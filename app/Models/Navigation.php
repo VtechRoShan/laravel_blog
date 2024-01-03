@@ -15,6 +15,7 @@ class Navigation extends Model
     {
         return $this->hasMany('App\Models\Blog');
     }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_navigation');

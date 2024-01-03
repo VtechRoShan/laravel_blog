@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->integer('count')->default(1);
             $table->timestamps();
-        
+
             // Define foreign key constraints
             $table->foreign('navigation_id')->references('id')->on('navigations')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');

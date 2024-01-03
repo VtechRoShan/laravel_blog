@@ -32,6 +32,7 @@ class Blog extends Model
     {
         return $this->belongsToMany(Category::class)->as('blog_category');
     }
+
     public function sharedAttributes()
     {
         return $this->hasOne(Shared_attributes::class, 'shared_attributes_id');

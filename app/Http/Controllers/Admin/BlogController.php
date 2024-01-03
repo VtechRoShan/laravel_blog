@@ -6,15 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Navigation;
-use App\Models\Tag;
 use App\Models\Shared_attributes;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-
-
 
 class BlogController extends Controller
 {
@@ -71,10 +69,9 @@ class BlogController extends Controller
             $validatedData = $validator->validated();
             // dd($validatedData);
 
-
-                // Create a new instance for shared attributes
-            $sharedAttributesData = $request->only(['keyword','status', 'seo_title', 'post_body', 'meta_desc', 'summary', 'image_caption']);
-            $sharedAttributesData['model'] = 'Blog'; 
+            // Create a new instance for shared attributes
+            $sharedAttributesData = $request->only(['keyword', 'status', 'seo_title', 'post_body', 'meta_desc', 'summary', 'image_caption']);
+            $sharedAttributesData['model'] = 'Blog';
 
             $sharedAttributesData['reading_time'] = calculateReadingTime($request->input('post_body'));
             if ($request->hasFile('featured_image')) {
@@ -89,7 +86,7 @@ class BlogController extends Controller
             // Create a new blog post instance
 
             // Create a new blog post instance without shared attributes fields
-            $blogData = Arr::except($validatedData, ['keyword', 'status', 'seo_title', 'post_body' ,'meta_desc', 'summary', 'image_caption', 'featured_image', 'thumnail_image', 'tag_id', 'category_id']);
+            $blogData = Arr::except($validatedData, ['keyword', 'status', 'seo_title', 'post_body', 'meta_desc', 'summary', 'image_caption', 'featured_image', 'thumnail_image', 'tag_id', 'category_id']);
             $blogData['shared_attributes_id'] = $sharedAttributes->id;
             $blog = Blog::create($blogData);
 
@@ -102,13 +99,13 @@ class BlogController extends Controller
             if (isset($validatedData['nav_bar_id']) && isset($validatedData['category_id'])) {
                 $navigation = Navigation::find($validatedData['nav_bar_id']);
                 $categories = Category::whereIn('id', $validatedData['category_id'])->get();
-            
+
                 foreach ($categories as $category) {
                     // Check if the entry already exists for the same navigation and category
                     $existingEntry = $navigation->categories()
                         ->where('category_id', $category->id)
                         ->first();
-            
+
                     if ($existingEntry) {
                         // Entry exists, increment the count
                         $existingEntry->pivot->increment('count');
@@ -119,13 +116,13 @@ class BlogController extends Controller
                 }
             }
             DB::commit();
+
             return redirect()->route('blog.index')->with('success', 'Blog post created successfully.');
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction on error
-    
+
             // Handle the error, e.g., return an error response or redirect with an error message
-            return redirect()->route('blog.create')->withErrors(['error' => 'Failed to create blog post: ' . $e->getMessage()]);
+            return redirect()->route('blog.create')->withErrors(['error' => 'Failed to create blog post: '.$e->getMessage()]);
         }
     }
 

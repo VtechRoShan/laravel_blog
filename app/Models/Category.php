@@ -24,10 +24,12 @@ class Category extends Model
     {
         return $this->belongsToMany(Blog::class, 'blog_category');
     }
+
     public function navigations()
     {
         return $this->belongsToMany(Navigation::class, 'category_navigation');
     }
+
     public function sharedAttributes()
     {
         return $this->hasOne(Shared_attributes::class, 'shared_attributes_id');
