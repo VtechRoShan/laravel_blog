@@ -133,12 +133,12 @@
                      </div>
 
                      <div class="form-group">
-                        <label for="blog_meta_desc">Meta Desc</label>
-                        <textarea class="form-control" id="blog_meta_desc"
-                           name='blog_meta_desc'>{{old("blog_meta_desc")}}</textarea>
+                        <label for="meta_desc">Meta Desc</label>
+                        <textarea class="form-control" id="meta_desc"
+                           name='meta_desc'>{{old("meta_desc")}}</textarea>
                            
                            <span style="color: red">
-                                 @error('blog_meta_desc')
+                                 @error('meta_desc')
                                  {{ $message }}
                                  @enderror
                               </span>

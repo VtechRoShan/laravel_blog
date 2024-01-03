@@ -17,8 +17,7 @@ class Category extends Model
         'name',
         'slug',
         'cat_icon',
-        'description',
-        'image',
+        'shared_attributes_id',
     ];
 
     public function blogs()
@@ -28,6 +27,10 @@ class Category extends Model
     public function navigations()
     {
         return $this->belongsToMany(Navigation::class, 'category_navigation');
+    }
+    public function sharedAttributes()
+    {
+        return $this->hasOne(Shared_attributes::class, 'shared_attributes_id');
     }
 
     public function Sluggable(): array

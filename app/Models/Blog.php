@@ -11,7 +11,7 @@ class Blog extends Model
     use HasFactory;
     use Sluggable;
 
-    protected $fillable = ['title', 'slug', 'status', 'publish_at', 'post_body', 'keyword', 'seo_title', 'blog_meta_desc', 'summary', 'featured_image', 'thumnail_image', 'image_caption', 'nav_bar_id', 'reading_time'];
+    protected $fillable = ['title', 'slug', 'publish_at', 'nav_bar_id', 'shared_attributes_id'];
 
     public function Sluggable(): array
     {
@@ -31,6 +31,10 @@ class Blog extends Model
     public function category()
     {
         return $this->belongsToMany(Category::class)->as('blog_category');
+    }
+    public function sharedAttributes()
+    {
+        return $this->hasOne(Shared_attributes::class, 'shared_attributes_id');
     }
 
     public function tags()

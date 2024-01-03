@@ -9,7 +9,7 @@
    <div class="container-fluid">
       <div class="row mb-2">
          <div class="col-sm-6">
-            <h1>Blog</h1>
+            <h1>Category</h1>
          </div>
          <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -28,7 +28,7 @@
          <div class="col-md-12">
             <div class="card ">
                <div class="col-md-6 card-header">
-                  <h3 class="">Add New Blog</h3>
+                  <h3 class="">Add New Category</h3>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
