@@ -18,6 +18,7 @@ class Category extends Model
         'slug',
         'cat_icon',
         'shared_attributes_id',
+        'image_id',
     ];
 
     public function blogs()
@@ -33,6 +34,11 @@ class Category extends Model
     public function sharedAttributes()
     {
         return $this->hasOne(Shared_attributes::class, 'shared_attributes_id');
+    }
+
+    public function images()
+    {
+        return $this->hasOne(Image::class, 'image_id');
     }
 
     public function Sluggable(): array

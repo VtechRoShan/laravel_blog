@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('slug')->unique()->nullable();
 
+            $table->unsignedBigInteger('image_id')->nullable();
+            $table->foreign('image_id')->references('id')->on('images');
+
             $table->unsignedBigInteger('shared_attributes_id')->nullable();
             $table->foreign('shared_attributes_id')->references('id')->on('shared_attributes');
 

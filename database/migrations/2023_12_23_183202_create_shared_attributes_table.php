@@ -20,12 +20,8 @@ return new class extends Migration
             $table->longText('meta_desc')->nullable();
             $table->longText('summary')->nullable();
             $table->longText('reading_time')->nullable();
-            $table->string('thumbnail_image')->nullable();
-            $table->string('featured_image')->nullable();
-            $table->string('image_caption')->nullable();
             $table->string('model')->nullable();
 
-            $table->timestamps();
         });
     }
 

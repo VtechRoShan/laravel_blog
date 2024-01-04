@@ -9,7 +9,7 @@ class Navigation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'image', 'description'];
+    protected $fillable = ['name', 'image', 'description', 'image_id'];
 
     public function blog()
     {
@@ -19,5 +19,10 @@ class Navigation extends Model
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_navigation');
+    }
+
+    public function images()
+    {
+        return $this->hasOne(Image::class, 'image_id');
     }
 }

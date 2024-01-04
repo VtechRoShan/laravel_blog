@@ -6,7 +6,7 @@
    <div class="container-fluid">
       <div class="row mb-2">
          <div class="col-sm-6">
-            <h1>Blog</h1>
+            <h1>Navigation</h1>
          </div>
          <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -25,80 +25,45 @@
          <div class="col-md-12">
             <div class="card ">
                <div class="col-md-6 card-header">
-                  <h3 class="">Add New Blog</h3>
+                  <h5 class="">Add New Navigation</h5>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                  <form action="{{ route('blog.store') }}" method="post" enctype="multipart/form-data">
+                  <form action="{{ route('navigation.store') }}" method="post" enctype="multipart/form-data">
                      @csrf
-                     <div class="form-group">
-                        <label for="blog_title">Blog Post Title</label>
-                        <input type="text" class="form-control" required  name='title' value="{{old('title')}}">
-                        <span style="color: red">
-                           @error('title')
-                           {{ $message }}
-                           @enderror
-                        </span>
-                     </div>
-                     <div class="form-group">
-                        <label for="blog_post_body">Post Body (Editor JS)
-                              <div class="form-group" id="">
-                                  <textarea name="blog_post_body" id="editorjs">
-                                  <div id="icons">
-            <button id="fullscreen-toggle" class="icon-button"><i class="fas fa-expand"></i></button>
-            <button id="close-button" class="icon-button"><i class="fas fa-times"></i></button>
-        </div>
-                                  </textarea>
-                              </div>
-                        </label>
-                     </div>
-                    <hr>
+
                      <div class='row'>
                         <div class='col-sm-6 col-md-6 col-lg-6'>
-                          <div class="form-group">
-                              <label for="keyword">Keywords</label>
-                              <input type="text" class="form-control" id="keyword" name='keyword' value="{{old('post_body')}}">
-                              <span style="color: red">
-                           @error('keyword')
+                        <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" required  name='name' value="{{old('name')}}">
+                        <span style="color: red">
+                           @error('name')
                            {{ $message }}
                            @enderror
                         </span>
-                           </div>
+                     </div>
                         </div>
                         <div class='col-sm-6 col-md-6 col-lg-6'>
                             <div class="form-group">
-                              <label for="blog_seo_title">SEO Title Tags  </label>
-                              <input class="form-control" id="blog_seo_title" aria-describedby="blog_seo_title_help"
+                              <label for="seo_title">SEO Tags  </label>
+                              <input class="form-control" id="seo_title" aria-describedby="seo_title"
                                 name='seo_title' type='text' value='{{old("seo_title")}}' >
 
                                 <span style="color: red">
-                                 @error('keyword')
+                                 @error('seo_title')
                                  {{ $message }}
                                  @enderror
                               </span>
                           </div>
                         </div>
                      </div>
-
                      <div class="form-group">
-                        <label for="blog_meta_desc">Meta Desc</label>
-                        <textarea class="form-control" id="blog_meta_desc"
-                           name='blog_meta_desc'>{{old("blog_meta_desc")}}</textarea>
-                           
+                        <label for="meta_desc">Meta Desc</label>
+                        <textarea class="form-control" id="meta_desc"
+                           name='meta_desc'>{{old("meta_desc")}}</textarea>
                            <span style="color: red">
-                                 @error('blog_meta_desc')
-                                 {{ $message }}
-                                 @enderror
-                              </span>
-                        
-                     </div>
-                     <div class="form-group">
-                        <label for="blog_short_description">Summery</label>
-                        <textarea class="form-control" id="blog_short_description" aria-describedby="blog_short_description_help"
-                           name='summary'>{{old("summary")}}</textarea>
-                           
-                           <span style="color: red">
-                                 @error('summary')
+                                 @error('meta_desc')
                                  {{ $message }}
                                  @enderror
                               </span>
@@ -108,10 +73,8 @@
                        <div class="row">
                         <div class="col-md-6">
                         <div class="form-group mb-4 p-2 ">
-                          
                            <label for="blog_ok">Featured Image</label>
                            <input class="form-control" type="file" name="featured_image" >
-                              
                            <span style="color: red">
                                  @error('featured_image')
                                  {{ $message }}
@@ -145,7 +108,7 @@
                      </div>
                         </div>
                      </div>
-                     <button class="btn btn-success float-right" type="submit">Add Blog</button>
+                     <button class="btn btn-primary float-right" type="submit">Add Navigation</button>
                   </form>
                </div>
             </div>

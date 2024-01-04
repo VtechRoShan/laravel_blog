@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('navigations', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('description')->nullable();
-            $table->string('image')->nullable();
+            $table->string('seo_title')->nullable();
+            $table->text('meta_desc')->nullable();
+
+            $table->unsignedBigInteger('image_id')->nullable();
+            $table->foreign('image_id')->references('id')->on('images');
+
             $table->timestamps();
         });
     }

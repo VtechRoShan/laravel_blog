@@ -20,9 +20,6 @@ class Shared_attributes extends Model
         'meta_desc',
         'summary',
         'reading_time',
-        'thumbnail_image',
-        'featured_image',
-        'image_caption',
         'model',
     ];
 
