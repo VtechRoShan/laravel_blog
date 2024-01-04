@@ -21,6 +21,7 @@ return new class extends Migration
             $table->longText('summary')->nullable();
             $table->longText('reading_time')->nullable();
             $table->string('model')->nullable();
+            $table->timestamps();
 
         });
     }
