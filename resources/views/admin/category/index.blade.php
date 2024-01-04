@@ -64,7 +64,7 @@
                       <td>{{ $category ->name  }}</td>
                       <td>{{ $category ->description  }}</td>
                       <td>{{ $category ->image  }}</td>
-                      <td>{{ $category ->cat_icon  }}</td>
+                      <td><i class="{{ $category ->cat_icon}}" ></i> </td>
                       <td>View Blogs</td>
                       <td>{{ $category -> created_at  }}</td>
                       <td class="text-right py-0 align-middle">
