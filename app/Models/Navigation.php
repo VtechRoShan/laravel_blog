@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Navigation extends Model
 {
     use HasFactory;
+
     protected $table = 'navigations';
 
     protected $fillable = ['name', 'seo_title', 'meta_desc', 'image_id'];

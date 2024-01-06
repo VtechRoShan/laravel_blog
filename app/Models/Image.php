@@ -18,16 +18,16 @@ class Image extends Model
         'model',
     ];
 
-
     public function blog()
     {
-        return $this->hasOne(Blog::class);
+        return $this->hasOne(Blog::class, 'image_id');
     }
 
     public function navigation()
     {
         return $this->hasOne(Navigation::class, 'image_id');
     }
+
     public function category()
     {
         return $this->hasOne(Category::class, 'image_id');

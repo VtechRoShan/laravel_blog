@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Navigation;
 use App\Models\Image;
+use App\Models\Navigation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class NavigationController extends Controller
-{   
+{
     protected $fileLocation = 'navigations';
+
     /**
      * Display a listing of the resource.
      */
@@ -68,28 +69,31 @@ class NavigationController extends Controller
             Navigation::create($navData);
 
             DB::commit();
-            $notification = array(
+            $notification = [
                 'message' => 'Item Added in Navigations',
-                'alert-type' => 'success'
-            );
+                'alert-type' => 'success',
+            ];
+
             return redirect()->route('navigation.index')->with($notification);
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction on error
 
-            $notification = array(
+            $notification = [
                 'message' => 'Failed to create blog post: '.$e->getMessage(),
-                'alert-type' => 'error'
-            );
+                'alert-type' => 'error',
+            ];
+
             // Handle the error, e.g., return an error response or redirect with an error message
             return redirect()->back()->with($notification);
         }
     }
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        
+
     }
 
     /**
@@ -98,6 +102,7 @@ class NavigationController extends Controller
     public function edit(string $id)
     {
         $navigation = Navigation::with('images')->find($id);
+
         return view('admin.navigation.edit', compact('navigation'));
     }
 
@@ -139,22 +144,24 @@ class NavigationController extends Controller
                 $imageData['featured_image'] = Storage::disk('public')->put($this->fileLocation, $request->file('featured_image'));
             }
             // Update Image record only if there's new image data
-            if (!empty($imageData)) {
+            if (! empty($imageData)) {
                 $navigation->images->update($imageData);
             }
             DB::commit();
-            $notification = array(
+            $notification = [
                 'message' => 'Item Edited in Navigations',
-                'alert-type' => 'success'
-            );
+                'alert-type' => 'success',
+            ];
+
             return redirect()->route('navigation.index')->with($notification);
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction on error
 
-            $notification = array(
+            $notification = [
                 'message' => 'Failed to cedit navigation: '.$e->getMessage(),
-                'alert-type' => 'error'
-            );
+                'alert-type' => 'error',
+            ];
+
             // Handle the error, e.g., return an error response or redirect with an error message
             return redirect()->back()->with($notification);
         }
@@ -164,11 +171,11 @@ class NavigationController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {   
+    {
         DB::beginTransaction();
         try {
             $navigation = Navigation::with('images')->findOrFail($id);
-    
+
             // Check if there are associated images and delete them from storage
             if ($navigation->images) {
                 if (Storage::disk('public')->exists($navigation->images->featured_image)) {
@@ -177,30 +184,31 @@ class NavigationController extends Controller
                 if (Storage::disk('public')->exists($navigation->images->thumbnail_image)) {
                     Storage::disk('public')->delete($navigation->images->thumbnail_image);
                 }
-    
+
                 // Delete the image records from the database
                 $navigation->images->delete();
             }
-    
+
             // Delete the navigation record
             $navigation->delete();
-    
+
             DB::commit();
-            $notification = array(
+            $notification = [
                 'message' => 'Item Deleted From Navigations',
-                'alert-type' => 'success'
-            );
+                'alert-type' => 'success',
+            ];
+
             return redirect()->route('navigation.index')->with($notification);
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction on error
 
-            $notification = array(
+            $notification = [
                 'message' => 'Failed to cedit navigation: '.$e->getMessage(),
-                'alert-type' => 'error'
-            );
+                'alert-type' => 'error',
+            ];
+
             // Handle the error, e.g., return an error response or redirect with an error message
             return redirect()->back()->with($notification);
         }
     }
-    
 }

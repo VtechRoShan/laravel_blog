@@ -98,13 +98,13 @@
                 @method('DELETE')
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Delete Blog</h4>
+                        <h4 class="modal-title">Delete Navigation Item</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p class="text-center text-bold">Are you sure you want to delete this Blog?</p>
+                        <p class="text-center text-bold">Are you sure you want to delete this Navigation Item?</p>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Go Back</button>

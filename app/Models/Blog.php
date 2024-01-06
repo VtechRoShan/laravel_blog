@@ -11,14 +11,14 @@ class Blog extends Model
 {
     use HasFactory;
     use Sluggable;
-    use SoftDeletes; 
+    use SoftDeletes;
 
     protected $fillable = [
-        'title', 
-        'slug', 
-        'publish_at', 
-        'nav_bar_id', 
-        'shared_attributes_id', 
+        'title',
+        'slug',
+        'publish_at',
+        'nav_bar_id',
+        'shared_attributes_id',
         'image_id',
     ];
 
@@ -46,6 +46,7 @@ class Blog extends Model
     {
         return $this->belongsToMany(Tag::class)->as('blog_tag');
     }
+
     public function Sluggable(): array
     {
         return [

@@ -91,4 +91,39 @@
                 </ul>
               </div>
             </div>
+            <div class="modal modal-bg-issue fade " style="background-color:transparent !important; border:none !important" id="confirmDeleteModal">
+        <div class="modal-dialog" style="margin-top:60px !important">
+            <form method="POST" id="deleteBlogForm" action="">
+                @csrf
+                @method('DELETE')
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete Blog</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-center text-bold">Are you sure you want to delete this Blog?</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Go Back</button>
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </form>
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <script>
+        function handleDelete(id) {
+            var form = document.getElementById('deleteBlogForm');
+            form.action = 'blog/' + id;
+            $('#confirmDeleteModal').modal('show');
+        }
+    </script>
+  
+  
+  
   @endsection
