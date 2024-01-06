@@ -27,12 +27,13 @@
          <div class="col-md-12">
             <div class="card ">
                <div class="col-md-6 card-header">
-                  <h3 class="">Add New Blog</h3>
+                  <h3 class="">Update Blog</h3>
                </div>
                <!-- /.card-header -->
                <div class="card-body">
-                  <form action="{{ route('blog.store') }}" method="post" enctype="multipart/form-data">
+                  <form method="post" action="{{ route('blog.update', $blog->id) }}" enctype="multipart/form-data">
                      @csrf
+                     @method('put')
                      <div class="form-group">
                         <label for="blog_title">Blog Post Title</label>
                         <input type="text" class="form-control" required  name='title' value=" {{  $blog->title }}  ">
@@ -60,7 +61,8 @@
                         <div class='col-sm-6 col-md-6  col-lg-6'>
                            <div class="form-group">
                               <label for="publish_at">Posted at</label>
-                              <input type="date" class="form-control" name='publish_at'value=" {{  $blog->publish_at }}  " >
+                              <input type="date" class="form-control" name='publish_at' 
+                              value="{{ old('publish_at', isset($blog->publish_at) ? \Carbon\Carbon::parse($blog->publish_at)->format('Y-m-d') : '') }}">
                               <span style="color: red">
                            @error('publish_at')
                            {{ $message }}
@@ -150,26 +152,37 @@
                                  @enderror
                               </span>
                      </div>
+
+
+
+
+
+
+
                      <div class='bg-white pt-4 px-4 pb-0 my-2 mb-4 rounded border'>
                        <h4>Featured Images</h4>
                        <div class="row">
                         <div class="col-md-6">
                         <div class="form-group mb-4 p-2 ">
                            <label for="blog_ok">Featured Image</label>
-                           <input class="form-control" type="file" name="featured_image" >
-                           <span style="color: red">
+                              <input type="file"name="featured_image" class="form-control" accept="image/" onchange="previewImage(this, 'featured-preview')">
+                              <img src="{{ Storage::url($blog->images->featured_image) }}" width="200px" style="padding-top:10px" class="fixed-size-image" id="featured-preview">
+                                 <span style="color: red">
                                  @error('featured_image')
                                  {{ $message }}
                                  @enderror
                               </span>
+
+
                         </div>
                         </div>
                         <div class="col-md-6">
                         <div class="form-group mb-4 p-2 ">
                            <label for="blog_ok">Image Thumbnail</label>
-                           <input class="form-control" type="file" name="thumnail_image" >
+                           <input class="form-control " type="file" name="thumbnail_image" accept="image/" onchange="previewImage(this, 'thumbnail-preview')" >
+                           <img src="{{ Storage::url($blog->images->thumbnail_image) }}" width="200px"style="padding-top:10px" class="fixed-size-image" id="thumbnail-preview">
                            <span style="color: red">
-                                 @error('thumnail_image')
+                                 @error('thumbnail_image')
                                  {{ $message }}
                                  @enderror
                               </span>
@@ -177,87 +190,29 @@
                         </div>
                         </div>
                         <div class="form-group">
-                           <label>Image Caption</label>
-                           <input type="text" class="form-control" required name='image_caption' avalue='{{old("seo_title")}}' >
-                           
-                           <span style="color: red">
-                                    @error('image_caption')
-                                    {{ $message }}
-                                    @enderror
-                                 </span>
-                        </div>
+                        <label>Image Caption</label>
+                        <input type="text" class="form-control" required name='image_caption'  value="{{ $blog ->images->image_caption }}" >
+                        
+                        <span style="color: red">
+                                 @error('image_caption')
+                                 {{ $message }}
+                                 @enderror
+                              </span>
                      </div>
-                  
-                     <div class="form-group">
-                        <div class='bg-white pt-4 px-4 pb-0 my-2 mb-4 rounded border'>
-                           <h4>Select Navigation Section:</h4>
-                           <div class='row '>
-                                 <select name='nav_bar_id' class='form-control'>
-                                    <option  selected value="Navigation"> <b> Select </b> </option>
-                                    @foreach($navigations as $navigation)
-                                    <option value="{{ $navigation->id }}"> <b> {{ $navigation->name }} </b> </option>
-                                    @endforeach
-                                 </select>
-                                 <span style="color: red">
-                                       @error('nav_bar_id')
-                                       {{ $message }}
-                                       @enderror
-                                 </span>
-                              
-                              <div class='col-md-12 my-3 text-center'>
-                                 <em><a class="a-link-cart-color" target='_blank' href=''><i class="fa fa-external-link" aria-hidden="true"></i>
-                              </a></em>
-                              </div>
-                           </div>
                         </div>
+                  
+                     <div class='bg-white pt-4 px-4 pb-0 my-2 mb-4 rounded border'>
+                        <h5 class="text-danger">Updating Navigation is not Availabel Now:</h5>
                      </div>
 
                       <div class='bg-white pt-4 px-4 pb-0 my-2 mb-4 rounded border'>
-                        <h4>Available Categories:</h4>
-                        <div class='row'>
-                           @forelse($categories as $category)
-                           <div class="form-check col-sm-2">
-                                    <input class="form-check-input" type="checkbox" name="category_id[]" value="{{$category->id}}" id="tags_check{{$category->id}}">
-                                    <label class="form-check-label" for="category_check{{$category->id}}">
-                                       {{$category->name}}
-                                    </label>
-                                 </div>
-                           @empty
-                           <div class='col-sm-2'>
-                              No categories
-                           </div>
-                           @endforelse
-                           <div class='col-md-12 my-3 text-center'>
-                              <em><a class="a-link-cart-color" href=''><i class="fa fa-external-link" aria-hidden="true"></i>
-                              Add new categories here</a></em>
-                           </div>
-                        </div>
+                        <h5 class="text-danger">Updating Categories Not Availabel Now:</h5>
                      </div>
 
                      <div class='bg-white pt-4 px-4 pb-0 my-2 mb-4 rounded border'>
-                        <h4>Select Available Tags:</h4>
-                        <div class='row'>
-                           @forelse($tags as $tag)
-                                 <div class="form-check col-sm-2">
-                                    <input class="form-check-input" type="checkbox" name="tag_id[]" value="{{$tag->id}}" id="tags_check{{$tag->id}}">
-                                    <label class="form-check-label" for="tags_check{{$tag->id}}">
-                                       {{$tag->name}}
-                                    </label>
-                                 </div>
-                           @empty
-                                 <div class='col-sm-12'>
-                                    No tags available.
-                                 </div>
-                           @endforelse
-                           <div class='col-md-12 my-3 text-center'>
-                                 <em><a class="a-link-cart-color" href=''>
-                                    <i class="fa fa-external-link" aria-hidden="true"></i>
-                                    Add new tags here </a></em>
-                           </div>
-                        </div>
-                     </div>
+                        <h5 class="text-danger"> Updatin Tags Not Available Now :</h5>
                   </div>
-                     <button class="btn btn-success float-right" type="submit">Add Blog</button>
+                     <button class="btn btn-success float-right" type="submit">Update Blog</button>
                   </form>
                </div>
             </div>
@@ -270,16 +225,14 @@
 @endsection
 @push('js')
 <script>
-   function previewImage(event) {
-       var input = event.target;
-       if (input.files && input.files[0]) {
-           var reader = new FileReader();
-           reader.onload = function(e) {
-               document.getElementById('imagePreview').src = e.target.result;
-               document.getElementById('imagePreview').style.display = 'block';
-           };
-           reader.readAsDataURL(input.files[0]);
-       }
-    }
+   function previewImage(input, previewId) {
+      if (input.files && input.files[0]) {
+         var reader = new FileReader();
+         reader.onload = function (e) {
+               document.getElementById(previewId).setAttribute('src', e.target.result);
+         };
+         reader.readAsDataURL(input.files[0]);
+      }
+   }
 </script>
 @endpush

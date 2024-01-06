@@ -62,10 +62,10 @@ class BlogController extends Controller
                 'meta_desc' => 'required|string',
                 'summary' => 'required|string',
 
-                'featured_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:4096|dimensions:min_width=100,min_height=100,max_width=5000,max_height=5000',
-                'thumbnail_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:1024|dimensions:min_width=50,min_height=50,max_width=1000,max_height=1000',
+                'featured_image' => 'required|image|mimes:jpg,jpeg,png,gif|max:4096|dimensions:min_width=100,min_height=100,max_width=5000,max_height=5000',
+                'thumbnail_image' => 'required|image|mimes:jpg,jpeg,png,gif|max:1024|dimensions:min_width=50,min_height=50,max_width=1000,max_height=1000',
                 'image_caption' => 'required|string',
-                
+
                 'nav_bar_id' => 'required|integer|exists:navigations,id',
                 'category_id' => 'required|array',
                 'category_id.*' => 'integer|exists:categories,id',
@@ -149,10 +149,8 @@ class BlogController extends Controller
     public function edit(string $id)
     {
         $blog = Blog::with('images', 'sharedAttributes') ->find($id);
-        $tags = Tag::all();
         $navigations = Navigation::all();
-        $categories = Category::all();
-        return view('admin.blog.edit', compact('blog', 'tags', 'navigations', 'categories'));
+        return view('admin.blog.edit', compact('blog', 'navigations'));
     }
 
     /**
@@ -160,8 +158,71 @@ class BlogController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $blog = Blog::with('sharedAttributes', 'images')->findOrFail($id);
+
+            // Validate the request data
+            $validatedData = $request->validate([
+                'title' => 'required|max:255',
+                'publish_at' => 'required|date',
+                'status' => 'required|in:Draft,Published',
+                'post_body' => 'required',
+                'keyword' => 'required|string',
+                'seo_title' => 'required|string',
+                'meta_desc' => 'required|string',
+                'summary' => 'required|string',
+                'featured_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:4096',
+                'thumbnail_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:1024',
+                'image_caption' => 'required|string',
+            ]);
+    
+            // Update shared attributes
+            $sharedAttributesData = $request->only(['status', 'post_body', 'keyword', 'seo_title', 'meta_desc', 'summary']);
+            $sharedAttributesData['reading_time'] = calculateReadingTime($request->input('post_body'));
+            $blog->sharedAttributes()->update($sharedAttributesData);
+
+
+
+            $imageData = $request->only(['image_caption']);
+            if ($request->hasFile('featured_image')) {
+                if ($blog->images->featured_image) {
+                    Storage::disk('public')->delete($blog->images->featured_image);
+                }
+                $imageData['featured_image'] = Storage::disk('public')->put($this->fileLocation, $request->file('featured_image'));
+            }
+    
+            if ($request->hasFile('thumbnail_image')) {
+                if ($blog->images->thumbnail_image) {
+                    Storage::disk('public')->delete($blog->images->thumbnail_image);
+                }
+                $imageData['thumbnail_image'] = Storage::disk('public')->put($this->fileLocation, $request->file('thumbnail_image'));
+            }
+    
+            $blog->images->update($imageData);
+
+            $blogData = Arr::except($validatedData, ['post_body', 'status', 'keyword', 'seo_title', 'meta_desc', 'summary', 'image_caption', 'featured_image', 'thumbnail_image']);
+            $blog->update($blogData);
+    
+            DB::commit();
+            $notification = array(
+                'message' => 'blog Item Edited',
+                'alert-type' => 'success'
+            );
+
+            return redirect()->route('blog.index')->with($notification);
+        } catch (\Exception $e) {
+            DB::rollBack(); // Rollback the transaction on error
+
+            $notification = array(
+                'message' => 'Failed to create category: '.$e->getMessage(),
+                'alert-type' => 'error'
+            );
+            // Handle the error, e.g., return an error response or redirect with an error message
+            return redirect()->back()->with($notification);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
