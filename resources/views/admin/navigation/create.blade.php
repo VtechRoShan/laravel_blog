@@ -85,10 +85,10 @@
                         <div class="col-md-6">
                         <div class="form-group mb-4 p-2 ">
                            <label for="blog_ok">Image Thumbnail</label>
-                           <input class="form-control" type="file" name="thumnail_image" >
+                           <input class="form-control" type="file" name="thumbnail_image" >
 
                            <span style="color: red">
-                                 @error('thumnail_image')
+                                 @error('thumbnail_image')
                                  {{ $message }}
                                  @enderror
                               </span>

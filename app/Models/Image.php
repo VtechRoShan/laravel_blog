@@ -30,6 +30,6 @@ class Image extends Model
 
     public function navigation()
     {
-        return $this->belongsTo(Navigation::class);
+        return $this->hasOne(Navigation::class, 'image_id');
     }
 }

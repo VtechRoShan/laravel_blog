@@ -21,7 +21,7 @@
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
-            <div class="row m-2">
+            <div class="row mx-2 mt-2">
               <div class="col-sm-6">
               <div class="card-header">
                 <h3 class="card-title">Bordered Table</h3>

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->foreign('nav_bar_id')->references('id')->on('navigations');
 
             $table->string('publish_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

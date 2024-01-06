@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Navigation extends Model
 {
     use HasFactory;
+    protected $table = 'navigations';
 
-    protected $fillable = ['name', 'image', 'description', 'image_id'];
+    protected $fillable = ['name', 'seo_title', 'meta_desc', 'image_id'];
 
     public function blog()
     {
@@ -23,6 +24,6 @@ class Navigation extends Model
 
     public function images()
     {
-        return $this->hasOne(Image::class, 'image_id');
+        return $this->belongsTo(Image::class, 'image_id');
     }
 }
