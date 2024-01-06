@@ -33,12 +33,12 @@ class Category extends Model
 
     public function sharedAttributes()
     {
-        return $this->hasOne(Shared_attributes::class, 'shared_attributes_id');
+        return $this->belongsTo(Shared_attributes::class, 'shared_attributes_id');
     }
 
     public function images()
     {
-        return $this->hasOne(Image::class, 'image_id');
+        return $this->belongsTo(Image::class, 'image_id');
     }
 
     public function Sluggable(): array

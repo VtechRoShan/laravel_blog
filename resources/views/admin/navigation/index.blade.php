@@ -91,7 +91,7 @@
                 </ul>
               </div>
             </div>
-            <div class="modal modal-bg-issue fade " style="background-color:transparent !important; border:none !important" id="confirmDeleteModal">
+      <div class="modal modal-bg-issue fade " style="background-color:transparent !important; border:none !important" id="confirmDeleteModal">
         <div class="modal-dialog" style="margin-top:60px !important">
             <form method="POST" id="deleteBlogForm" action="">
                 @csrf

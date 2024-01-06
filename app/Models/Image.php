@@ -18,10 +18,6 @@ class Image extends Model
         'model',
     ];
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
 
     public function blog()
     {
@@ -31,5 +27,9 @@ class Image extends Model
     public function navigation()
     {
         return $this->hasOne(Navigation::class, 'image_id');
+    }
+    public function category()
+    {
+        return $this->hasOne(Category::class, 'image_id');
     }
 }

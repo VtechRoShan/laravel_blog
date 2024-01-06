@@ -18,10 +18,10 @@ return new class extends Migration
             $table->string('cat_icon')->nullable();
 
             $table->unsignedBigInteger('image_id')->nullable();
-            $table->foreign('image_id')->references('id')->on('images');
+            $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade');
 
             $table->unsignedBigInteger('shared_attributes_id')->nullable();
-            $table->foreign('shared_attributes_id')->references('id')->on('shared_attributes');
+            $table->foreign('shared_attributes_id')->references('id')->on('shared_attributes')->onDelete('cascade');
 
             $table->timestamps();
         });

@@ -68,9 +68,11 @@
                       <td>View Blogs</td>
                       <td>{{ $category -> created_at  }}</td>
                       <td class="text-right py-0 align-middle">
-                        <div class="btn-group btn-group-sm">
-                          <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                          <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                      <div class="">
+                          <a href="{{ route('category.show', $category ->id )}}" class="btn btn-sm btn-primary m-2"><i class="fas fa-eye"></i></a>
+                          <a href="{{ route('category.edit', $category ->id )}}" class="btn btn-sm btn-info m-2"><i class="fas fa-edit"></i></a>
+                          <button class="btn btn-sm btn-danger m-2 " data-toggle="tooltip" data-placement="top" title="Delete"onclick="handleDelete('{{ $category ->id }} ')">
+                                                        <i class="fa fa-trash" aria-hidden="true"></i></button>
                         </div>
                       </td>
                     </tr>
@@ -92,4 +94,39 @@
                 </ul>
               </div>
             </div>
+
+
+
+            <div class="modal modal-bg-issue fade " style="background-color:transparent !important; border:none !important" id="confirmDeleteModal">
+        <div class="modal-dialog" style="margin-top:60px !important">
+            <form method="POST" id="deleteBlogForm" action="">
+                @csrf
+                @method('DELETE')
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete Blog</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-center text-bold">Are you sure you want to delete this Blog?</p>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No, Go Back</button>
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </form>
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <script>
+        function handleDelete(id) {
+            var form = document.getElementById('deleteBlogForm');
+            form.action = 'category/' + id;
+            $('#confirmDeleteModal').modal('show');
+        }
+    </script>
   @endsection
