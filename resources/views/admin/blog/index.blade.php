@@ -65,8 +65,11 @@
                       <td>{{ $blog -> publish_at  }}</td>
                       <td class="text-right py-0 align-middle">
                         <div class="btn-group btn-group-sm">
-                          <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                          <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        <a href="{{ route('blog.show', $blog ->id )}}" class="btn btn-sm btn-primary m-2"><i class="fas fa-eye"></i></a>
+                          <a href="{{ route('blog.edit', $blog ->id )}}" class="btn btn-sm btn-info m-2"><i class="fas fa-edit"></i></a>
+                          <button class="btn btn-sm btn-danger m-2 " data-toggle="tooltip" data-placement="top" title="Delete"
+                                                onclick="handleDelete('{{ $blog ->id }} ')"><i class="fa fa-trash"
+                                                    aria-hidden="true"></i></button>
                         </div>
                       </td>
                     </tr>

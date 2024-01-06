@@ -13,17 +13,14 @@ class Blog extends Model
     use Sluggable;
     use SoftDeletes; 
 
-    protected $fillable = ['title', 'slug', 'publish_at', 'nav_bar_id', 'shared_attributes_id', 'image_id'];
-
-    public function Sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'title',
-                'onUpdate' => true,
-            ],
-        ];
-    }
+    protected $fillable = [
+        'title', 
+        'slug', 
+        'publish_at', 
+        'nav_bar_id', 
+        'shared_attributes_id', 
+        'image_id',
+    ];
 
     public function navigation()
     {
@@ -37,16 +34,25 @@ class Blog extends Model
 
     public function sharedAttributes()
     {
-        return $this->hasOne(Shared_attributes::class, 'shared_attributes_id');
+        return $this->belongsTo(Shared_attributes::class, 'shared_attributes_id');
     }
 
     public function images()
     {
-        return $this->hasOne(Image::class, 'image_id');
+        return $this->belongsTo(Image::class, 'image_id');
     }
 
     public function tags()
     {
         return $this->belongsToMany(Tag::class)->as('blog_tag');
+    }
+    public function Sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title',
+                'onUpdate' => true,
+            ],
+        ];
     }
 }

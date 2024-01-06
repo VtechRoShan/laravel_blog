@@ -21,7 +21,7 @@ class Image extends Model
 
     public function blog()
     {
-        return $this->belongsTo(Blog::class);
+        return $this->hasOne(Blog::class);
     }
 
     public function navigation()

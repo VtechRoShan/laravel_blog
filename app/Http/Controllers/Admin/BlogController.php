@@ -63,8 +63,9 @@ class BlogController extends Controller
                 'summary' => 'required|string',
 
                 'featured_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:4096|dimensions:min_width=100,min_height=100,max_width=5000,max_height=5000',
-                'thumnail_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:1024|dimensions:min_width=50,min_height=50,max_width=1000,max_height=1000',
+                'thumbnail_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:1024|dimensions:min_width=50,min_height=50,max_width=1000,max_height=1000',
                 'image_caption' => 'required|string',
+                
                 'nav_bar_id' => 'required|integer|exists:navigations,id',
                 'category_id' => 'required|array',
                 'category_id.*' => 'integer|exists:categories,id',
@@ -147,7 +148,11 @@ class BlogController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $blog = Blog::with('images', 'sharedAttributes') ->find($id);
+        $tags = Tag::all();
+        $navigations = Navigation::all();
+        $categories = Category::all();
+        return view('admin.blog.edit', compact('blog', 'tags', 'navigations', 'categories'));
     }
 
     /**
