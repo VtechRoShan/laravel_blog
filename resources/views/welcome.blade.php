@@ -13,9 +13,9 @@
             <a href="article.html">
                 <div class="card-image">
                 <div class="post-info"> <span class="text-uppercase">{{ (new DateTime($blog->publish_at))->format('d M Y') }}</span>
-                    <span class="text-uppercase">{{$blog->reading_time }} minute reads</span>
+                    <span class="text-uppercase">{{$blog-> sharedAttributes -> reading_time }} minute reads</span>
                 </div>
-                <img loading="lazy" decoding="async" src="{{ Storage::url($blog->thumnail_image) }}" alt="Post Thumbnail" class="w-100">
+                <img loading="lazy" decoding="async" src="{{ Storage::url($blog->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
                 </div>
             </a>
             <div class="card-body px-0">
@@ -27,7 +27,7 @@
                 @endif
             </ul>
                 <h2><a class="post-title" href="article.html">{{ $blog->title }}</a></h2>
-                <p class="card-text">{{ $blog->summary }}</p>
+                <p class="card-text">{{ $blog-> sharedAttributes ->summary }}</p>
                 <div class="content"> <a class="read-more-btn" href="article.html">Read Full Article {{$key}}</a>
                 </div>
             </div>

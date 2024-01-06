@@ -61,7 +61,7 @@
                       <td> {{$count+1}}</td>
                       <td>{{ $blog ->title  }}</td>
                       <td>{{ $blog ->navigation ->name  }}</td>
-                      <td>{{ $blog ->status  }}</td>
+                      <td>{{ $blog ->sharedAttributes ->status  }}</td>
                       <td>{{ $blog -> publish_at  }}</td>
                       <td class="text-right py-0 align-middle">
                         <div class="btn-group btn-group-sm">
