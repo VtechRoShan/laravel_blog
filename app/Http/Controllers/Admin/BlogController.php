@@ -52,14 +52,16 @@ class BlogController extends Controller
             $inputData['model'] = 'Blog';
             $validator = Validator::make($inputData, [
                 'title' => 'required|max:255',
-                'status' => 'required|in:Draft,Published',
                 'publish_at' => 'required|date',
+
+                'status' => 'required|in:Draft,Published',
                 'post_body' => 'required',
                 'model' => 'required',
                 'keyword' => 'required|string',
                 'seo_title' => 'required|string',
                 'meta_desc' => 'required|string',
                 'summary' => 'required|string',
+
                 'featured_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:4096|dimensions:min_width=100,min_height=100,max_width=5000,max_height=5000',
                 'thumnail_image' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:1024|dimensions:min_width=50,min_height=50,max_width=1000,max_height=1000',
                 'image_caption' => 'required|string',
@@ -74,17 +76,19 @@ class BlogController extends Controller
             // dd($validatedData);
 
             // Create a new instance for shared attributes
-            $sharedAttributesData = $request->only(['keyword', 'status', 'seo_title', 'post_body', 'meta_desc', 'summary', 'model']);
+            $sharedAttributesData = $request->only([ 'status', 'post_body', 'keyword', 'seo_title', 'meta_desc', 'summary']);
             $sharedAttributesData['reading_time'] = calculateReadingTime($request->input('post_body'));
+            $sharedAttributesData['model'] = 'Blog';
             $sharedAttributes = Shared_attributes::create($sharedAttributesData);
 
-            $imageData = $request->only(['image_caption', 'model']);
+            $imageData = $request->only(['image_caption']);
+            $imageData['model'] = 'Blog';
             if ($request->hasFile('featured_image')) {
                 $imageData['featured_image'] = Storage::disk('public')->put($this->fileLocation, $request->file('featured_image'));
             }
 
-            if ($request->hasFile('thumnail_image')) {
-                $imageData['thumnail_image'] = Storage::disk('public')->put($this->fileLocation, $request->file('thumnail_image'));
+            if ($request->hasFile('thumbnail_image')) {
+                $imageData['thumbnail_image'] = Storage::disk('public')->put($this->fileLocation, $request->file('thumbnail_image'));
             }
             $image = Image::create($imageData);
 
