@@ -5,23 +5,22 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Blog extends Model
 {
     use HasFactory;
     use Sluggable;
+    use SoftDeletes;
 
-    protected $fillable = ['title', 'slug', 'status', 'publish_at', 'post_body', 'keyword', 'seo_title', 'blog_meta_desc', 'summary', 'featured_image', 'thumnail_image', 'image_caption', 'nav_bar_id', 'reading_time'];
-
-    public function Sluggable(): array
-    {
-        return [
-            'slug' => [
-                'source' => 'title',
-                'onUpdate' => true,
-            ],
-        ];
-    }
+    protected $fillable = [
+        'title',
+        'slug',
+        'publish_at',
+        'nav_bar_id',
+        'shared_attributes_id',
+        'image_id',
+    ];
 
     public function navigation()
     {
@@ -33,8 +32,28 @@ class Blog extends Model
         return $this->belongsToMany(Category::class)->as('blog_category');
     }
 
+    public function sharedAttributes()
+    {
+        return $this->belongsTo(Shared_attributes::class, 'shared_attributes_id');
+    }
+
+    public function images()
+    {
+        return $this->belongsTo(Image::class, 'image_id');
+    }
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class)->as('blog_tag');
+    }
+
+    public function Sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title',
+                'onUpdate' => true,
+            ],
+        ];
     }
 }

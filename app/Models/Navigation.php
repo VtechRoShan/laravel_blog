@@ -9,14 +9,22 @@ class Navigation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'image', 'description'];
+    protected $table = 'navigations';
+
+    protected $fillable = ['name', 'seo_title', 'meta_desc', 'image_id'];
 
     public function blog()
     {
         return $this->hasMany('App\Models\Blog');
     }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_navigation');
+    }
+
+    public function images()
+    {
+        return $this->belongsTo(Image::class, 'image_id');
     }
 }

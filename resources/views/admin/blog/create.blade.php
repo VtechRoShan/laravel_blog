@@ -133,12 +133,12 @@
                      </div>
 
                      <div class="form-group">
-                        <label for="blog_meta_desc">Meta Desc</label>
-                        <textarea class="form-control" id="blog_meta_desc"
-                           name='blog_meta_desc'>{{old("blog_meta_desc")}}</textarea>
+                        <label for="meta_desc">Meta Desc</label>
+                        <textarea class="form-control" id="meta_desc"
+                           name='meta_desc'>{{old("meta_desc")}}</textarea>
                            
                            <span style="color: red">
-                                 @error('blog_meta_desc')
+                                 @error('meta_desc')
                                  {{ $message }}
                                  @enderror
                               </span>
@@ -172,9 +172,9 @@
                         <div class="col-md-6">
                         <div class="form-group mb-4 p-2 ">
                            <label for="blog_ok">Image Thumbnail</label>
-                           <input class="form-control" type="file" name="thumnail_image" >
+                           <input class="form-control" type="file" name="thumbnail_image" >
                            <span style="color: red">
-                                 @error('thumnail_image')
+                                 @error('thumbnail_image')
                                  {{ $message }}
                                  @enderror
                               </span>

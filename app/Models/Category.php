@@ -17,17 +17,28 @@ class Category extends Model
         'name',
         'slug',
         'cat_icon',
-        'description',
-        'image',
+        'shared_attributes_id',
+        'image_id',
     ];
 
     public function blogs()
     {
         return $this->belongsToMany(Blog::class, 'blog_category');
     }
+
     public function navigations()
     {
         return $this->belongsToMany(Navigation::class, 'category_navigation');
+    }
+
+    public function sharedAttributes()
+    {
+        return $this->belongsTo(Shared_attributes::class, 'shared_attributes_id');
+    }
+
+    public function images()
+    {
+        return $this->belongsTo(Image::class, 'image_id');
     }
 
     public function Sluggable(): array

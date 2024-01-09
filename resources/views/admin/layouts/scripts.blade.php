@@ -30,6 +30,49 @@
 <script src="{{ asset('admin/dist/js/adminlte.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('admin/dist/js/demo.js')}}"></script>
-<script src="{{ asset('admin/dist/js/editorjs.js')}}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('admin/dist/js/pages/dashboard.js')}}"></script>
+<!-- Toaster JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script>
+    @if (Session::has('message'))
+        var type = "{{ Session::get('alert-type', 'info') }}"
+        switch (type) {
+            case 'info':
+
+                toastr.options.timeOut = 10000;
+                toastr.info("{{ Session::get('message') }}");
+                var audio = new Audio('audio.mp3');
+                audio.play();
+                break;
+            case 'success':
+
+                toastr.options.timeOut = 10000;
+                toastr.success("{{ Session::get('message') }}");
+                var audio = new Audio('audio.mp3');
+                audio.play();
+
+                break;
+            case 'warning':
+
+                toastr.options.timeOut = 10000;
+                toastr.warning("{{ Session::get('message') }}");
+                var audio = new Audio('audio.mp3');
+                audio.play();
+
+                break;
+            case 'error':
+
+                toastr.options.timeOut = 10000;
+                toastr.error("{{ Session::get('message') }}");
+                var audio = new Audio('audio.mp3');
+                audio.play();
+
+                break;
+        }
+    @endif
+</script>

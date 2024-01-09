@@ -15,9 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->string('description')->nullable();
             $table->string('cat_icon')->nullable();
-            $table->string('image')->nullable();
+
+            $table->unsignedBigInteger('image_id')->nullable();
+            $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade');
+
+            $table->unsignedBigInteger('shared_attributes_id')->nullable();
+            $table->foreign('shared_attributes_id')->references('id')->on('shared_attributes')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
