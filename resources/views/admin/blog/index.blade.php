@@ -56,9 +56,6 @@ window.onload = updateClock; // Start the clock once the window has loaded.
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div>
-
-
-
     </div>
     <!-- Main content -->
     <section class="">
@@ -168,7 +165,4 @@ window.onload = updateClock; // Start the clock once the window has loaded.
             $('#confirmDeleteModal').modal('show');
         }
     </script>
-  
-  
-  
-  @endsection
+@endsection

@@ -1,42 +1,78 @@
 @extends('admin.layouts.app')
 @section('content')
+
+<script>
+  function updateClock() {
+    var now = new Date();
+    var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var ampm = now.getHours() >= 12 ? 'pm' : 'am';
+    var hours = now.getHours() % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    var minutes = now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes();
+    var seconds = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds();
+    var strTime = days[now.getDay()] + ", " + months[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear() + " " + hours + ':' + minutes + ':' + seconds + " " + ampm;
+    
+    document.getElementById("realtimeClock").innerHTML = strTime;
+    setTimeout(updateClock, 1000);
+}
+
+window.onload = updateClock; // Start the clock once the window has loaded.
+</script>
+<style>
+    .breadcrumb {
+        background-color: #f8f9fa; /* Light grey background */
+        border-radius: 0.75rem; /* Rounded corners for the breadcrumb */
+        margin-bottom: 0; /* Remove bottom margin */
+        display: flex; /* Flexbox layout to align items in a row */
+        align-items: center; /* Center items vertically */
+        padding: 0.5rem 1rem; /* Padding around the breadcrumb */
+    }
+</style>
+
 <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+          <nav aria-label="breadcrumb">
+        <ol class="breadcrumb text-primary h6">  
+            <i class="fa-brands fa-laravel fa-2x mx-2  fa-beat" style="color: #db0000;"></i>   <a href="">  Dashboard </a>  <span class="mx-1 text-dark"> <b>|</b> </span>
+            <i class="fa-solid fa-hand-holding-medical fa-beat-fade mx-2" style="color: #000000;"></i  <a href="">  Category Management </a> 
+        </ol> 
+    </nav>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
+            <div class="d-flex flex-row float-end">
+       <u> <div id="realtimeClock" class="clock" onload="showTime()"></div> </u>
+    </div>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+      </div>
     </div>
     <!-- Main content -->
     <section class="">
-      <div class="container-fluid">
+      <div class="mx-5 px-5 b-3">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
-            <div class="row mx-2 mt-2">
+            <div class="row m-2 ">
               <div class="col-sm-6">
               <div class="card-header">
                 <h3 class="card-title">Bordered Table</h3>
               </div>
               </div><!-- /.col -->
-              <div class="col-sm-6">
+              <div class="col-sm-6 ">
                 <ol class=" float-sm-right">
                   <!-- <li class="breadcrumb-item">                 -->
-                    <a href="{{ route('category.create')}}" class="btn btn-sm-success btn-app">
-                      <i class="fas fa-pen"></i> Add
+                    <a href="{{ route('category.create')}}" class="btn btn-sm-primary btn-app">
+                    <i class="fa-solid fa-2x fa-file-pen success text-success"></i> Add
                     </a>
                   <!-- </li> -->
                   <!-- <li class="breadcrumb-item">                 -->
                     <a  href=" "class="btn btn-sm btn-app">
-                      <i class="fas fa-edit"></i> Trash
+                      <i class="fas fa-edit text-warning "></i> Trash
                     </a>
                   <!-- </li> -->
                 </ol>
@@ -44,7 +80,7 @@
             </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table class="table table-bordered">
+              <table class="table table-bordered">
                   <thead>
                     <tr>
                       <th style="width: 10px">#</th>
@@ -82,6 +118,7 @@
                     @endforelse
                   </tbody>
                 </table>
+
               </div>
               <!-- /.card-body -->
               <div class="card-footer clearfix">
@@ -94,9 +131,6 @@
                 </ul>
               </div>
             </div>
-
-
-
             <div class="modal modal-bg-issue fade " style="background-color:transparent !important; border:none !important" id="confirmDeleteModal">
         <div class="modal-dialog" style="margin-top:60px !important">
             <form method="POST" id="deleteBlogForm" action="">
