@@ -4,6 +4,12 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
+      <li class="nav-item">
+          <a class="nav-link " href="{{ route('/') }}" target="_blank" t> <span class="btn-sm btn-primary" > The DevOps Console &nbsp;
+            <i class="fa-solid fa-arrow-up-right-from-square"> </i></span>
+          </a>
+        </li>
+
     </ul>
 
     <!-- Right navbar links -->
@@ -33,11 +39,6 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
         </a>
       </li>
     </ul>

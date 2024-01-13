@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Navigation;
-use App\Models\Shared_attributes;
 
 class frontendController extends Controller
 {

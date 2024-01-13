@@ -12,7 +12,6 @@
   @include('admin.layouts.nav')
   @include('admin.layouts.sidebar')
   <!-- Content Wrapper. Contains page content -->
-  @sec
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     @yield('content')

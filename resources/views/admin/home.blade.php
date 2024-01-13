@@ -85,3 +85,4 @@
       </div><!-- /.container-fluid -->
     </section>
   @endsection
+  <script src="{{  asset('script/script.js ') }}"></script>

@@ -1,36 +1,65 @@
 @extends('admin.layouts.app')
-@push('css')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" />
-@endpush
 @section('content')
-<!-- Content Header (Page header) -->
-<section class="content-header">
-   <div class="container-fluid">
-      <div class="row mb-2">
-         <div class="col-sm-6">
-            <h1>Blog</h1>
-         </div>
-         <div class="col-sm-6">
+
+<script>
+  function updateClock() {
+    var now = new Date();
+    var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var ampm = now.getHours() >= 12 ? 'pm' : 'am';
+    var hours = now.getHours() % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    var minutes = now.getMinutes() < 10 ? '0' + now.getMinutes() : now.getMinutes();
+    var seconds = now.getSeconds() < 10 ? '0' + now.getSeconds() : now.getSeconds();
+    var strTime = days[now.getDay()] + ", " + months[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear() + " " + hours + ':' + minutes + ':' + seconds + " " + ampm;
+    
+    document.getElementById("realtimeClock").innerHTML = strTime;
+    setTimeout(updateClock, 1000);
+}
+
+window.onload = updateClock; // Start the clock once the window has loaded.
+</script>
+
+<style>
+   .breadcrumb {
+      background-color: #f8f9fa; /* Light grey background */
+      border-radius: 0.75rem; /* Rounded corners for the breadcrumb */
+      margin-bottom: 0; /* Remove bottom margin */
+      display: flex; /* Flexbox layout to align items in a row */
+      align-items: center; /* Center items vertically */
+      padding: 0.5rem 1rem; /* Padding around the breadcrumb */
+   }
+</style>
+
+<div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+          <nav aria-label="breadcrumb">
+        <ol class="breadcrumb text-primary h6">  
+            <i class="fa-brands fa-laravel fa-2x mx-2  fa-beat" style="color: #db0000;"></i>   <a href="">  Dashboard </a>  <span class="mx-1 text-dark"> <b>|</b> </span>
+            <i class="fa-solid fa-file-circle-check fa-beat-fade mx-2" style="color: #000000;"></i>  <a href="">  Post Management </a> <span class="mx-1 text-dark"> <b>|</b> </span>
+            <i class="fa-solid fa-pencil fa-beat-fade mx-2" style="color: #000000;"></i>  <a href="">  Edit Blog </a> 
+        </ol>
+    </nav>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-               <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <div class="d-flex flex-row float-end">
+       <u> <div id="realtimeClock" class="clock" onload="showTime()"></div> </u>
+    </div>
             </ol>
-         </div>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
       </div>
-   </div>
-   <!-- /.container-fluid -->
-</section>
-<!-- Main content -->
-<section class="content">
-   <div class="container-fluid">
-      <div class="row">
-         <!-- right column -->
-         <div class="col-md-12">
-            <div class="card ">
-               <div class="col-md-6 card-header">
-                  <h3 class="">Update Blog</h3>
-               </div>
-               <!-- /.card-header -->
-               <div class="card-body">
+    </div>
+    <!-- Main content -->
+    <section class="">
+      <div class="mx-5 px-5 b-3">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+              <div class="card-body">
                   <form method="post" action="{{ route('blog.update', $blog->id) }}" enctype="multipart/form-data">
                      @csrf
                      @method('put')
@@ -215,24 +244,19 @@
                      <button class="btn btn-success float-right" type="submit">Update Blog</button>
                   </form>
                </div>
+
             </div>
-         </div>
-      </div>
-   </div>
-   <!-- /.container-fluid -->
-</section>
-<!-- /.content -->
 @endsection
 @push('js')
 <script>
    function previewImage(input, previewId) {
-      if (input.files && input.files[0]) {
-         var reader = new FileReader();
-         reader.onload = function (e) {
-               document.getElementById(previewId).setAttribute('src', e.target.result);
-         };
-         reader.readAsDataURL(input.files[0]);
-      }
-   }
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById(previewId).setAttribute('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 </script>
 @endpush

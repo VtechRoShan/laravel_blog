@@ -67,3 +67,10 @@
     </div>
 </div>
 @endsection
+
+
+@push('js')
+<script>
+    // your code
+</script>
+@endpush
