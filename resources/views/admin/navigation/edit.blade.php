@@ -37,9 +37,9 @@ window.onload = updateClock; // Start the clock once the window has loaded.
           <div class="col-sm-6">
           <nav aria-label="breadcrumb">
         <ol class="breadcrumb text-primary h6">  
-        <i class="fa-brands fa-laravel fa-2x mx-2  fa-beat" style="color: #db0000;"></i>   <a href="">  Dashboard </a>  <span class="mx-1 text-dark"> <b>|</b> </span>
-                  <i class="fa-solid fa-hand-holding-medical mx-2  fa-beat" style="color: #000000;"></i>   <a href="">  Category </a>  <span class="mx-1 text-dark"> <b>|</b> </span>
-                  <i class="fa-solid fa-pencil fa-beat-fade mx-2" style="color: #000000;"></i  <a href="">  Edit Category </a> <span class="mx-1 text-dark"> <b>|</b> </span>
+            <i class="fa-brands fa-laravel fa-2x mx-2  fa-beat" style="color: #db0000;"></i>   <a href="">  Dashboard </a>  <span class="mx-1 text-dark"> <b>|</b> </span>
+            <i class="fa-solid fa-compass fa-beat mx-2" style="color: #000000;"></i>  <a href="">  Navigations </a> <span class="mx-1 text-dark"> <b>|</b> </span>
+            <i class="fa-solid fa-street-view fa-beat-fade mx-2" style="color: #000000;"></i  <a href="">  Edit Navigation </a> 
         </ol>
     </nav>
           </div><!-- /.col -->

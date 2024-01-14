@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -16,28 +15,19 @@
 </head>
 
 <body>
-
-<header class="navigation">
-    @include('layouts.nav')
-</header>
-
 <main>
-  <section class="section mt-0">
-    <div class="container my-0">
-      <div class="row m-0 no-gutters-lg">
+  <section class="section">
+    <div class="container">
+      <div class="row no-gutters-lg">
         <div class="col-12">
           <h2 class="section-title">Latest Articles</h2>
         </div>
         @yield('content')
-        <div class="col-lg-4">
-            @include('layouts.sidebar')
-        </div>
       </div>
     </div>
   </section>
 </main>
 
-@include('layouts.footer')
 @include('layouts.script')
 </body>
 </html>

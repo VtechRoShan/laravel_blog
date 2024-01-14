@@ -19,11 +19,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [frontendController::class, 'index'])->name('/');
+Route::get('/{slug}/post', [frontendController::class, 'view_post'])->name('view_post');
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resource('/blog', BlogController::class)->shallow();
     Route::resource('/category', CategoryController::class)->shallow();
     Route::resource('/navigation', NavigationController::class)->shallow();
