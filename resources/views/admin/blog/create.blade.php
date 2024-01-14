@@ -115,18 +115,41 @@ window.onload = updateClock; // Start the clock once the window has loaded.
                            </div>
                         </div>
                      </div>
-                    
                      <div class="form-group">
-                        <label>Post Body</label>
-                        <div id="editorjs" class="border w-100">
-
-                        </div>
+                        <label for="blog_post_body">Post Body (Tiny Mice)
+                        @if(config("blog.echo_html"))
+                        (HTML)
+                        @else
+                        (Html will be escaped)
+                        @endif
+                        </label>
+                        <textarea style='min-height:400px;' class="form-control blog_post_body" id="blog_post_body" name='post_body'>{{old("post_body")}}</textarea>
                         <span style="color: red">
-                              @error('post_body')
-                                 {{ $message }}
-                              @enderror
+                           @error('post_body')
+                           {{ $message }}
+                           @enderror
                         </span>
                      </div>
+
+                  <!-- Place the first <script> tag in your HTML's <head> -->
+                  <script src="https://cdn.tiny.cloud/1/0nnxiieaki9dx4u1xtnwick76s9pfptyigrrv9xlwo6nmsvt/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+                  <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+                  <script>
+                    tinymce.init({
+                      selector: '#blog_post_body',
+                      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount toc',
+                      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | toc',
+                      tinycomments_mode: 'embedded',
+                      tinycomments_author: 'Author name',
+                      mergetags_list: [
+                        { value: 'First.Name', title: 'First Name' },
+                        { value: 'Email', title: 'Email' },
+                      ],
+                      ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                    });
+                  </script>
+
                     <hr>
                      <div class='row'>
                         <div class='col-sm-6 col-md-6 col-lg-6'>
@@ -267,40 +290,3 @@ window.onload = updateClock; // Start the clock once the window has loaded.
 
             </div>
 @endsection
-@push('js')
-
-{{-- Text Editor --}}
-    @include('admin.layouts.editor')
-    <script src="{{ asset('js/editorjs.js') }}"></script>
-    <script>
-        const addBlogBtn = document.querySelector("#add-blog");
-        const blogForm = document.querySelector("#blog-form");
-        const csrfToken = document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute("content");
-        // Editor js setup
-        const editor = editorjs(csrfToken)
-        // Add Form
-        addBlogBtn.addEventListener("click", (event) => {
-            event.preventDefault();
-            // Form Validation
-            if (blogForm.checkValidity()) {
-                editor.save().then((outputData) => {
-                    const content = JSON.stringify(outputData);
-                    // Pass description value along with form
-                    const hiddenInput = document.createElement("input");
-
-                    hiddenInput.setAttribute("type", "hidden");
-                    hiddenInput.setAttribute("name", "post_body");
-                    hiddenInput.setAttribute("value", content);
-
-                    blogForm.appendChild(hiddenInput);
-                    blogForm.submit();
-                });
-            } else {
-                alert("Please fill in all required fields.");
-            }
-        });
-    </script>
-
-@endpush()
