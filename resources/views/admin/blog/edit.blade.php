@@ -123,9 +123,10 @@ window.onload = updateClock; // Start the clock once the window has loaded.
                   <script>
                     tinymce.init({
                       selector: '#blog_post_body',
-                      plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
-                      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                      plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount toc',
+                      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | toc',
                       tinycomments_mode: 'embedded',
+                      menubar: 'insert',
                       tinycomments_author: 'Author name',
                       mergetags_list: [
                         { value: 'First.Name', title: 'First Name' },

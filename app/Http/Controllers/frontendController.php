@@ -20,8 +20,8 @@ class frontendController extends Controller
     {
         $navigations = Navigation::with('categories')->get();
         $categories = Category::select('id', 'name')->get();
-        $blogs = Blog::where('slug', $slug) ->first();
+        $blog = Blog::where('slug', $slug) ->first();
 
-        return view('view_post', compact('navigations', 'blogs', 'categories'));
+        return view('view_post', compact('navigations', 'blog', 'categories'));
     }
 }
