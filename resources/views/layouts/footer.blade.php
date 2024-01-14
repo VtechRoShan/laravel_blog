@@ -15,5 +15,4 @@
       </div>
     </div>
   </div>
-  <div class="copyright bg-dark content">Designed &amp; Developed By <a href="https://themefisher.com/">Themefisher</a></div>
 </footer>

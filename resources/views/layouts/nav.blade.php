@@ -12,6 +12,8 @@
           <input id="search-query" name="s" type="search" placeholder="Search..." autocomplete="off">
         </form>
 
+        
+
 <style>.content {
   padding: 7rem 0; }
 
@@ -152,7 +154,7 @@ h2 {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <div class="collapse navbar-collapse text-center order-lg-2 order-4" id="navigation">
-          <ul class="navbar-nav mx-auto mt-3 mt-lg-0">
+          <ul class="navbar-nav mx-auto mt-lg-0">
 
 
           @foreach($navigations as $navigation)

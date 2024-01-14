@@ -16,4 +16,12 @@ class frontendController extends Controller
 
         return view('welcome', compact('navigations', 'blogs', 'categories'));
     }
+    public function view_post($slug)
+    {
+        $navigations = Navigation::with('categories')->get();
+        $categories = Category::select('id', 'name')->get();
+        $blogs = Blog::where('slug', $slug) ->first();
+
+        return view('view_post', compact('navigations', 'blogs', 'categories'));
+    }
 }

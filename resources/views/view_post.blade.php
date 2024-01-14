@@ -7,7 +7,6 @@
 </style>
 <div class="col-lg-8 mb-5 mb-lg-0">
     <div class="row">
-        
         @foreach($blogs as $key => $blog)
         <div class="{{ $key === 0 ? 'col-12' : 'col-md-6 col-lg-6 col-sm-6'}} mb-4">
             <article class="card article-card {{ $key === 0 ? '':'article-card-sm h-100' }}">
@@ -29,7 +28,7 @@
             </ul>
                 <h2><a class="post-title" href="{{ route('view_post', $blog->slug) }}">{{ $blog->title }}</a></h2>
                 <p class="card-text">{{ $blog-> sharedAttributes ->summary }}</p>
-                <div class="content"> <a class="read-more-btn" href="{{ route('view_post', $blog->slug) }}">Read Full Article {{$key}}</a>
+                <div class="content"> <a class="read-more-btn" href="{{ route('view_post', $blog->slug) }}">R Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nisi, placeat eius? Optio vero rerum quaerat maxime fugit maiores harum ad, ipsa, placeat nobis dolor sequi exercitationem ipsam, recusandae ea. Tenetur. {{$key}}</a>
                 </div>
             </div>
             </article>
