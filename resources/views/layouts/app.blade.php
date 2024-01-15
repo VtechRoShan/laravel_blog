@@ -17,7 +17,7 @@
 
 <body>
 
-<header class="navigation">
+<header class="navigation mb-0">
     @include('layouts.nav')
 </header>
 

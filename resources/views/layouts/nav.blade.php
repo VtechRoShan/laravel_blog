@@ -1,7 +1,7 @@
-<div class="container">
-  <nav class="navbar navbar-expand-lg navbar-light px-0">
+<div class="container mb-0">
+  <nav class="navbar navbar-expand-lg navbar-light px-0 mb-0 pb-0">
         <a class="navbar-brand order-1 py-0" href="{{ route('/') }}">
-          <img loading="prelaod" decoding="async" class="img-fluid" src="{{ asset('frontend/images/logo.png') }}" alt="Reporter Hugo">
+          <img loading="prelaod" decoding="async" class="img-fluid m-0" src="{{ asset('frontend/images/logo.png') }}" style="width: 200px;" alt="Reporter Hugo">
         </a>
         <div class="navbar-actions order-3 ml-0 ml-md-4">
           <button aria-label="navbar toggler" class="navbar-toggler border-0" type="button" data-toggle="collapse"
@@ -11,9 +11,6 @@
         <form action="#!" class="search order-lg-3 order-md-2 order-3 ml-auto">
           <input id="search-query" name="s" type="search" placeholder="Search..." autocomplete="off">
         </form>
-
-        
-
 <style>.content {
   padding: 7rem 0; }
 
