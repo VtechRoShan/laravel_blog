@@ -32,7 +32,7 @@
             </ul>
                 <h2><a class="post-title" href="{{ route('view_post', $blog->slug) }}">{{ $blog->title }}</a></h2>
                 <p class="card-text">{{ $blog-> sharedAttributes ->summary }}</p>
-                <div class="content"> <a class="read-more-btn" href="{{ route('view_post', $blog->slug) }}">Read Full Article {{$key}}</a>
+                <div class="content"> <a class="read-more-btn" href="{{ route('view_post', $blog->slug) }}">Read Full Article</a>
                 </div>
             </div>
             </article>
@@ -76,16 +76,14 @@
         <div class="col-lg-12">
         <div class="widget">
             <div class="widget-body">
-            <img loading="lazy" decoding="async" src="{{ asset('frontend/images/author.jpg') }}" alt="About Me" class="w-100 author-thumb-sm d-block">
-            <h2 class="widget-title my-3">Hootan Safiyari</h2>
-            <p class="mb-3 pb-2">Hello, I’m Hootan Safiyari. A Content writter, Developer and Story teller. Working as a Content writter at CoolTech Agency. Quam nihil …</p> <a href="about.html" class="btn btn-sm btn-outline-primary">Know
-                More</a>
+            <img loading="lazy" decoding="async" src="{{ asset('frontend/images/author.png') }}" alt="About Me" class="w-100 author-thumb-sm d-block">
+            <p class="mb-3 pb-2">"Discover our DevOps console—a dedicated space for DevOps aficionados, deployments enthusiasts, and security guardians. Explore our focused blogs and resources to streamline your DevOps journey." </p>
             </div>
         </div>
         </div>
         <div class="col-lg-12 col-md-6">
         <div class="widget">
-            <h2 class="section-title mb-3">Recommended</h2>
+            <h2 class="section-title h2">Recommended</h2>
             <div class="widget-body">
             <div class="widget-list">
                 <article class="card mb-4">
@@ -135,18 +133,32 @@
         </div>
         </div>
         <div class="col-lg-12 col-md-6">
-        <div class="widget">
-            <h2 class="section-title mb-3">Categories</h2>
-            <div class="widget-body">
-            <ul class="widget-list">
-                @foreach($categories as $category)
-                <li><a href="#!">{{ $category->name }}......<span class="ml-auto">({{ $category->blogs->count()  }})</span></a>
-                </li>
-                @endforeach
-                </li>
-            </ul>
+            <div class="widget">
+            <h2 class="section-title h2">Categories</h2>
+                <div class="widget-body">
+                <ul class="widget-list">
+                    @foreach($categories as $category)
+                    <li><a href="#!">{{ $category->name }}......<span class="ml-auto">({{ $category->blogs->count()  }})</span></a>
+                    </li>
+                    @endforeach
+                    </li>
+                </ul>
+                </div>
             </div>
         </div>
+        <div class="col-lg-12 col-md-6">
+            <div class="widget">
+                <h2 class="section-title mb-3">Pick one from Ocean of Tags</h2>
+                <div class="widget-body">
+                <ul class="widget-list">
+                    @foreach($tags as $tag)
+                    <li><a href="#!">#{{ (str_replace(' ', '', $tag->name)) }}-<span class="ml-auto">({{ $tag->blogs->count()  }})</span></a>
+                    </li>
+                    @endforeach
+                    </li>
+                </ul>
+                </div>
+            </div>
         </div>
     </div>
     </div>

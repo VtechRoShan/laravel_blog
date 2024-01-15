@@ -6,6 +6,15 @@
   <title>DevOps Console | Dashboard</title>
   @include('admin.layouts.header')
   @stack('css')
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-59Z9WL79QD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-59Z9WL79QD');
+  </script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
