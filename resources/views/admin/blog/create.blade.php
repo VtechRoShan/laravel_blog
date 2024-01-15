@@ -140,7 +140,6 @@ window.onload = updateClock; // Start the clock once the window has loaded.
                       selector: '#blog_post_body',
                       plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount toc',
                       toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | toc',
-                      menubar: 'insert',
                       tinycomments_mode: 'embedded',
                       tinycomments_author: 'Author name',
                       mergetags_list: [
