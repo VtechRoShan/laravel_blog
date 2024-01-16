@@ -152,7 +152,7 @@
                 <div class="widget-body">
                 <ul class="widget-list">
                     @foreach($tags as $tag)
-                    <li><a href="#!">#{{ (str_replace(' ', '', $tag->name)) }}-<span class="ml-auto">({{ $tag->blogs->count()  }})</span></a>
+                    <li><a href=" {{ route('view_post_by_tag', $tag->slug) }} ">#{{ (str_replace(' ', '', $tag->name)) }}-<span class="ml-auto">({{ $tag->blogs->count()  }})</span></a>
                     </li>
                     @endforeach
                     </li>

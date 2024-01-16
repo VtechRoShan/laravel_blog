@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [frontendController::class, 'index'])->name('/');
-Route::get('/{slug}/post', [frontendController::class, 'view_post'])->name('view_post');
+Route::get('/blog/{slug}', [frontendController::class, 'view_post'])->name('view_post');
+Route::get('/tag/{slug}', [frontendController::class, 'view_post_by_tag'])->name('view_post_by_tag');
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

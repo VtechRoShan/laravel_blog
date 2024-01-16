@@ -13,7 +13,7 @@ class frontendController extends Controller
     {
         $navigations = Navigation::with('categories')->get();
         $categories = Category::select('id', 'name')->get();
-        $tags = Tag::select('id', 'name')->withCount('blogs')->having('blogs_count', '>=', 1)->orderBy('created_at', 'desc')->get();
+        $tags = Tag::select('id', 'name', 'slug')->withCount('blogs')->having('blogs_count', '>=', 1)->orderBy('created_at', 'desc')->get();
         $blogs = Blog::all();
 
         return view('welcome', compact('navigations', 'blogs','tags', 'categories'));
@@ -46,5 +46,13 @@ class frontendController extends Controller
         $relatedPosts = $this->getRelatedPosts($blog->id);
 
         return view('view_post', compact('navigations', 'blog', 'relatedPosts'));
+    }
+    public function view_post_by_tag($slug)
+    {
+        $navigations = Navigation::with('categories')->get();
+        $tags = Tag::with('blogs')->where('slug', $slug)->first();
+        $categories = Category::select('id', 'name')->get();
+
+        return view('view_post', compact('navigations', 'tags'));
     }
 }
