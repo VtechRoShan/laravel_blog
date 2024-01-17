@@ -182,15 +182,7 @@ window.onload = updateClock; // Start the clock once the window has loaded.
                                  @enderror
                               </span>
                      </div>
-
-
-
-
-
-
-
                      <div class='bg-white pt-4 px-4 pb-0 my-2 mb-4 rounded border'>
-                       <h4>Featured Images</h4>
                        <div class="row">
                         <div class="col-md-6">
                         <div class="form-group mb-4 p-2 ">
