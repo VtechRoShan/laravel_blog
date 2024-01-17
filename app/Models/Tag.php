@@ -11,11 +11,22 @@ class Tag extends Model
     use HasFactory;
     use Sluggable;
 
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'meta_desc',
+        'meta_keyword',
+        'image_id',
+    ];
 
     public function blogs()
     {
         return $this->belongsToMany(Blog::class, 'blog_tag');
+    }
+    public function images()
+    {
+        return $this->belongsTo(Image::class, 'image_id');
     }
 
     public function Sluggable(): array
