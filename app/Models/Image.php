@@ -32,4 +32,8 @@ class Image extends Model
     {
         return $this->hasOne(Category::class, 'image_id');
     }
+    public function tags()
+    {
+        return $this->hasOne(Tag::class, 'image_id');
+    }
 }

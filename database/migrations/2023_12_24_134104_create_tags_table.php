@@ -15,8 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->string('description')->nullable();
-            $table->string('image')->nullable();
+            
+            $table->longText('post_body')->nullable();
+            $table->longText('meta_desc')->nullable();
+            $table->string('keyword')->nullable();
+
+            $table->unsignedBigInteger('image_id')->nullable();
+            $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\NavigationController;
 use App\Http\Controllers\frontendController;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [frontendController::class, 'index'])->name('/');
-Route::get('/{slug}/post', [frontendController::class, 'view_post'])->name('view_post');
+Route::get('/blog/{slug}', [frontendController::class, 'view_post'])->name('view_post');
+Route::get('/tag/{slug}', [frontendController::class, 'view_post_by_tag'])->name('view_post_by_tag');
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -27,5 +29,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resource('/blog', BlogController::class)->shallow();
     Route::resource('/category', CategoryController::class)->shallow();
+    Route::resource('/tag', TagController::class)->shallow();
     Route::resource('/navigation', NavigationController::class)->shallow();
 });

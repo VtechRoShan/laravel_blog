@@ -97,8 +97,7 @@
             <div class="widget-body">
             <ul class="widget-list">
             @foreach($blog->tags as $tag)
-                <li><a href="#!">#{{ (str_replace(' ', '', $tag->name)) }}</a>
-                </li>
+                <li><a href="{{ route('view_post_by_tag', $tag->slug) }}">#{{ (str_replace(' ', '', $tag->name)) }}</a></li>
                 @endforeach
                 </li>
             </ul>

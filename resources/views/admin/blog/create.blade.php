@@ -202,8 +202,7 @@ window.onload = updateClock; // Start the clock once the window has loaded.
                               </span>
                      </div>
                      <div class='bg-white pt-4 px-4 pb-0 my-2 mb-4 rounded border'>
-                       <h4>Featured Images</h4>
-                       <div class="row">
+                      <div class="row">
                         <div class="col-md-6">
                         <div class="form-group mb-4 p-2 ">
                            <label for="blog_ok">Featured Image</label>
@@ -240,7 +239,7 @@ window.onload = updateClock; // Start the clock once the window has loaded.
                      </div>
                   
                       <div class='bg-white pt-4 px-4 pb-0 my-2 mb-4 rounded border'>
-                        <h4>Available Categories:</h4>
+                        <h6> <b> Available Categories: </b> </h6>
                         <div class='row'>
                            @forelse($categories as $category)
                            <div class="form-check col-sm-2">
@@ -254,15 +253,11 @@ window.onload = updateClock; // Start the clock once the window has loaded.
                               No categories
                            </div>
                            @endforelse
-                           <div class='col-md-12 my-3 text-center'>
-                              <em><a class="a-link-cart-color" href=''><i class="fa fa-external-link" aria-hidden="true"></i>
-                              Add new categories here</a></em>
-                           </div>
                         </div>
                      </div>
 
                      <div class='bg-white pt-4 px-4 pb-0 my-2 mb-4 rounded border'>
-                        <h4>Select Available Tags:</h4>
+                        <h6> <b> Select Available Tags: </b> </h6>
                         <div class='row'>
                            @forelse($tags as $tag)
                                  <div class="form-check col-sm-2">
@@ -276,11 +271,6 @@ window.onload = updateClock; // Start the clock once the window has loaded.
                                     No tags available.
                                  </div>
                            @endforelse
-                           <div class='col-md-12 my-3 text-center'>
-                                 <em><a class="a-link-cart-color" href=''>
-                                    <i class="fa fa-external-link" aria-hidden="true"></i>
-                                    Add new tags here </a></em>
-                           </div>
                         </div>
                      </div>
                   </div>
