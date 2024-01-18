@@ -116,7 +116,7 @@
                                   <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
                               </div>
                               <div class="card-body px-0 pb-1">
-                                  <h3><a class="post-title post-title-sm" href="article.html">{{ $category->name }}</a></h3>
+                                  <h3><a class="post-title post-title-sm" href="{{ route('view_post_by_category', $category->slug) }}">{{ $category->name }}</a></h3>
                                   <div class="content"><p class="card-text">{{ $category->sharedAttributes->summary }} </p><a class="read-more-btn" href="article.html">Read Full Article</a> </div>
                               </div>
                           </article>

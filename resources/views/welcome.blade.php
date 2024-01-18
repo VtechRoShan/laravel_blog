@@ -138,8 +138,7 @@
                 <div class="widget-body">
                 <ul class="widget-list">
                     @foreach($categories as $category)
-                    <li><a href="#!">{{ $category->name }}......<span class="ml-auto">({{ $category->blogs->count()  }})</span></a>
-                    </li>
+                        <li><a href="">{{ $category->name }}.....{{ $category->slug }}......<span class="ml-auto">({{ $category->slug }})</span></a></li>
                     @endforeach
                     </li>
                 </ul>
@@ -152,8 +151,7 @@
                 <div class="widget-body">
                 <ul class="widget-list">
                     @foreach($tags as $tag)
-                    <li><a href=" {{ route('view_post_by_tag', $tag->slug) }} ">#{{ (str_replace(' ', '', $tag->name)) }}-<span class="ml-auto">({{ $tag->blogs->count()  }})</span></a>
-                    </li>
+                        <li><a href=" {{ route('view_post_by_tag', $tag->slug) }} ">#{{ (str_replace(' ', '', $tag->name)) }}-<span class="ml-auto">({{ $tag->blogs->count()  }})</span></a></li>
                     @endforeach
                     </li>
                 </ul>

@@ -166,8 +166,8 @@ h2 {
               
               <div class="mega-menu d-flex">
                 <div>
-                  <a href="#" class="d-block mb-1"><img src="images/hero_1.jpg" alt="Image" class="img-fluid mb-3"></a>
-                  <p><a href="#">PSD Mockups</a><span class="text-muted">View All Here</span></p>
+                  <a href="#" class="d-block mb-1"><img src="{{ Storage::url($navigation->images->thumbnail_image) }}" alt="Image" class="img-fluid mb-3"></a>
+                  <p><a href="#">{{$navigation ->name}}</a><span class="text-muted">View All Here</span></p>
                 </div>
                 <div>
                   <ul class="list-unstyled">
