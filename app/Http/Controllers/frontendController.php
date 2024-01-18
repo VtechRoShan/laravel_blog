@@ -59,13 +59,13 @@ class frontendController extends Controller
     }
     public function view_post_by_category($slug)
     {   
-        dd($slug);
+        // dd($slug);
         $navigations = Navigation::with('categories')->get();
-        $tags = Tag::with('blogs')
+        $categoryWithBlogs= Category::with('blogs')
             ->where('slug', $slug)
             ->first();
         $categories = Category::all();
 
-        return view('view_post_by_tag', compact('navigations', 'tags', 'categories'));
+        return view('view_post_by_category', compact('navigations','categoryWithBlogs', 'categories'));
     }
 }

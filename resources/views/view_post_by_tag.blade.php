@@ -116,18 +116,19 @@
                                   <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
                               </div>
                               <div class="card-body px-0 pb-1">
-                                  <h3><a class="post-title post-title-sm" href="article.html">{{ $category->name }}</a></h3>
-                                  <div class="content"><p class="card-text">{{ $category->sharedAttributes->summary }} </p><a class="read-more-btn" href="article.html">Read Full Article</a> </div>
+                                  <h3><a class="post-title post-title-sm" href="{{ route('view_post_by_category', $category->slug) }}">{{ $category->name }}</a></h3>
+                                  <div class="content"><p class="card-text">{{ $category->sharedAttributes->summary }} </p><a class="read-more-btn" href="{{ route('view_post_by_category', $category->slug) }}">Read Full Article</a> </div>
                               </div>
                           </article>
                       @else
                           <!-- Other Categories in 'a' tags -->
-                          <a class="media align-items-center" href="article.html">
+                          <a class="media align-items-center" href="{{ route('view_post_by_category', $category->slug) }}">
                               <!-- You might want to replace 'No Image Specified' with actual image logic -->
-                              <span class="image-fallback image-fallback-xs">No Image Specified</span>
+                              <span class="image-fallback image-fallback-xs">
+                                  <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class=""></span>
                               <div class="media-body ml-3">
                                   <h3 style="margin-top:-5px">{{ $category->name }}</h3>
-                                  <p class="mb-0 small">{{ $category->summary }}</p>
+                                  <p class="mb-0 small"> {{ $category->sharedAttributes->summary }}</p>
                               </div>
                           </a>
                       @endif

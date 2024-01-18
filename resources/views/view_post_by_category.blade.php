@@ -13,26 +13,42 @@
 
         <div class="col-12">
             <article class="card article-card article-card-sm h-100 ">
-            <a href="{{ route('view_post', $tags->slug) }}">
+            <a href="{{ route('view_post', $categoryWithBlogs->slug) }}">
                 <div class="card-image">
-                <div class="post-info"> <span class="text-uppercase">{{ (new DateTime($tags->publish_at))->format('d M Y') }}</span></div>
-                <img loading="lazy" decoding="async" src="{{ Storage::url($tags->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
+                <div class="post-info"> <span class="text-uppercase">{{ (new DateTime($categoryWithBlogs->publish_at))->format('d M Y') }}</span></div>
+                <img loading="lazy" decoding="async" src="{{ Storage::url($categoryWithBlogs->images->featured_image) }}" alt="Post Thumbnail" class="w-100">
                 </div>
             </a>
             <div class="card-body px-0">
             <ul class="post-meta mb-2">
-                @if($tags->category)
+              {{--  @if($tags->category)
                     @foreach ($tags->category as $category)
                         <li><a href="#!">{{ $category->name }}</a></li>
                     @endforeach
-                @endif
+                @endif --}}
             </ul>
-                <h2><a class="post-title" href="{{ route('view_post', $tags->slug) }}">{{ $tags->title }}</a></h2>
-                <p class="card-text">{!! $tags-> post_body !!}</p>
+                <h2><a class="post-title" href="{{ route('view_post', $categoryWithBlogs->slug) }}">{{ $categoryWithBlogs->title }}</a></h2>
+                <p class="card-text">{!! $categoryWithBlogs->sharedAttributes-> post_body !!}</p>
+                <div class="py-3">
+                <style>
+                   .shadow-custom {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; /* Default state with a slightly larger shadow for visibility */
+    transition: box-shadow 0.3s ease-in-out !important;
+}
+
+.shadow-custom:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 150, 0.3) !important; /* Increased blur and spread on hover, with a hint of color */
+}
+                </style>
+                    <img loading="lazy" decoding="async" src="{{ Storage::url($categoryWithBlogs->images->thumbnail_image) }}" alt="Post Thumbnail" class="img-fluid rounded mx-auto d-block  shadow-lg shadow-custom">
+
+
+                </div>
+                <p class="card-text">{{ $categoryWithBlogs->sharedAttributes->summary }}</p>
             </div>
             </article>
         </div>
-        @foreach($tags->blogs as $key => $blog)
+        @foreach($categoryWithBlogs->blogs as $key => $blog)
         <div class="{{ $key === 0 ? 'col-md-4 col-lg-4 col-sm-4' : 'col-md-4 col-lg-4 col-sm-4'}} mb-4">
             <article class="card article-card {{ $key === 0 ? '':'article-card-sm h-100' }}">
             <a href="{{ route('view_post', $blog->slug) }}">
@@ -122,7 +138,7 @@
                           </article>
                       @else
                           <!-- Other Categories in 'a' tags -->
-                          <a class="media align-items-center" href="article.html">
+                          <a class="media align-items-center" href="{{ route('view_post_by_category', $category->slug) }}">
                               <!-- You might want to replace 'No Image Specified' with actual image logic -->
                               <span class="image-fallback image-fallback-xs">No Image Specified</span>
                               <div class="media-body ml-3">
