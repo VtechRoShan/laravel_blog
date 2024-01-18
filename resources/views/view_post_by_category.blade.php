@@ -8,6 +8,18 @@
         padding: 0rem !important;
     }
 </style>
+
+
+<style>
+    .shadow-custom {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; /* Default state with a slightly larger shadow for visibility */
+        transition: box-shadow 0.3s ease-in-out !important;
+    }
+
+    .shadow-custom:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 150, 0.3) !important; /* Increased blur and spread on hover, with a hint of color */
+    }
+</style>
 <div class="col-lg-8 mb-5 mb-lg-0">
     <div class="row">
 
@@ -30,21 +42,18 @@
                 <h2><a class="post-title" href="{{ route('view_post', $categoryWithBlogs->slug) }}">{{ $categoryWithBlogs->title }}</a></h2>
                 <p class="card-text">{!! $categoryWithBlogs->sharedAttributes-> post_body !!}</p>
                 <div class="py-3">
-                <style>
-                   .shadow-custom {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; /* Default state with a slightly larger shadow for visibility */
-    transition: box-shadow 0.3s ease-in-out !important;
-}
 
-.shadow-custom:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 150, 0.3) !important; /* Increased blur and spread on hover, with a hint of color */
-}
-                </style>
-                    <img loading="lazy" decoding="async" src="{{ Storage::url($categoryWithBlogs->images->thumbnail_image) }}" alt="Post Thumbnail" class="img-fluid rounded mx-auto d-block  shadow-lg shadow-custom">
-
-
+           
+                    <figure class="figure mx-auto d-block">
+                        <img src="{{ Storage::url($categoryWithBlogs->images->thumbnail_image) }}" class="figure-img img-fluid rounded mx-auto d-block shadow-lg shadow-custom " alt="Post Thumbnail">
+                        <figcaption class="figure-caption text-center text-dark"> {{ $categoryWithBlogs->images->image_caption }} </figcaption>
+                    </figure>
                 </div>
+                <div class="shadow-lg p-3 bg-info-tertiary rounded">
+                <h3 class="section-title h3">Summary</h3>
                 <p class="card-text">{{ $categoryWithBlogs->sharedAttributes->summary }}</p>
+                </div>
+
             </div>
             </article>
         </div>
