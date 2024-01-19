@@ -60,7 +60,7 @@ class TagController extends Controller
             // Create a new instance for shared attributes
 
             $imageData = $request->only(['image_caption']);
-            $imageData['model'] = 'Category';
+            $imageData['model'] = 'Tag';
             if ($request->hasFile('featured_image')) {
                 $imageData['featured_image'] = Storage::disk('public')->put($this->fileLocation, $request->file('featured_image'));
             }

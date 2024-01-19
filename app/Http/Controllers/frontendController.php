@@ -53,8 +53,19 @@ class frontendController extends Controller
         $tags = Tag::with('blogs')
             ->where('slug', $slug)
             ->first();
-        $categories = Category::select('id', 'name')->get();
+        $categories = Category::all();
 
         return view('view_post_by_tag', compact('navigations', 'tags', 'categories'));
+    }
+    public function view_post_by_category($slug)
+    {   
+        // dd($slug);
+        $navigations = Navigation::with('categories')->get();
+        $categoryWithBlogs= Category::with('blogs')
+            ->where('slug', $slug)
+            ->first();
+        $categories = Category::all();
+
+        return view('view_post_by_category', compact('navigations','categoryWithBlogs', 'categories'));
     }
 }

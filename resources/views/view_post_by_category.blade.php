@@ -7,32 +7,88 @@
     .content{
         padding: 0rem !important;
     }
+    .shadow-custom {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; /* Default state with a slightly larger shadow for visibility */
+        transition: box-shadow 0.3s ease-in-out !important;
+    }
+
+    .shadow-custom:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 150, 0.3) !important; /* Increased blur and spread on hover, with a hint of color */
+    }
 </style>
 <div class="col-lg-8 mb-5 mb-lg-0">
     <div class="row">
 
         <div class="col-12">
             <article class="card article-card article-card-sm h-100 ">
-            <a href="{{ route('view_post', $tags->slug) }}">
-                <div class="card-image">
-                <div class="post-info"> <span class="text-uppercase">{{ (new DateTime($tags->publish_at))->format('d M Y') }}</span></div>
-                <img loading="lazy" decoding="async" src="{{ Storage::url($tags->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
-                </div>
+            <a href="{{ route('view_post', $categoryWithBlogs->slug) }}">
+
+
+            <div class="card text-white my-3">
+  <div class="card-body p-3" style="background-color: rgba(23, 23, 33, 1);">
+    <div class="d-flex justify-content-between align-items-center">
+      <h2 class="section-title h2 text-white">{{ $categoryWithBlogs->name }}</h2>
+      <div>
+        <img src="{{ asset('path_to_author_avatar.png') }}" alt="Author" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+        <span style="font-size: 14px;">By Jack Roper &middot; </span>
+        <span style="font-size: 14px;">{{ (new DateTime($categoryWithBlogs->publish_at))->format('d M Y') }} &middot; </span>
+        <span style="font-size: 14px;">{{ $categoryWithBlogs->sharedAttributes->reading_time }} Mins reading</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="card  featured_image text-white text-center overflow-hidden">
+  <img src="{{ Storage::url($categoryWithBlogs->images->featured_image) }}" class="card-img" alt="Featured Image" style="object-fit: cover; width: 100%; height: auto;">
+</div>
+
+<style>
+.featured_image {
+    
+box-shadow: 0px 8px 6px -6px black;/* Bottom shadow */
+               /* Spread shadow */
+}
+
+
+    .card-img-overlay {
+        transform: translateY(50%);
+    }
+</style>
+
+
+
+
+
+
             </a>
             <div class="card-body px-0">
             <ul class="post-meta mb-2">
-                @if($tags->category)
+              {{--  @if($tags->category)
                     @foreach ($tags->category as $category)
                         <li><a href="#!">{{ $category->name }}</a></li>
                     @endforeach
-                @endif
+                @endif --}}
             </ul>
-                <h2><a class="post-title" href="{{ route('view_post', $tags->slug) }}">{{ $tags->title }}</a></h2>
-                <p class="card-text">{!! $tags-> post_body !!}</p>
+                <h2><a class="post-title" href="{{ route('view_post', $categoryWithBlogs->slug) }}">{{ $categoryWithBlogs->title }}</a></h2>
+                <p class="card-text">{!! $categoryWithBlogs->sharedAttributes-> post_body !!}</p>
+                <div class="py-3">
+
+           
+                    <figure class="figure mx-auto d-block">
+                        <img src="{{ Storage::url($categoryWithBlogs->images->thumbnail_image) }}" class="figure-img img-fluid rounded mx-auto d-block shadow-lg shadow-custom " alt="Post Thumbnail">
+                        <figcaption class="figure-caption text-center text-dark"> {{ $categoryWithBlogs->images->image_caption }} </figcaption>
+                    </figure>
+                </div>
+                <div class="shadow-lg p-3 bg-info-tertiary rounded">
+                <h3 class="section-title h3">Summary</h3>
+                <p class="card-text">{{ $categoryWithBlogs->sharedAttributes->summary }}</p>
+                </div>
+
             </div>
             </article>
         </div>
-        @foreach($tags->blogs as $key => $blog)
+        @foreach($categoryWithBlogs->blogs as $key => $blog)
         <div class="{{ $key === 0 ? 'col-md-4 col-lg-4 col-sm-4' : 'col-md-4 col-lg-4 col-sm-4'}} mb-4">
             <article class="card article-card {{ $key === 0 ? '':'article-card-sm h-100' }}">
             <a href="{{ route('view_post', $blog->slug) }}">
@@ -59,36 +115,6 @@
             </article>
         </div>
         @endforeach
-        <div class="col-12">
-            <div class="row">
-            <div class="col-12">
-                <nav class="mt-4">
-                <!-- pagination -->
-                <nav class="mb-md-50">
-                    <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link" href="#!" aria-label="Pagination Arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
-                        </svg>
-                        </a>
-                    </li>
-                    <li class="page-item active "> <a href="{{ route('/') }}" class="page-link">1 </a> </li>
-                    <li class="page-item"> <a href="#!" class="page-link"> 2 </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#!" aria-label="Pagination Arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z" />
-                        </svg>
-                        </a>
-                    </li>
-                    </ul>
-                </nav>
-                </nav>
-            </div>
-            </div>
-        </div>
     </div>
 </div>
 <div class="col-lg-4">
@@ -117,18 +143,17 @@
                               </div>
                               <div class="card-body px-0 pb-1">
                                   <h3><a class="post-title post-title-sm" href="{{ route('view_post_by_category', $category->slug) }}">{{ $category->name }}</a></h3>
-                                  <div class="content"><p class="card-text">{{ $category->sharedAttributes->summary }} </p><a class="read-more-btn" href="{{ route('view_post_by_category', $category->slug) }}">Read Full Article</a> </div>
+                                  <div class="content"><p class="card-text">{{ $category->sharedAttributes->summary }} </p><a class="read-more-btn" href="article.html">Read Full Article</a> </div>
                               </div>
                           </article>
                       @else
                           <!-- Other Categories in 'a' tags -->
                           <a class="media align-items-center" href="{{ route('view_post_by_category', $category->slug) }}">
                               <!-- You might want to replace 'No Image Specified' with actual image logic -->
-                              <span class="image-fallback image-fallback-xs">
-                                  <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class=""></span>
+                              <span class="image-fallback image-fallback-xs">No Image Specified</span>
                               <div class="media-body ml-3">
                                   <h3 style="margin-top:-5px">{{ $category->name }}</h3>
-                                  <p class="mb-0 small"> {{ $category->sharedAttributes->summary }}</p>
+                                  <p class="mb-0 small">{{ $category->summary }}</p>
                               </div>
                           </a>
                       @endif
