@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug');
-            
+
             $table->longText('post_body')->nullable();
             $table->longText('meta_desc')->nullable();
             $table->string('keyword')->nullable();

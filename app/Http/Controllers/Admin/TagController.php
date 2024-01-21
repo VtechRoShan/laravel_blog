@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Tag;
 use App\Models\Image;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -12,13 +12,14 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class TagController extends Controller
-{   
+{
     protected $fileLocation = 'tags';
 
     public function __construct()
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -89,6 +90,7 @@ class TagController extends Controller
                 'message' => 'Failed to create tag: '.$e->getMessage(),
                 'alert-type' => 'error',
             ];
+
             // Handle the error, e.g., return an error response or redirect with an error message
             return redirect()->back()->with($notification);
         }

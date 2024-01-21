@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AuthorController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\NavigationController;
-use App\Http\Controllers\Admin\AuthorController;
+use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\frontendController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;

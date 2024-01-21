@@ -16,15 +16,16 @@ class frontendController extends Controller
         $tags = Tag::select('id', 'name', 'slug')->withCount('blogs')->having('blogs_count', '>=', 1)->orderBy('created_at', 'desc')->get();
         $blogs = Blog::all();
 
-        return view('welcome', compact('navigations', 'blogs','tags', 'categories'));
+        return view('welcome', compact('navigations', 'blogs', 'tags', 'categories'));
     }
+
     public function getRelatedPosts($postId)
     {
         $post = Blog::with(['category', 'tags'])->findOrFail($postId);
-    
+
         $categoryIds = $post->category->pluck('id');
         $tagIds = $post->tags->pluck('id');
-    
+
         $relatedPosts = Blog::where('id', '<>', $postId)
             ->whereHas('category', function ($query) use ($categoryIds) {
                 $query->whereIn('blog_category.category_id', $categoryIds); // Referencing the pivot table
@@ -35,18 +36,20 @@ class frontendController extends Controller
             ->orderBy('tags_count', 'desc') // Order by the count of matching tags
             ->take(11)
             ->get();
-    
+
         return $relatedPosts;
     }
+
     public function view_post($slug)
     {
         $navigations = Navigation::with('categories')->get();
-        $blog = Blog::where('slug', $slug) ->first();
+        $blog = Blog::where('slug', $slug)->first();
 
         $relatedPosts = $this->getRelatedPosts($blog->id);
 
         return view('view_post', compact('navigations', 'blog', 'relatedPosts'));
     }
+
     public function view_post_by_tag($slug)
     {
         $navigations = Navigation::with('categories')->get();
@@ -57,15 +60,16 @@ class frontendController extends Controller
 
         return view('view_post_by_tag', compact('navigations', 'tags', 'categories'));
     }
+
     public function view_post_by_category($slug)
-    {   
+    {
         // dd($slug);
         $navigations = Navigation::with('categories')->get();
-        $categoryWithBlogs= Category::with('blogs')
+        $categoryWithBlogs = Category::with('blogs')
             ->where('slug', $slug)
             ->first();
         $categories = Category::all();
 
-        return view('view_post_by_category', compact('navigations','categoryWithBlogs', 'categories'));
+        return view('view_post_by_category', compact('navigations', 'categoryWithBlogs', 'categories'));
     }
 }

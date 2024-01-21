@@ -100,6 +100,7 @@ class CategoryController extends Controller
                 'message' => 'Failed to create category: '.$e->getMessage(),
                 'alert-type' => 'error',
             ];
+
             // Handle the error, e.g., return an error response or redirect with an error message
             return redirect()->back()->with($notification);
         }
