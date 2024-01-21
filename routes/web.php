@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\NavigationController;
+use App\Http\Controllers\Admin\AuthorController;
 use App\Http\Controllers\frontendController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -32,4 +33,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resource('/category', CategoryController::class)->shallow();
     Route::resource('/tag', TagController::class)->shallow();
     Route::resource('/navigation', NavigationController::class)->shallow();
+    Route::resource('/author', AuthorController::class)->shallow();
 });
