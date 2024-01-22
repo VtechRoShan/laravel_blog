@@ -4,11 +4,11 @@ namespace App\Console\Commands;
 
 use App\Models\Blog;
 use App\Models\Category;
-use App\Models\Navigation;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
+
 class GenerateSitemap extends Command
 {
     /**

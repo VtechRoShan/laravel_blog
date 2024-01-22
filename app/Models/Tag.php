@@ -24,6 +24,7 @@ class Tag extends Model
     {
         return $this->belongsToMany(Blog::class, 'blog_tag');
     }
+
     public function images()
     {
         return $this->belongsTo(Image::class, 'image_id');
