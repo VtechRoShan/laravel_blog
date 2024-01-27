@@ -12,7 +12,7 @@ class frontendController extends Controller
     public function index()
     {
         $navigations = Navigation::with('categories')->get();
-        $categories = Category::select('id', 'name')->get();
+        $categories = Category::all();
         $tags = Tag::select('id', 'name', 'slug')->withCount('blogs')->having('blogs_count', '>=', 1)->orderBy('created_at', 'desc')->get();
         $blogs = Blog::all();
 
