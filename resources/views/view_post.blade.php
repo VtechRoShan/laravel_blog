@@ -41,7 +41,7 @@
         <div class="widget">
             @foreach($blog->category as $category)
             <div class="widget m-0">
-            <img loading="lazy" decoding="async" src="" alt="About Me" class="w-100 author-thumb-sm d-block">
+            <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="About Me" class="w-100 author-thumb-sm d-block">
             <style>
                 .clickme {
                     background-color: #EEEEEE;
