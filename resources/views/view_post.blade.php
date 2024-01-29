@@ -34,78 +34,88 @@
 </div>
 
 
-<div class="col-lg-4">
-    <div class="widget-blocks">
-    <div class="row">
-        <div class="col-lg-12">
-        <div class="widget">
-            @foreach($blog->category as $category)
-            <div class="widget m-0">
-            <img loading="lazy" decoding="async" src="" alt="About Me" class="w-100 author-thumb-sm d-block">
-            <style>
-                .clickme {
-                    background-color: #EEEEEE;
-                    padding: 4px 10px;
-                    text-decoration:none;
-                    font-weight:bold;
-                    border-radius:5px;
-                    cursor:pointer;
-                }
-            </style>
-            <span class="widget-title h3"> {{ $category-> name}}  &nbsp; &nbsp; &nbsp;</span><span class="mb-3 pb-2"></span> <a href="about.html" class="clickme">Read More</a>
+<style>
+    .fix {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0; /* Adjust this value based on your header height or desired offset */
+    height: fit-content; /* Optional: Adjusts the height of the element to its content */
+}
+</style>
+
+<div class="col-lg-4 fix">
+   <div class="widget-blocks">
+      <div class="row">
+         <div class="col-lg-12">
+            <div class="widget">
+               <h2 class="section-title mb-3">Included Category</h2>
+               @foreach($blog->category as $category)
+               <div class="widget m-0">
+                  <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="About Me" class="w-100 author-thumb-sm d-block">
+                  <style>
+                     .clickme {
+                     background-color: #EEEEEE;
+                     padding: 4px 10px;
+                     text-decoration:none;
+                     font-weight:bold;
+                     border-radius:5px;
+                     cursor:pointer;
+                     }
+                  </style>
+                  <span class="widget-title h3"> {{ $category-> name}}  &nbsp; &nbsp; &nbsp;</span><span class="mb-3 pb-2"></span> <a href="about.html" class="clickme">Read More</a>
+               </div>
+               @endforeach
             </div>
-            @endforeach
-        </div>
-        </div>
-        <div class="col-lg-12 col-md-6">
-        <div class="widget">
-            <h2 class="section-title mb-3">Recommended</h2>
-            <div class="widget-body">
-                <div class="widget-list">
-                    @forelse ($relatedPosts as $index => $relatedPost)
-                        @if ($index == 0)  <!-- First related post -->
-                            <article class="card mb-4">
-                                <div class="card-image">
-                                    <div class="post-info"> <span class="text-uppercase">1 minutes read</span></div>
-                                    <img loading="lazy" decoding="async" src="{{ Storage::url($relatedPost->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
-                                </div>
-                                <div class="card-body px-0 pb-1">
-                                    <h3><a class="post-title post-title-sm" href="{{ route('view_post', $relatedPost->slug) }}">{{ $relatedPost->title }}</a></h3>
-                                    <p class="card-text">{{ Str::limit($relatedPost->description, 150, '...') }}</p>
-                                    <div class="content"> <a class="read-more-btn" href="{{ route('view_post', $relatedPost->slug) }}">Read Full Article</a></div>
-                                </div>
-                            </article>
-                        @else  <!-- Other related posts -->
-                            <a class="media align-items-center" href="{{ route('view_post', $relatedPost->slug) }}">
-                                <img loading="lazy" decoding="async" src="{{ Storage::url($relatedPost->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
-                                <div class="media-body ml-3">
-                                    <h3 style="margin-top:-5px">{{ $relatedPost->title }}</h3>
-                                    <p class="mb-0 small">{{ Str::limit($relatedPost->description, 100, '...') }}</p>
-                                </div>
-                            </a>
-                        @endif
-                    @empty
-                        <p>No related posts found.</p>
-                    @endforelse
-                </div>
+         </div>
+         <div class="col-lg-12 col-md-6">
+            <div class="widget">
+               <h2 class="section-title mb-3">Recommended Post</h2>
+               <div class="widget-body">
+                  <div class="widget-list">
+                     @forelse ($relatedPosts as $index => $relatedPost)
+                     @if ($index == 0)  <!-- First related post -->
+                     <article class="card mb-4">
+                        <div class="card-image">
+                           <div class="post-info"> <span class="text-uppercase">1 minutes read</span></div>
+                           <img loading="lazy" decoding="async" src="{{ Storage::url($relatedPost->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
+                        </div>
+                        <div class="card-body px-0 pb-1">
+                           <h3><a class="post-title post-title-sm" href="{{ route('view_post', $relatedPost->slug) }}">{{ $relatedPost->title }}</a></h3>
+                           <p class="card-text">{{ Str::limit($relatedPost->description, 150, '...') }}</p>
+                           <div class="content"> <a class="read-more-btn" href="{{ route('view_post', $relatedPost->slug) }}">Read Full Article</a></div>
+                        </div>
+                     </article>
+                     @else  <!-- Other related posts -->
+                     <a class="media align-items-center" href="{{ route('view_post', $relatedPost->slug) }}">
+                        <img loading="lazy" decoding="async" src="{{ Storage::url($relatedPost->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
+                        <div class="media-body ml-3">
+                           <h3 style="margin-top:-5px">{{ $relatedPost->title }}</h3>
+                           <p class="mb-0 small">{{ Str::limit($relatedPost->description, 100, '...') }}</p>
+                        </div>
+                     </a>
+                     @endif
+                     @empty
+                     <p>No related posts found.</p>
+                     @endforelse
+                  </div>
+               </div>
             </div>
-        </div>
-        </div>
-        <div class="col-lg-12 col-md-6">
-        <div class="widget">
-            <h2 class="section-title mb-3">Tags in </h2>
-            <div class="widget-body">
-            <ul class="widget-list">
-            @foreach($blog->tags as $tag)
-                <li><a href="{{ route('view_post_by_tag', $tag->slug) }}">#{{ (str_replace(' ', '', $tag->name)) }}</a></li>
-                @endforeach
-                </li>
-            </ul>
+         </div>
+         <div class="col-lg-12 col-md-6">
+            <div class="widget">
+               <h2 class="section-title mb-3">Tags in Post</h2>
+               <div class="widget-body">
+                  <ul class="widget-list">
+                     @foreach($blog->tags as $tag)
+                     <li><a href="{{ route('view_post_by_tag', $tag->slug) }}">#{{ (str_replace(' ', '', $tag->name)) }}</a></li>
+                     @endforeach
+                     </li>
+                  </ul>
+               </div>
             </div>
-        </div>
-        </div>
-    </div>
-    </div>
+         </div>
+      </div>
+   </div>
 </div>
 
 
