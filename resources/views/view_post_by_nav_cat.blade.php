@@ -12,37 +12,37 @@
     <div class="row">
     <div class="col-12">
 					<div class="breadcrumbs mb-4"> <a href="index.html">Home</a>
-						<span class="mx-1">/</span>  <a href="#!">Navigation</a>
-						<span class="mx-1">/</span>  <a href="#!"> {{$name}} </a>
+						<span class="mx-1">/</span>  <a href="#!">{{ $navigationName}}</a>
+						<span class="mx-1">/</span>  <a href="#!"> {{ $categoryName}} </a>
 					</div>
-					<h1 class="mb-4 border-bottom border-primary d-inline-block">  {{$name}} </h1>
+					<h1 class="mb-4 border-bottom border-primary d-inline-block">  {{$categoryName}} </h1>
 				</div>
         
-        @foreach($blogs as $key => $blog)
+        @foreach($blogs as $blog)
         <div class="col-md-4 col-lg-4 col-sm-6 mb-4">
             <article class="card article-card article-card-sm h-100">
-            <a href="{{ route('view_post', $blog->slug) }}">
-                <div class="card-image">
-                <div class="post-info"> <span class="text-uppercase">{{ (new DateTime($blog->publish_at))->format('d M Y') }}</span>
-                    <span class="text-uppercase">{{$blog-> sharedAttributes -> reading_time }} minute reads</span>
-                </div>
-                <img loading="lazy" decoding="async" src="{{ Storage::url($blog->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
-                </div>
-            </a>
-            <div class="card-body px-0">
-            <ul class="post-meta mb-2">
-                @if($blog->category)
-                    @foreach ($blog->category as $category)
-                        <li><a href="#!">{{ $category->name }}</a></li>
-                    @endforeach
-                @endif
-            </ul>
+              <a href="{{ route('view_post', $blog->slug) }}">
+                  <div class="card-image">
+                  <div class="post-info"> <span class="text-uppercase">{{ (new DateTime($blog->publish_at))->format('d M Y') }}</span>
+                      <span class="text-uppercase">{{$blog-> sharedAttributes -> reading_time }} minute reads</span>
+                  </div>
+                  <img loading="lazy" decoding="async" src="{{ Storage::url($blog->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
+                  </div>
+              </a>
+              <div class="card-body px-0">
+                <ul class="post-meta mb-2">
+                    @if($blog->category)
+                        @foreach ($blog->category as $category)
+                            <li><a href="#!">{{ $category->name }}</a></li>
+                        @endforeach
+                    @endif
+                </ul>
                 <h2><a class="post-title" href="{{ route('view_post', $blog->slug) }}">{{ $blog->title }}</a></h2>
                 <p class="card-text">{{ $blog-> sharedAttributes ->summary }}</p>
                 <div class="content"> <a class="read-more-btn" href="{{ route('view_post', $blog->slug) }}">Read Full Article</a>
                 </div>
             </div>
-            </article>
+          </article>
         </div>
         @endforeach
         <div class="col-12">
