@@ -92,6 +92,7 @@ window.onload = updateClock; // Start the clock once the window has loaded.
                       <th style="width: 10px">#</th>
                       <th>Title</th>
                       <th>Navigation</th>
+                      <th>Category</th>
                       <th>Status</th>
                       <th>Publish</th>
                       <th>Label</th>
@@ -103,6 +104,13 @@ window.onload = updateClock; // Start the clock once the window has loaded.
                       <td> {{$count+1}}</td>
                       <td>{{ $blog ->title  }}</td>
                       <td>{{ $blog ->navigation ->name  }}</td>
+                      <td>
+                          @if($blog->category)
+                        @foreach ($blog->category as $category)
+                            <li><a href="#!">{{ $category->name }}</a></li>
+                        @endforeach
+                    @endif
+                      </td>
                       <td>{{ $blog ->sharedAttributes ->status  }}</td>
                       <td>{{ $blog -> publish_at  }}</td>
                       <td class="text-right py-0 align-middle">

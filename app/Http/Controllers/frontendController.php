@@ -29,17 +29,36 @@ class frontendController extends Controller
         $blogs = Blog::where('nav_bar_id', $navigation->id)->get();
         return view('view_post_by_navigation', compact('navigations','navigation', 'blogs'));
     }
-    public function nav_cat_blog($name)
+    public function nav_cat_blog($navigationName, $categoryName)
     {   
-        dd(0);
         $navigations = Navigation::with('categories')->get();
-        $navigation = $navigations->where('name', $name)->first();        
+        $navigation = $navigations->where('name', $navigationName)->first();        
         if (!$navigation) {
             abort(404); 
         }
-        $blogs = Blog::where('nav_bar_id', $navigation->id)->get();
-        return view('view_post_by_navigation', compact('navigations','navigation', 'blogs'));
+
+        $blogs = Blog::whereHas('navigation', function ($query) use ($navigation) {
+            $query->where('id', $navigation->id);})->whereHas('category', function ($query) use ($categoryName) {
+            $query->where('name', $categoryName);})->get();
+
+        return view('view_post_by_nav_cat', compact('navigations','navigation', 'blogs'));  
     }
+
+    // public function nav_cat_blog($navigationName, $categoryName)
+    // {   
+    //     $navigations = Navigation::with('categories')->get();
+    //     $navigation = $navigations->where('name', $navigationName)->first();        
+    //     if (!$navigation) {
+    //         abort(404); 
+    //     }
+
+
+    //     $navigations = Navigation::with('categories->blogs')->get();
+
+    //     $blogs = Category::with('blogs')->where('slug', $categoryName)->first();
+    //     dd($blogs);
+    //     return view('view_post_by_navigation', compact('navigations','navigation', 'blogs'));  
+    // }
 
     public function getRelatedPosts($postId)
     {
