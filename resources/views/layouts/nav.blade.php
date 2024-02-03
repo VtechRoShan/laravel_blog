@@ -11,7 +11,8 @@
         <form action="#!" class="search order-lg-3 order-md-2 order-3 ml-auto">
           <input id="search-query" name="s" type="search" placeholder="Search..." autocomplete="off">
         </form>
-<style>.content {
+<style>
+.content {
   padding: 7rem 0; }
 
 h2 {
@@ -103,7 +104,6 @@ h2 {
       opacity: 1;
       visibility: visible;
       width: 6px; }
-
 .custom-dropdown .dropdown-menu {
   border: 1px solid transparent;
   -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);

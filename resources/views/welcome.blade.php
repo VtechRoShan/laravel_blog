@@ -90,17 +90,17 @@
                             @if ($index == 0)  <!-- First related post -->
                                 <article class="card mb-4">
                                     <div class="card-image">
-                                        <div class="post-info"> <span class="text-uppercase">1 minutes read</span></div>
+                                        <div class="post-info"> <span class="text-uppercase"> {{ $category->sharedAttributes->reading_time }} minutes read</span></div>
                                         <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
                                     </div>
                                     <div class="card-body px-0 pb-1">
-                                        <h3><a class="post-title post-title-sm" href="{{ route('view_post', $category->slug) }}">{{ $category->name }}</a></h3>
+                                        <h3><a class="post-title post-title-sm" href="{{ route('view_post_by_category', $category->slug) }}">{{ $category->name }}</a></h3>
                                         <p class="card-text">{{ Str::limit($category->sharedAttributes->summary, 150, '...') }}</p>
-                                        <div class="content"> <a class="read-more-btn" href="{{ route('view_post', $category->slug) }}">Read Full Article</a></div>
+                                        <div class="content"> <a class="read-more-btn" href="{{ route('view_post_by_category', $category->slug) }}">Read Full Article</a></div>
                                     </div>
                                 </article>
                             @else  <!-- Other related posts -->
-                                <a class="media align-items-center" href="{{ route('view_post', $category->slug) }}">
+                                <a class="media align-items-center" href="{{ route('view_post_by_category', $category->slug) }}">
                                     <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
                                     <div class="media-body ml-3">
                                         <h3 style="margin-top:-5px">{{ $category->name }}</h3>
