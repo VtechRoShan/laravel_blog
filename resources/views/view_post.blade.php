@@ -28,12 +28,10 @@
             <li> <a href="/categories/destination">destination</a>
             </li>
         </ul>
-        <h1 class="my-3">Top 7 Reasons to Visit Denver this Summer</h1>
+        <h1 class="my-3">  {{  $blog->title }}  </h1>
         <div> {!!  $blog->sharedAttributes->post_body !!} </div>
     </article>
 </div>
-
-
 <style>
     .fix {
     position: -webkit-sticky; /* Safari */
@@ -119,10 +117,7 @@
 </div>
 
 
-
 @endsection
-
-
 @push('js')
 <script>
     // your code
