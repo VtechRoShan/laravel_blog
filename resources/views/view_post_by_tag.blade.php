@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('section_bar')
-<div class="col-12"><h2 class="section-title">Latest Articles</h2></div>
+<div class="col-12"><h2 class="section-title"></h2></div>
 @endsection
 @section('content')
 <style>
@@ -32,6 +32,7 @@
             </div>
             </article>
         </div>
+        <div class="mt-3">
         @foreach($tags->blogs as $key => $blog)
         <div class="{{ $key === 0 ? 'col-md-4 col-lg-4 col-sm-4' : 'col-md-4 col-lg-4 col-sm-4'}} mb-4">
             <article class="card article-card {{ $key === 0 ? '':'article-card-sm h-100' }}">
@@ -59,6 +60,7 @@
             </article>
         </div>
         @endforeach
+        </div>
         <div class="col-12">
             <div class="row">
             <div class="col-12">
@@ -94,46 +96,38 @@
 <div class="col-lg-4">
     <div class="widget-blocks">
       <div class="row">
-        <div class="col-lg-12">
-          <div class="widget">
-              <div class="widget-body">
-              <img loading="lazy" decoding="async" src="{{ asset('frontend/images/author.png') }}" alt="About Me" class="w-100 author-thumb-sm d-block">
-              <p class="mb-3 pb-2">"Discover our DevOps console—a dedicated space for DevOps aficionados, deployments enthusiasts, and security guardians. Explore our focused blogs and resources to streamline your DevOps journey." </p>
-              </div>
-          </div>
-        </div>
         <div class="col-lg-12 col-md-6">
           <div class="widget">
-            <h2 class="section-title h2">Categories</h2>
+            <h2 class="section-title h2"> All Tags</h2>
             <div class="widget-body">
-              <div class="widget-list">
-                  @foreach($categories as $category)
-                      @if($loop->first)
-                          <!-- First Category in an article tag -->
-                          <article class="card mb-4">
-                              <div class="card-image">
-                                  <div class="post-info"> <span class="text-uppercase">1 minutes read</span> </div>
-                                  <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
-                              </div>
-                              <div class="card-body px-0 pb-1">
-                                  <h3><a class="post-title post-title-sm" href="{{ route('view_post_by_category', $category->slug) }}">{{ $category->name }}</a></h3>
-                                  <div class="content"><p class="card-text">{{ $category->sharedAttributes->summary }} </p><a class="read-more-btn" href="{{ route('view_post_by_category', $category->slug) }}">Read Full Article</a> </div>
-                              </div>
-                          </article>
-                      @else
-                          <!-- Other Categories in 'a' tags -->
-                          <a class="media align-items-center" href="{{ route('view_post_by_category', $category->slug) }}">
-                              <!-- You might want to replace 'No Image Specified' with actual image logic -->
-                              <span class="image-fallback image-fallback-xs">
-                                  <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class=""></span>
-                              <div class="media-body ml-3">
-                                  <h3 style="margin-top:-5px">{{ $category->name }}</h3>
-                                  <p class="mb-0 small"> {{ $category->sharedAttributes->summary }}</p>
-                              </div>
-                          </a>
-                      @endif
-                  @endforeach
-              </div>
+            <div class="widget-list">
+                        @forelse($alltags as $index => $category)
+                            @if ($index == 0) <!-- First related post -->
+                            <article class="card mb-4">
+                                <div class="card-image">
+                                    <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
+                                </div>
+                                <div class="card-body px-0 pb-1">
+                                    <h3><a class="post-title post-title-sm" href="{{ route('view_post_by_category', $category->slug) }}">{{ $category->name }}</a></h3>
+                                    <p class="card-text">{!! Str::limit(strip_tags($category->post_body), 70, '...') !!}</p>
+                                    <div class="content">
+                                        <a class="read-more-btn" href="{{ route('view_post_by_category', $category->slug) }}">Read Full Article</a>
+                                    </div>
+                                </div>
+                            </article>
+                            @else <!-- Other related posts -->
+                            <a class="media align-items-center" href="{{ route('view_post_by_category', $category->slug) }}">
+                                <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
+                                <div class="media-body ml-3">
+                                    <h3 style="margin-top:-5px">{{ $category->name }}</h3>
+                                    <p class="mb-0 small">{!! Str::limit(strip_tags($category->post_body), 30, '...') !!}</p>
+                                </div>
+                            </a>
+                            @endif
+                        @empty
+                        <p>No Data Found.</p>
+                        @endforelse
+                    </div>
             </div>
           </div>
         </div>

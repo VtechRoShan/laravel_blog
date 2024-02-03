@@ -18,6 +18,17 @@ class frontendController extends Controller
 
         return view('welcome', compact('navigations', 'blogs', 'tags', 'categories'));
     }
+    public function navbar($name)
+    {   
+        // dd($name);
+        $navigations = Navigation::with('categories')->get();
+        $navigation = $navigations->where('name', $name)->first();        
+        if (!$navigation) {
+            abort(404); 
+        }
+        $blogs = Blog::where('nav_bar_id', $navigation->id)->get();
+        return view('view_post_by_navigation', compact('navigations','navigation', 'blogs'));
+    }
 
     public function getRelatedPosts($postId)
     {
@@ -51,14 +62,19 @@ class frontendController extends Controller
     }
 
     public function view_post_by_tag($slug)
-    {
+    {   
+        // dd($slug);
         $navigations = Navigation::with('categories')->get();
         $tags = Tag::with('blogs')
             ->where('slug', $slug)
             ->first();
         $categories = Category::all();
+        // Retrieve all categories except the current one and shuffle them
+        $alltags = Tag::where('id', '!=', $tags->id ?? null)
+            ->inRandomOrder()
+            ->get();
 
-        return view('view_post_by_tag', compact('navigations', 'tags', 'categories'));
+        return view('view_post_by_tag', compact('navigations', 'tags', 'categories', 'alltags'));
     }
 
     public function view_post_by_category($slug)
@@ -68,7 +84,7 @@ class frontendController extends Controller
         $categoryWithBlogs = Category::with('blogs')
             ->where('slug', $slug)
             ->first();
-            
+
         // Retrieve all categories except the current one and shuffle them
         $categories = Category::where('id', '!=', $categoryWithBlogs->id ?? null)
             ->inRandomOrder()

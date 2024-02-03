@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('section_bar')
 <div class="col-12">
-   <h2 class="section-title">Latest Articles</h2>
+   <h2 class="section-title"></h2>
 </div>
 @endsection
 @section('content')
@@ -115,38 +115,37 @@
             <div class="widget">
                <h2 class="section-title h2">Recommended Categories</h2>
                <div class="widget-body">
-               <div class="widget-list">
-    @forelse($categories as $index => $category)
-            @if ($index == 0) <!-- First related post -->
-            <article class="card mb-4">
-                <div class="card-image">
-                    <div class="post-info">
-                        <span class="text-uppercase">{{ $category->sharedAttributes->reading_time }} minutes read</span>
+                    <div class="widget-list">
+                        @forelse($categories as $index => $category)
+                            @if ($index == 0) <!-- First related post -->
+                            <article class="card mb-4">
+                                <div class="card-image">
+                                    <div class="post-info">
+                                        <span class="text-uppercase">{{ $category->sharedAttributes->reading_time }} minutes read</span>
+                                    </div>
+                                    <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
+                                </div>
+                                <div class="card-body px-0 pb-1">
+                                    <h3><a class="post-title post-title-sm" href="{{ route('view_post_by_category', $category->slug) }}">{{ $category->name }}</a></h3>
+                                    <p class="card-text">{{ Str::limit($category->sharedAttributes->summary, 150, '...') }}</p>
+                                    <div class="content">
+                                        <a class="read-more-btn" href="{{ route('view_post_by_category', $category->slug) }}">Read Full Article</a>
+                                    </div>
+                                </div>
+                            </article>
+                            @else <!-- Other related posts -->
+                            <a class="media align-items-center" href="{{ route('view_post_by_category', $category->slug) }}">
+                                <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
+                                <div class="media-body ml-3">
+                                    <h3 style="margin-top:-5px">{{ $category->name }}</h3>
+                                    <p class="mb-0 small">{{ Str::limit($category->sharedAttributes->summary, 100, '...') }}</p>
+                                </div>
+                            </a>
+                            @endif
+                        @empty
+                        <p>No Data Found.</p>
+                        @endforelse
                     </div>
-                    <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
-                </div>
-                <div class="card-body px-0 pb-1">
-                    <h3><a class="post-title post-title-sm" href="{{ route('view_post_by_category', $category->slug) }}">{{ $category->name }}</a></h3>
-                    <p class="card-text">{{ Str::limit($category->sharedAttributes->summary, 150, '...') }}</p>
-                    <div class="content">
-                        <a class="read-more-btn" href="{{ route('view_post_by_category', $category->slug) }}">Read Full Article</a>
-                    </div>
-                </div>
-            </article>
-            @else <!-- Other related posts -->
-            <a class="media align-items-center" href="{{ route('view_post_by_category', $category->slug) }}">
-                <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
-                <div class="media-body ml-3">
-                    <h3 style="margin-top:-5px">{{ $category->name }}</h3>
-                    <p class="mb-0 small">{{ Str::limit($category->sharedAttributes->summary, 100, '...') }}</p>
-                </div>
-            </a>
-            @endif
-    @empty
-    <p>No Data Found.</p>
-    @endforelse
-</div>
-
                </div>
             </div>
          </div>

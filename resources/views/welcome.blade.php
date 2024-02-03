@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('section_bar')
-<div class="col-12"><h2 class="section-title">Latest Articles</h2></div>
+<div class="col-12"><h2 class="section-title"></h2></div>
 @endsection
 @section('content')
 <style>
