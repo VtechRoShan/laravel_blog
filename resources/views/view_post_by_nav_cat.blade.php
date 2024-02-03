@@ -12,10 +12,10 @@
     <div class="row">
     <div class="col-12">
 					<div class="breadcrumbs mb-4"> <a href="index.html">Home</a>
-						<span class="mx-1">/</span>  <a href="#!">Navigation</a>
-						<span class="mx-1">/</span>  <a href="#!"> {{$navigation->name}} </a>
+						<span class="mx-1">/</span>  <a href="#!">{{ $navigationName}}</a>
+						<span class="mx-1">/</span>  <a href="#!"> {{ $categoryName}} </a>
 					</div>
-					<h1 class="mb-4 border-bottom border-primary d-inline-block">  {{$navigation->name}} </h1>
+					<h1 class="mb-4 border-bottom border-primary d-inline-block">  {{$categoryName}} </h1>
 				</div>
         
         @foreach($blogs as $blog)
