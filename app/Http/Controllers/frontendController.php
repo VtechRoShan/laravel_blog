@@ -29,6 +29,17 @@ class frontendController extends Controller
         $blogs = Blog::where('nav_bar_id', $navigation->id)->get();
         return view('view_post_by_navigation', compact('navigations','navigation', 'blogs'));
     }
+    public function nav_cat_blog($name)
+    {   
+        dd(0);
+        $navigations = Navigation::with('categories')->get();
+        $navigation = $navigations->where('name', $name)->first();        
+        if (!$navigation) {
+            abort(404); 
+        }
+        $blogs = Blog::where('nav_bar_id', $navigation->id)->get();
+        return view('view_post_by_navigation', compact('navigations','navigation', 'blogs'));
+    }
 
     public function getRelatedPosts($postId)
     {

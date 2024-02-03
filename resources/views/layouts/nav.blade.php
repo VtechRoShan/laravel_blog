@@ -156,7 +156,7 @@
                            <ul class="list-unstyled">
                               @foreach ($navigation->categories as $category)
                               @if ($loop->index % 2 == 0)
-                              <a href="#" class="dropdown-item"><i class="{{ $category->cat_icon }}"></i> {{ $category->name }}  </a>
+                              <a href="{{ route('nav_cat_blog', ['nav_name' => $navigation->name, 'cat_name' => $category->slug]) }}   " class="dropdown-item"><i class="{{ $category->cat_icon }}"></i> {{ $category->name }}  </a>
                               @endif
                               @endforeach
                            </ul>
@@ -165,7 +165,7 @@
                            <ul class="list-unstyled">
                               @foreach ($navigation->categories as $category)
                               @if ($loop->index % 2 != 0)
-                              <a href="#" class="dropdown-item"><i class="{{ $category->cat_icon }}"></i> {{ $category->name }} </a>
+                              <a href="{{ route('nav_cat_blog', ['nav_name' => $navigation->name, 'cat_name' => $category->name]) }}   " class="dropdown-item"><i class="{{ $category->cat_icon }}"></i> {{ $category->name }} </a>
                               @endif
                               @endforeach
                            </ul>

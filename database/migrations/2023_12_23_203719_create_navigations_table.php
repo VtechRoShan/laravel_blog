@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('navigations', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->string('slug')->unique();
             $table->string('seo_title')->nullable();
             $table->text('meta_desc')->nullable();
 
