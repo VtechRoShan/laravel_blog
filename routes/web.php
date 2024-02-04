@@ -27,7 +27,15 @@ Route::get('/blog/{slug}', [frontendController::class, 'view_post'])->name('view
 Route::get('/tags/{slug}', [frontendController::class, 'view_post_by_tag'])->name('view_post_by_tag');
 Route::get('/category/{slug}', [frontendController::class, 'view_post_by_category'])->name('view_post_by_category');
 
-Auth::routes();
+
+Route::redirect('/register', route('/'));
+Route::redirect('/password/reset', route('/'));
+Route::redirect('/email/verify', route('/'));
+Auth::routes([
+    'register' => false, // Registration Routes...
+    'reset' => false, // Password Reset Routes...
+    'verify' => false, // Email Verification Routes...
+  ]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
