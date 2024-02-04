@@ -112,4 +112,11 @@ class frontendController extends Controller
             ->get();
         return view('view_post_by_category', compact('navigations', 'categoryWithBlogs', 'categories'));
     }
+    public function all_tag()
+    {
+        // dd($slug);
+        $navigations = Navigation::with('categories')->get();
+        $all_tags = Tag::all();
+        return view('view_all_tags', compact('navigations', 'all_tags'));
+    }
 }

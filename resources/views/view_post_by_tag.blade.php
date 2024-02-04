@@ -8,8 +8,17 @@
         padding: 0rem !important;
     }
 </style>
+<div class="col-12">
+        <div class="breadcrumbs mb-4"> <a href="{{ route('/') }}">Home</a>
+            <span class="mx-1">/</span>  <a href="{{ route('all_tag') }}">Tags</a>
+            <span class="mx-1">/</span>  <a href="{{ route('view_post_by_category', 'hello' )  }}"> Tag Name </a>
+            <span class="mx-1"></span>  <a href=""></a>
+        </div>
+        <h1 class="mb-4 border-bottom border-primary d-inline-block"> Hello Tag name </h1>
+    </div>
 <div class="col-lg-8 mb-5 mb-lg-0">
     <div class="row">
+
 
         <div class="col-12">
             <article class="card article-card article-card-sm h-100 ">

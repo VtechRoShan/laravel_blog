@@ -1,13 +1,7 @@
 @extends('layouts.app')
-@section('section_bar')
-<div class="col-12">
-    <div class="breadcrumbs mb-4">
-        <a href="index.html">Home</a>
-        <span class="mx-1">/</span>
-        <a href="#!">Contact</a>
-    </div>
-</div>
-@endsection
+@section('site_title') {{ $blog->title }} @endsection
+@section('meta_tag', '')
+@section('meta_description','{{  $blog->sharedAttributes->meta_desc }}')
 @section('content')
 <style>
     .content{

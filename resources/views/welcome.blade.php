@@ -1,7 +1,7 @@
 @extends('layouts.app')
-@section('section_bar')
-<div class="col-12"><h2 class="section-title"></h2></div>
-@endsection
+@section('site_title', 'The DevOps Console')
+@section('meta_tag', '')
+@section('meta_description','Hello World')
 @section('content')
 <style>
     .content{
