@@ -25,12 +25,10 @@ Route::get('/navs/{slug}', [frontendController::class, 'navbar'])->name('view_po
 Route::get('/{nav_name}/{cat_name}/blogs', [frontendController::class, 'nav_cat_blog'])->name('nav_cat_blog');
 Route::get('/blog/{slug}', [frontendController::class, 'view_post'])->name('view_post');
 Route::get('/tags/{slug}', [frontendController::class, 'view_post_by_tag'])->name('view_post_by_tag');
+Route::get('/all-tags', [frontendController::class, 'all_tag'])->name('all_tag');
 Route::get('/category/{slug}', [frontendController::class, 'view_post_by_category'])->name('view_post_by_category');
 
 
-Route::redirect('/register', route('/'));
-Route::redirect('/password/reset', route('/'));
-Route::redirect('/email/verify', route('/'));
 Auth::routes([
     'register' => false, // Registration Routes...
     'reset' => false, // Password Reset Routes...
