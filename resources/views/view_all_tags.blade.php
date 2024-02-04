@@ -19,17 +19,32 @@
         </div>
         <h1 class="mb-4 border-bottom border-primary d-inline-block"> All Tags</h1>
     </div>
-        
+    <style>
+        .custom-h3 {
+            margin-top: -5px;
+            font-size: 1.5rem;
+            color: #333;
+        }
+        .custom-h4 {
+            font-size: 1rem;
+            color: #666;
+        }
+     </style>
         <div class="col-12">
             <div class="widget">
                 <div class="widget-body">
                     <div class="widget-list">
+
                         @forelse($all_tags as $index=> $tag)
                            <!-- Other related posts -->
                                 <a class="media align-items-center" href="{{ route('view_post_by_tag', $tag->slug) }}">
                                     <img loading="lazy" decoding="async" src="{{ Storage::url($tag->images->thumbnail_image) }}" alt="Post Thumbnail" class="w-100">
                                     <div class="media-body ml-3">
-                                        <h3 style="margin-top:-5px">{{ $tag->name }}  -----------------  {{ $tag->blogs->count()  }}  {{ (new DateTime($tag->publish_at))->format('d M Y') }} </h3>
+                                        <!-- <h3 style="margin-top:-5px">  {{ $tag->blogs->count()  }}  {{ (new DateTime($tag->publish_at))->format('d M Y') }} </h3> -->
+                                        <div class="d-flex justify-content-between">
+                                                <h3 class="custom-h3" >{{ $tag->name }} </h3>
+                                                <h4 class="custom-h4">{{ (new DateTime($tag->publish_at))->format('d M Y') }} </h4>
+                                        </div>
                                         <p class="mb-0 small">{!!  Str::limit(strip_tags($tag->post_body), 200, '...')  !!}</p>
                                     </div>
                                 </a>
