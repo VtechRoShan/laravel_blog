@@ -20,7 +20,7 @@
     <div class="container">
       <div class="row no-gutters-lg">
         <div class="col-12">
-          <h2 class="section-title">Latest Articles</h2>
+          <h2 class="section-title"> </h2>
         </div>
         @yield('content')
       </div>

@@ -32,10 +32,10 @@
             </div>
             </article>
         </div>
-        <div class="mt-3">
-        @foreach($tags->blogs as $key => $blog)
-        <div class="{{ $key === 0 ? 'col-md-4 col-lg-4 col-sm-4' : 'col-md-4 col-lg-4 col-sm-4'}} mb-4">
-            <article class="card article-card {{ $key === 0 ? '':'article-card-sm h-100' }}">
+
+        @foreach($tags->blogs as $blog)
+        <div class="col-md-4 col-lg-4 col-sm-4 mb-4 mt-3">
+            <article class="card article-card article-card-sm h-100">
             <a href="{{ route('view_post', $blog->slug) }}">
                 <div class="card-image">
                 <div class="post-info"> <span class="text-uppercase">{{ (new DateTime($blog->publish_at))->format('d M Y') }}</span>
@@ -60,7 +60,6 @@
             </article>
         </div>
         @endforeach
-        </div>
         <div class="col-12">
             <div class="row">
             <div class="col-12">

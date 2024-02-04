@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [frontendController::class, 'index'])->name('/');
-Route::get('/navs/{name}', [frontendController::class, 'navbar'])->name('view_post_by_navigation');
+Route::get('/navs/{slug}', [frontendController::class, 'navbar'])->name('view_post_by_navigation');
 Route::get('/{nav_name}/{cat_name}/blogs', [frontendController::class, 'nav_cat_blog'])->name('nav_cat_blog');
 Route::get('/blog/{slug}', [frontendController::class, 'view_post'])->name('view_post');
 Route::get('/tags/{slug}', [frontendController::class, 'view_post_by_tag'])->name('view_post_by_tag');
