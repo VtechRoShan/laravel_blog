@@ -11,12 +11,13 @@
 <div class="col-lg-12 mb-5 mb-lg-0">
     <div class="row">
     <div class="col-12">
-					<div class="breadcrumbs mb-4"> <a href="index.html">Home</a>
-						<span class="mx-1">/</span>  <a href="#!">{{ $navigationName}}</a>
-						<span class="mx-1">/</span>  <a href="#!"> {{ $categoryName}} </a>
-					</div>
-					<h1 class="mb-4 border-bottom border-primary d-inline-block">  {{$categoryName}} </h1>
-				</div>
+        <div class="breadcrumbs mb-4"> <a href="{{ route('/') }}">Home</a>
+            <span class="mx-1">/</span>  <a href="{{ route('view_post_by_navigation', ['slug' => $navigation->slug]) }}">{{ $navigation->name}}</a>
+            <span class="mx-1">/</span>  <a href="{{ route('view_post_by_category', $category ->slug )  }}"> {{ $category ->name}} </a>
+            <span class="mx-1"></span>  <a href=""></a>
+        </div>
+        <h1 class="mb-4 border-bottom border-primary d-inline-block"> Hello {{$category->name}} </h1>
+    </div>
         
         @foreach($blogs as $blog)
         <div class="col-md-4 col-lg-4 col-sm-6 mb-4">

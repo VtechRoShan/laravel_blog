@@ -48,7 +48,7 @@
             <div class="widget">
                <h2 class="section-title mb-3">Included Category</h2>
                @foreach($blog->category as $category)
-               <div class="widget m-0">
+               <div class="widget m-0"><a href="">
                   <img loading="lazy" decoding="async" src="{{ Storage::url($category->images->thumbnail_image) }}" alt="About Me" class="w-100 author-thumb-sm d-block">
                   <style>
                      .clickme {
@@ -60,8 +60,8 @@
                      cursor:pointer;
                      }
                   </style>
-                  <span class="widget-title h3"> {{ $category-> name}}  &nbsp; &nbsp; &nbsp;</span><span class="mb-3 pb-2"></span> <a href="about.html" class="clickme">Read More</a>
-               </div>
+                  <span class="widget-title h3"> {{ $category-> name}}  &nbsp; &nbsp; &nbsp;</span><span class="mb-3 pb-2"></span> <p>{{ $category->sharedAttributes->summary}} </p> <a href="about.html" class="clickme">Read More</a>
+                  </a>  </div>
                @endforeach
             </div>
          </div>

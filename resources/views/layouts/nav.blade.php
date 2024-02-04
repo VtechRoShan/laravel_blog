@@ -142,21 +142,21 @@
          <ul class="navbar-nav mx-auto mt-lg-0">
             @foreach($navigations as $navigation)
             <li class="nav-item dropdown">
-              <a class="nav-link" href="{{ route('view_post_by_navigation', ['name' => $navigation->name]) }}" role="button">
+              <a class="nav-link" href="{{ route('view_post_by_navigation', ['slug' => $navigation->slug]) }}" role="button">
                 {{$navigation->name}}
               </a>
                 <div class="dropdown custom-dropdown">
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                      <div class="mega-menu d-flex">
                         <div>
-                           <a href=" {{ route('view_post_by_navigation', ['name' => $navigation->name]) }}" class="d-block mb-1"><img src="{{ Storage::url($navigation->images->thumbnail_image) }}" alt="Image" class="img-fluid mb-3"></a>
-                           <p><a href=" {{ route('view_post_by_navigation', ['name' => $navigation->name]) }}">{{$navigation ->name}}</a><span class="text-muted">View All Here</span></p>
+                           <a href=" {{ route('view_post_by_navigation', ['slug' => $navigation->slug]) }}" class="d-block mb-1"><img src="{{ Storage::url($navigation->images->thumbnail_image) }}" alt="Image" class="img-fluid mb-3"></a>
+                           <p><a href=" {{ route('view_post_by_navigation', ['slug' => $navigation->slug]) }}">{{$navigation ->name}}</a><span class="text-muted">View All Here</span></p>
                         </div>
                         <div>
                            <ul class="list-unstyled">
                               @foreach ($navigation->categories as $category)
                               @if ($loop->index % 2 == 0)
-                              <a href="{{ route('nav_cat_blog', ['nav_name' => $navigation->name, 'cat_name' => $category->slug]) }}   " class="dropdown-item"><i class="{{ $category->cat_icon }}"></i> {{ $category->name }}  </a>
+                              <a href="{{ route('nav_cat_blog', ['nav_name' => $navigation->slug, 'cat_name' => $category->slug]) }}   " class="dropdown-item"><i class="{{ $category->cat_icon }}"></i> {{ $category->name }}  </a>
                               @endif
                               @endforeach
                            </ul>
@@ -165,7 +165,7 @@
                            <ul class="list-unstyled">
                               @foreach ($navigation->categories as $category)
                               @if ($loop->index % 2 != 0)
-                              <a href="{{ route('nav_cat_blog', ['nav_name' => $navigation->name, 'cat_name' => $category->name]) }}   " class="dropdown-item"><i class="{{ $category->cat_icon }}"></i> {{ $category->name }} </a>
+                              <a href="{{ route('nav_cat_blog', ['nav_name' => $navigation->slug, 'cat_name' => $category->slug]) }}   " class="dropdown-item"><i class="{{ $category->cat_icon }}"></i> {{ $category->name }} </a>
                               @endif
                               @endforeach
                            </ul>

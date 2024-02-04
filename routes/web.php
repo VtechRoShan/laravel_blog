@@ -21,13 +21,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [frontendController::class, 'index'])->name('/');
-Route::get('/navs/{name}', [frontendController::class, 'navbar'])->name('view_post_by_navigation');
+Route::get('/navs/{slug}', [frontendController::class, 'navbar'])->name('view_post_by_navigation');
 Route::get('/{nav_name}/{cat_name}/blogs', [frontendController::class, 'nav_cat_blog'])->name('nav_cat_blog');
 Route::get('/blog/{slug}', [frontendController::class, 'view_post'])->name('view_post');
 Route::get('/tags/{slug}', [frontendController::class, 'view_post_by_tag'])->name('view_post_by_tag');
 Route::get('/category/{slug}', [frontendController::class, 'view_post_by_category'])->name('view_post_by_category');
 
-Auth::routes();
+
+Route::redirect('/register', route('/'));
+Route::redirect('/password/reset', route('/'));
+Route::redirect('/email/verify', route('/'));
+Auth::routes([
+    'register' => false, // Registration Routes...
+    'reset' => false, // Password Reset Routes...
+    'verify' => false, // Email Verification Routes...
+  ]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {

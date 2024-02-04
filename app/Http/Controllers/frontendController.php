@@ -18,30 +18,37 @@ class frontendController extends Controller
 
         return view('welcome', compact('navigations', 'blogs', 'tags', 'categories'));
     }
-    public function navbar($name)
+    public function navbar($slug)
     {   
         // dd($name);
         $navigations = Navigation::with('categories')->get();
-        $navigation = $navigations->where('name', $name)->first();        
+        $navigation = $navigations->where('slug', $slug)->first();        
         if (!$navigation) {
             abort(404); 
         }
         $blogs = Blog::where('nav_bar_id', $navigation->id)->get();
-        return view('view_post_by_navigation', compact('navigations','name', 'blogs'));
+        $name = $navigation->name;
+        return view('view_post_by_navigation', compact('navigations','navigation', 'blogs'));
     }
     public function nav_cat_blog($navigationName, $categoryName)
     {   
         $navigations = Navigation::with('categories')->get();
-        $navigation = $navigations->where('name', $navigationName)->first();        
+        $navigation = $navigations->where('slug', $navigationName)->first();        
         if (!$navigation) {
             abort(404); 
+        }else{
+            $category = Category::where('slug', $categoryName)->first();        
+            if (!$category) {
+                abort(404); 
+            }else{
+                $blogs = Blog::whereHas('navigation', function ($query) use ($navigation) {
+                    $query->where('id', $navigation->id);})->whereHas('category', function ($query) use ($categoryName) {
+                    $query->where('slug', $categoryName);})->get();
+            }
         }
 
-        $blogs = Blog::whereHas('navigation', function ($query) use ($navigation) {
-            $query->where('id', $navigation->id);})->whereHas('category', function ($query) use ($categoryName) {
-            $query->where('name', $categoryName);})->get();
 
-        return view('view_post_by_nav_cat', compact('navigations', 'navigationName', 'categoryName','blogs'));  
+        return view('view_post_by_nav_cat', compact('navigations', 'navigation', 'category','blogs'));  
     }
 
     public function getRelatedPosts($postId)
