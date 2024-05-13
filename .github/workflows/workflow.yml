@@ -129,7 +129,7 @@ jobs:
         shell: bash
 
       - name: Transfer .env to server
-        run: scp .env ubuntu@${{ secrets.HOST }}:/var/www/html/
+        run: scp .env ubuntu@${{ secrets.HOST }}:/var/www/html
         shell: bash
 
       - name: Set Laravel log file permissions
