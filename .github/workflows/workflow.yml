@@ -35,8 +35,7 @@ jobs:
 
       - name: Sync project files
         run: |
-          rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' \-e "ssh" ./ ubuntu@${{ secrets.HOST }}:'sudo rsync -avh /var/www/html/'
-
+          rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' \ -e "ssh" ./ ubuntu@${{ secrets.HOST }}:/var/www/html/ --rsync-path="sudo rsync"
         shell: bash
 
       - name: Move files if present and remove directory
