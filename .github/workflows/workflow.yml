@@ -36,7 +36,7 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "APP_NAME=DevOps Consoles" >> .env
+          echo "APP_NAME=DevOpsConsoles" >> .env
           echo "APP_ENV=local" >> .env
           echo "APP_KEY=base64:/" >> .env
           echo "APP_DEBUG=true" >> .env
