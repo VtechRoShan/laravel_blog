@@ -43,3 +43,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resource('/navigation', NavigationController::class)->shallow();
     Route::resource('/author', AuthorController::class)->shallow();
 });
+
+
+// Hello Test 
