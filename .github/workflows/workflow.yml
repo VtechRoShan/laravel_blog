@@ -110,10 +110,10 @@ jobs:
         run: ssh ubuntu@${{ secrets.HOST }} 'if [ "$(ls -A ~/backup_uploads/)" ]; then sudo mv ~/backup_uploads/* /var/www/html/public/uploads/; fi; sudo rm -rf ~/backup_uploads/'
 
 
-      # - name: Set Laravel folder permission
-      #   run: |
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /var/www/html/'
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
+      - name: Set Laravel folder permission
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /var/www/html/'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
 
       - name: Ensure storage directories exist
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/storage && sudo  mkdir -p framework/sessions framework/views framework/cache/data logs'
