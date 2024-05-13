@@ -129,12 +129,6 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/public/'
 
 
-
-      # - name: Transfer .env to server
-      #   run: |
-      #     rsync -avh --rsync-path="sudo rsync" .env ubuntu@${{ secrets.HOST }}:/var/www/html/
-      #   shell: bash
-
       - name: Set Laravel log file permissions
         run: |
           ssh ubuntu@${{ secrets.HOST }} 'sudo touch /var/www/html/storage/logs/laravel.log'
@@ -148,7 +142,11 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/storage'
 
       - name: Install Dependencies
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && composer install --no-dev'
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir /var/www/html/vendor'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data /var/www/html/vendor'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/vendor'
+          ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && composer install --no-dev'
 
       - name: Generate Application Key
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && php artisan key:generate'
