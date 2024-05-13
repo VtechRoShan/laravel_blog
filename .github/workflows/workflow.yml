@@ -33,33 +33,6 @@ jobs:
       - name: Delete Existing Assets
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo rm -rf ./*'
 
-      - name: Sync project files
-        run: |
-          rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' -e "ssh" ./ ubuntu@${{ secrets.HOST }}:/var/www/html/ --rsync-path="sudo rsync"
-        shell: bash
-
-      - name: Move files if present and remove directory
-        run: ssh ubuntu@${{ secrets.HOST }} 'if [ "$(ls -A ~/backup_uploads/)" ]; then sudo mv ~/backup_uploads/* /var/www/html/public/uploads/; fi; sudo rm -rf ~/backup_uploads/'
-
-
-      # - name: Set Laravel folder permission
-      #   run: |
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /var/www/html/'
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
-
-      - name: Ensure storage directories exist
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/storage && sudo  mkdir -p framework/sessions framework/views framework/cache/data logs'
-
-      - name: Set Directory Permissions for Storage
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/storage'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/storage'
-
-      - name: Set Directory Permission for  Public Directory
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/public/'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/public/'
-
 
       - name: Create .env file
         run: |
@@ -128,9 +101,39 @@ jobs:
           # Add other environment variables as needed
         shell: bash
 
-      - name: Transfer .env to server
-        run: scp .env ubuntu@${{ secrets.HOST }}:/var/www/html
+      - name: Sync project files
+        run: |
+          rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' -e "ssh" ./ ubuntu@${{ secrets.HOST }}:/var/www/html/ --rsync-path="sudo rsync"
         shell: bash
+
+      - name: Move files if present and remove directory
+        run: ssh ubuntu@${{ secrets.HOST }} 'if [ "$(ls -A ~/backup_uploads/)" ]; then sudo mv ~/backup_uploads/* /var/www/html/public/uploads/; fi; sudo rm -rf ~/backup_uploads/'
+
+
+      # - name: Set Laravel folder permission
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /var/www/html/'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
+
+      - name: Ensure storage directories exist
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/storage && sudo  mkdir -p framework/sessions framework/views framework/cache/data logs'
+
+      - name: Set Directory Permissions for Storage
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/storage'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/storage'
+
+      - name: Set Directory Permission for  Public Directory
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/public/'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/public/'
+
+
+
+      # - name: Transfer .env to server
+      #   run: |
+      #     rsync -avh --rsync-path="sudo rsync" .env ubuntu@${{ secrets.HOST }}:/var/www/html/
+      #   shell: bash
 
       - name: Set Laravel log file permissions
         run: |
