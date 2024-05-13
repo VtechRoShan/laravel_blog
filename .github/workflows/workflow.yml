@@ -57,8 +57,8 @@ jobs:
 
       - name: Set Directory Permission for  Public Directory
         run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/public/uploads'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/public/uploads'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/public/'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/public/'
 
 
       - name: Create .env file
