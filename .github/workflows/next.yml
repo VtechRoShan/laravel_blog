@@ -1,7 +1,7 @@
 # sudo rm -rf * && sudo rm -rf .*
 name: site-deploy
 # sudo rm -rf * && sudo rm -rf .*
-name: site-deploy
+# name: site-deploy
 
 on:
   workflow_dispatch:
