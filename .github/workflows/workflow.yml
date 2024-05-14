@@ -130,7 +130,7 @@ jobs:
 
       - name: Set Laravel log file permissions
         run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo touch /var/www/html/storage/logs/laravel.log'
+          ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo mkdir -p vendor && sudo touch /var/www/html/storage/logs/laravel.log'
       # ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/html/storage/logs/laravel.log'
         shell: bash
       # ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data /var/www/html/storage/logs/laravel.log'
