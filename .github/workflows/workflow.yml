@@ -37,7 +37,7 @@ jobs:
         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/home/ubuntu/laravel_blog/public/uploads" ]; then mkdir -p ~/backup_uploads && mv /home/ubuntu/laravel_blog/public/uploads/* ~/backup_uploads/; fi'
 
       - name: Delete Existing Assets
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo rm -rf ./*'
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo rm -rf .* && sudo rm -rf *'
 
       - name: Create .env file
         run: |
