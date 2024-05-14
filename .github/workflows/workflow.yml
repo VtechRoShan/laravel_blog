@@ -89,13 +89,13 @@ jobs:
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo composer install --no-dev'
 
       - name: Generate Application Key
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && php artisan key:generate'
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan key:generate'
 
       - name: Cache Configuration
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && php artisan config:cache && php artisan route:cache'
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan config:cache && sudo php artisan route:cache'
 
       - name: Run Migrations
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && php artisan migrate --no-interaction --force'
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan migrate --no-interaction --force'
 
       - name: Set Laravel folder permission
         run: |
