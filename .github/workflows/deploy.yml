@@ -70,9 +70,9 @@ jobs:
           echo "DB_CONNECTION=mysql" >> .env
           echo "DB_HOST= 127.0.0.1" >> .env
           echo "DB_PORT=3306" >> .env
-          echo "DB_DATABASE=shamanktm_ecommerce " >> .env
-          echo "DB_USERNAME=shamanktm" >> .env
-          echo "DB_PASSWORD=shamanktm" >> .env
+          echo "DB_DATABASE=laravel_blog" >> .env
+          echo "DB_USERNAME=ugra" >> .env
+          echo "DB_PASSWORD=ugra1234" >> .env
 
           echo "BROADCAST_DRIVER=log" >> .env
           echo "CACHE_DRIVER=file" >> .env
