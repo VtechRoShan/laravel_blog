@@ -148,29 +148,29 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "APP_NAME=DevOpsConsoles" >> /var/www/html/.env
-          echo "APP_ENV=local" >> /var/www/html/.env
-          echo "APP_KEY=base64:/" >> /var/www/html/.env
-          echo "APP_DEBUG=true" >> /var/www/html/.env
-          echo "APP_URL=https://devopsconsoles.com" >> /var/www/html/.env
+          echo "APP_NAME=DevOpsConsoles" >> .env
+          echo "APP_ENV=local" >> .env
+          echo "APP_KEY=base64:/" >> .env
+          echo "APP_DEBUG=true" >> .env
+          echo "APP_URL=https://devopsconsoles.com" >> .env
 
-          echo "LOG_CHANNEL=stack" >> /var/www/html/.env
-          echo "LOG_DEPRECATIONS_CHANNEL=null" >> /var/www/html/.env
-          echo "LOG_LEVEL=debug" >> /var/www/html/.env
+          echo "LOG_CHANNEL=stack" >> .env
+          echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
+          echo "LOG_LEVEL=debug" >> .env
 
-          echo "DB_CONNECTION=mysql" >> /var/www/html/.env
-          echo "DB_HOST=127.0.0.1" >> /var/www/html/.env
-          echo "DB_PORT=3306" >> /var/www/html/.env
-          echo "DB_DATABASE=laravel_blog" >> /var/www/html/.env
-          echo "DB_USERNAME=ugra" >> /var/www/html/.env
-          echo "DB_PASSWORD=ugra1234" >> /var/www/html/.env
+          echo "DB_CONNECTION=mysql" >> .env
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_DATABASE=laravel_blog" >> .env
+          echo "DB_USERNAME=ugra" >> .env
+          echo "DB_PASSWORD=ugra1234" >> .env
 
-          echo "BROADCAST_DRIVER=log" >> /var/www/html/.env
-          echo "CACHE_DRIVER=file" >> /var/www/html/.env
-          echo "FILESYSTEM_DISK=local" >> /var/www/html/.env
-          echo "QUEUE_CONNECTION=sync" >> /var/www/html/.env
-          echo "SESSION_DRIVER=file" >> /var/www/html/.env
-          echo "SESSION_LIFETIME=120" >> /var/www/html/.env
+          echo "BROADCAST_DRIVER=log" >> .env
+          echo "CACHE_DRIVER=file" >> .env
+          echo "FILESYSTEM_DISK=local" >> .env
+          echo "QUEUE_CONNECTION=sync" >> .env
+          echo "SESSION_DRIVER=file" >> .env
+          echo "SESSION_LIFETIME=120" >> .env
         shell: bash
 
       - name: Sync project files
