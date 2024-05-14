@@ -28,8 +28,8 @@ jobs:
       - name: Add SSH key to known hosts
         run: ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-      - name: Conditionally backup public/uploads directory
-        run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/home/ubuntu/laravel_blog/public/uploads" ]; then mkdir -p ~/backup_uploads && mv /home/ubuntu/laravel_blog/public/uploads/* ~/backup_uploads/; fi'
+      # - name: Conditionally backup public/uploads directory
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/home/ubuntu/laravel_blog/public/uploads" ]; then mkdir -p ~/backup_uploads && mv /home/ubuntu/laravel_blog/public/uploads/* ~/backup_uploads/; fi'
 
       - name: Delete Existing Assets
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo rm -rf .* && sudo rm -rf *'
@@ -63,12 +63,12 @@ jobs:
 
       - name: Sync project files
         run: |
-          rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' -e "ssh" ./ ubuntu@${{ secrets.HOST }}:/home/ubuntu/laravel_blog/ --rsync-path="sudo rsync"
+          rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' -e "ssh" ./ ubuntu@${{ secrets.HOST }}:/home/ubuntu/laravel_blog/ --rsync-path="rsync"
         shell: bash
 
-      - name: Move files if present and remove directory
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then mv ~/backup_uploads/* /home/ubuntu/laravel_blog/public/uploads/; fi; rm -rf ~/backup_uploads/'
+      # - name: Move files if present and remove directory
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then mv ~/backup_uploads/* /home/ubuntu/laravel_blog/public/uploads/; fi; rm -rf ~/backup_uploads/'
 
       - name: Ensure storage directories exist
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/storage && mkdir -p framework framework/sessions framework/views framework/cache/data logs'
