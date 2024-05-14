@@ -110,7 +110,7 @@ jobs:
       #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo composer require laravel/ui'
 
       - name: Install Dependencies
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && composer install --no-dev'
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && composer install'
 
       - name: Generate Application Key
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && php artisan key:generate'
