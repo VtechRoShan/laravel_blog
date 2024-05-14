@@ -1,106 +1,106 @@
-# sudo rm -rf * && sudo rm -rf .*
-name: site-deploy
-# sudo rm -rf * && sudo rm -rf .*
+# # sudo rm -rf * && sudo rm -rf .*
 # name: site-deploy
+# # sudo rm -rf * && sudo rm -rf .*
+# # name: site-deploy
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-      # - 8586-dev-relationships
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches:
+#       - main
+#       # - 8586-dev-relationships
 
-permissions:
-  id-token: write
-  contents: read
-  pull-requests: write
+# permissions:
+#   id-token: write
+#   contents: read
+#   pull-requests: write
 
-jobs:
-  site-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+# jobs:
+#   site-deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
+#       - name: Setup SSH
+#         uses: webfactory/ssh-agent@v0.5.3
+#         with:
+#           ssh-private-key: ${{ secrets.SSH_KEY }}
 
-      - name: Add SSH key to known hosts
-        run: ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+#       - name: Add SSH key to known hosts
+#         run: ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-      - name: Set Laravel folder permission
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown ubuntu:ubuntu -R /var/www/html/'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
+#       - name: Set Laravel folder permission
+#         run: |
+#           ssh ubuntu@${{ secrets.HOST }} 'sudo chown ubuntu:ubuntu -R /var/www/html/'
+#           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
 
-      - name: Conditionally backup public/uploads directory
-        run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/html/public/uploads" ]; then mkdir -p ~/backup_uploads && sudo mv /var/www/html/public/uploads/* ~/backup_uploads/; fi'
+#       - name: Conditionally backup public/uploads directory
+#         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/html/public/uploads" ]; then mkdir -p ~/backup_uploads && sudo mv /var/www/html/public/uploads/* ~/backup_uploads/; fi'
 
-      - name: Delete Existing Assets
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo rm -rf ./*'
+#       - name: Delete Existing Assets
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo rm -rf ./*'
 
-      - name: Create .env file
-        run: |
-          echo "APP_NAME=DevOpsConsoles" >> .env
-          echo "APP_ENV=local" >> .env
-          echo "APP_KEY=base64:/" >> .env
-          echo "APP_DEBUG=true" >> .env
-          echo "APP_URL=https://devopsconsoles.com" >> .env
+#       - name: Create .env file
+#         run: |
+#           echo "APP_NAME=DevOpsConsoles" >> .env
+#           echo "APP_ENV=local" >> .env
+#           echo "APP_KEY=base64:/" >> .env
+#           echo "APP_DEBUG=true" >> .env
+#           echo "APP_URL=https://devopsconsoles.com" >> .env
 
-          echo "LOG_CHANNEL=stack" >> .env
-          echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
-          echo "LOG_LEVEL=debug" >> .env
+#           echo "LOG_CHANNEL=stack" >> .env
+#           echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
+#           echo "LOG_LEVEL=debug" >> .env
 
-          echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST=127.0.0.1" >> .env
-          echo "DB_PORT=3306" >> .env
-          echo "DB_DATABASE=laravel_blog" >> .env
-          echo "DB_USERNAME=ugra" >> .env
-          echo "DB_PASSWORD=ugra1234" >> .env
+#           echo "DB_CONNECTION=mysql" >> .env
+#           echo "DB_HOST=127.0.0.1" >> .env
+#           echo "DB_PORT=3306" >> .env
+#           echo "DB_DATABASE=laravel_blog" >> .env
+#           echo "DB_USERNAME=ugra" >> .env
+#           echo "DB_PASSWORD=ugra1234" >> .env
 
-          echo "BROADCAST_DRIVER=log" >> .env
-          echo "CACHE_DRIVER=file" >> .env
-          echo "FILESYSTEM_DISK=local" >> .env
-          echo "QUEUE_CONNECTION=sync" >> .env
-          echo "SESSION_DRIVER=file" >> .env
-          echo "SESSION_LIFETIME=120" >> .env
-        shell: bash
+#           echo "BROADCAST_DRIVER=log" >> .env
+#           echo "CACHE_DRIVER=file" >> .env
+#           echo "FILESYSTEM_DISK=local" >> .env
+#           echo "QUEUE_CONNECTION=sync" >> .env
+#           echo "SESSION_DRIVER=file" >> .env
+#           echo "SESSION_LIFETIME=120" >> .env
+#         shell: bash
 
-      - name: Sync project files
-        run: |
-          rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' -e "ssh" ./ ubuntu@${{ secrets.HOST }}:/var/www/html/ --rsync-path="sudo rsync"
-        shell: bash
+#       - name: Sync project files
+#         run: |
+#           rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' -e "ssh" ./ ubuntu@${{ secrets.HOST }}:/var/www/html/ --rsync-path="sudo rsync"
+#         shell: bash
 
-      - name: Move files if present and remove directory
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then sudo mv ~/backup_uploads/* /var/www/html/public/uploads/; fi; sudo rm -rf ~/backup_uploads/'
+#       - name: Move files if present and remove directory
+#         run: |
+#           ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then sudo mv ~/backup_uploads/* /var/www/html/public/uploads/; fi; sudo rm -rf ~/backup_uploads/'
 
-      - name: Ensure storage directories exist
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/storage && sudo mkdir -p framework/sessions framework/views framework/cache/data logs'
+#       - name: Ensure storage directories exist
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/storage && sudo mkdir -p framework/sessions framework/views framework/cache/data logs'
 
-      - name: Set Laravel log file permissions
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir -p /var/www/html/storage/logs && sudo touch /var/www/html/storage/logs/laravel.log'
+#       - name: Set Laravel log file permissions
+#         run: |
+#           ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir -p /var/www/html/storage/logs && sudo touch /var/www/html/storage/logs/laravel.log'
 
-      - name: Install laravel/ui Package
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo composer require laravel/ui'
+#       - name: Install laravel/ui Package
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo composer require laravel/ui'
 
-      - name: Install Dependencies
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo composer install --no-dev'
+#       - name: Install Dependencies
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo composer install --no-dev'
 
-      - name: Generate Application Key
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan key:generate'
+#       - name: Generate Application Key
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan key:generate'
 
-      - name: Cache Configuration
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan config:cache && sudo php artisan route:cache'
+#       - name: Cache Configuration
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan config:cache && sudo php artisan route:cache'
 
-      - name: Run Migrations
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan migrate --no-interaction --force'
+#       - name: Run Migrations
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan migrate --no-interaction --force'
 
-      - name: Set Laravel folder permission
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /var/www/html/'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
-#
+#       - name: Set Laravel folder permission
+#         run: |
+#           ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /var/www/html/'
+#           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
+# #
