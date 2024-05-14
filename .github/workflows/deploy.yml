@@ -49,10 +49,10 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /home/ubuntu/laravel_blog/storage'
           ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /home/ubuntu/laravel_blog/storage'
 
-      - name: Set Directory Permission for  Public Directory
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /home/ubuntu/laravel_blog/public/uploads'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /home/ubuntu/laravel_blog/public/uploads'
+      # - name: Set Directory Permission for  Public Directory
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /home/ubuntu/laravel_blog/public/uploads'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /home/ubuntu/laravel_blog/public/uploads'
 
 
       - name: Create .env file
