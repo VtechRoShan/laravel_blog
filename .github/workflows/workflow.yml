@@ -33,111 +33,52 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
 
       - name: Conditionally backup public/uploads directory
-        run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/html/public/uploads" ]; then mkdir -p ~/backup_uploads && sudo mv /var/www/html/public/uploads/ ~/backup_uploads/; fi'
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/html/public/uploads" ]; then mkdir -p ~/backup_uploads && sudo mv /var/www/html/public/uploads/* ~/backup_uploads/; fi'
 
       - name: Delete Existing Assets
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo rm -rf ./*'
 
-
       - name: Create .env file
         run: |
-          echo "APP_NAME=DevOpsConsoles" >> .env
-          echo "APP_ENV=local" >> .env
-          echo "APP_KEY=base64:/" >> .env
-          echo "APP_DEBUG=true" >> .env
-          echo "APP_URL=https://devopsconsoles.com" >> .env
+          echo "APP_NAME=DevOpsConsoles" >> /var/www/html/.env
+          echo "APP_ENV=local" >> /var/www/html/.env
+          echo "APP_KEY=base64:/" >> /var/www/html/.env
+          echo "APP_DEBUG=true" >> /var/www/html/.env
+          echo "APP_URL=https://devopsconsoles.com" >> /var/www/html/.env
 
-          echo "LOG_CHANNEL=stack" >> .env
-          echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
-          echo "LOG_LEVEL=debug" >> .env
+          echo "LOG_CHANNEL=stack" >> /var/www/html/.env
+          echo "LOG_DEPRECATIONS_CHANNEL=null" >> /var/www/html/.env
+          echo "LOG_LEVEL=debug" >> /var/www/html/.env
 
-          echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST= 127.0.0.1" >> .env
-          echo "DB_PORT=3306" >> .env
-          echo "DB_DATABASE=laravel_blog " >> .env
-          echo "DB_USERNAME=ugra" >> .env
-          echo "DB_PASSWORD=ugra1234" >> .env
+          echo "DB_CONNECTION=mysql" >> /var/www/html/.env
+          echo "DB_HOST=127.0.0.1" >> /var/www/html/.env
+          echo "DB_PORT=3306" >> /var/www/html/.env
+          echo "DB_DATABASE=laravel_blog" >> /var/www/html/.env
+          echo "DB_USERNAME=ugra" >> /var/www/html/.env
+          echo "DB_PASSWORD=ugra1234" >> /var/www/html/.env
 
-          echo "BROADCAST_DRIVER=log" >> .env
-          echo "CACHE_DRIVER=file" >> .env
-          echo "FILESYSTEM_DISK=local" >> .env
-          echo "QUEUE_CONNECTION=sync" >> .env
-          echo "SESSION_DRIVER=file" >> .env
-          echo "SESSION_LIFETIME=120" >> .env
-
-          echo "MEMCACHED_HOST=127.0.0.1" >> .env
-
-          echo "REDIS_HOST=127.0.0.1" >> .env
-          echo "REDIS_PASSWORD=null" >> .env
-          echo "REDIS_PORT=6379" >> .env
-
-          echo "MAIL_MAILER=smtp" >> .env
-          echo "MAIL_HOST=sandbox.smtp.mailtrap.io" >> .env
-          echo "MAIL_PORT=2525" >> .env
-          echo " # MAIL_PORT=1025" >> .env
-          echo "MAIL_USERNAME=eadf39e3f3f209" >> .env
-          echo "MAIL_PASSWORD=14bfa63f3f5c78" >> .env
-
-          echo "MAIL_ENCRYPTION=tls" >> .env
-          echo "MAIL_FROM_ADDRESS="hello@shamankathmandu.com"" >> .env
-          echo "MAIL_FROM_NAME="${APP_NAME}"" >> .env
-
-
-          echo "AWS_ACCESS_KEY_ID=" >> .env
-          echo "AWS_SECRET_ACCESS_KEY=" >> .env
-          echo "AWS_DEFAULT_REGION=us-east-1" >> .env
-          echo "AWS_BUCKET=" >> .env
-          echo "AWS_USE_PATH_STYLE_ENDPOINT=false" >> .env
-
-          echo "PUSHER_APP_ID=" >> .env
-          echo "PUSHER_APP_KEY=" >> .env
-          echo "PUSHER_APP_SECRET=" >> .env
-          echo "PUSHER_HOST=" >> .env
-          echo "PUSHER_PORT=443" >> .env
-          echo "PUSHER_SCHEME=https" >> .env
-          echo "PUSHER_APP_CLUSTER=mt1" >> .env
-
-          echo "VITE_APP_NAME="${APP_NAME}"" >> .env
-          echo "VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"" >> .env
-          echo "VITE_PUSHER_HOST="${PUSHER_HOST}"" >> .env
-          echo "VITE_PUSHER_PORT="${PUSHER_PORT}"" >> .env
-          echo "VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"" >> .env
-          echo "VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"" >> .env
-          # Add other environment variables as needed
-        shell: bash
+          echo "BROADCAST_DRIVER=log" >> /var/www/html/.env
+          echo "CACHE_DRIVER=file" >> /var/www/html/.env
+          echo "FILESYSTEM_DISK=local" >> /var/www/html/.env
+          echo "QUEUE_CONNECTION=sync" >> /var/www/html/.env
+          echo "SESSION_DRIVER=file" >> /var/www/html/.env
+          echo "SESSION_LIFETIME=120" >> /var/www/html/.env
 
       - name: Sync project files
         run: |
           rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' -e "ssh" ./ ubuntu@${{ secrets.HOST }}:/var/www/html/ --rsync-path="sudo rsync"
-        shell: bash
 
       - name: Move files if present and remove directory
-        run: ssh ubuntu@${{ secrets.HOST }} 'if [ "$(ls -A ~/backup_uploads/)" ]; then sudo mv ~/backup_uploads/* /var/www/html/public/uploads/; fi; sudo rm -rf ~/backup_uploads/'
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then sudo mv ~/backup_uploads/* /var/www/html/public/uploads/; fi; sudo rm -rf ~/backup_uploads/'
 
       - name: Ensure storage directories exist
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/storage && sudo  mkdir -p framework/sessions framework/views framework/cache/data logs'
-
-      # - name: Set Directory Permissions for Storage
-      #   run: |
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/storage'
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/storage'
-
-      # - name: Set Directory Permission for  Public Directory
-      #   run: |
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/public/'
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/public/'
-
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/storage && sudo mkdir -p framework/sessions framework/views framework/cache/data logs'
 
       - name: Set Laravel log file permissions
         run: |
-          ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo mkdir -p vendor && sudo touch /var/www/html/storage/logs/laravel.log'
-      # ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/html/storage/logs/laravel.log'
-        shell: bash
-      # ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data /var/www/html/storage/logs/laravel.log'
-      # - name: Set Laravel storage permissions
-      #   run: |
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/storage'
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/storage'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir -p /var/www/html/storage/logs && sudo touch /var/www/html/storage/logs/laravel.log'
 
       - name: Install Dependencies
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo composer install --no-dev'
@@ -151,14 +92,7 @@ jobs:
       - name: Run Migrations
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && php artisan migrate --no-interaction --force'
 
-      # - name: Set Laravel bootstrap/cache permissions
-      #   run: |
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/bootstrap/cache'
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/bootstrap/cache'
-
       - name: Set Laravel folder permission
         run: |
           ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /var/www/html/'
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
-
-# test
