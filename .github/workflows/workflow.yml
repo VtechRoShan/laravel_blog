@@ -71,7 +71,7 @@ jobs:
       #     ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then mv ~/backup_uploads/* /home/ubuntu/laravel_blog/public/uploads/; fi; rm -rf ~/backup_uploads/'
 
       - name: Ensure storage directories exist
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/storage && mkdir -p framework framework/sessions framework/views framework/cache/data logs'
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/storage && sudo -u ubuntu mkdir -p framework framework/sessions framework/views framework/cache/data logs'
 
       - name: Set Laravel log file permissions
         run: |
