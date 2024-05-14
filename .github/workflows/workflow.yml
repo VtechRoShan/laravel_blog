@@ -27,6 +27,11 @@ jobs:
       - name: Add SSH key to known hosts
         run: ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
+      - name: Set Laravel folder permission
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown ubuntu:ubuntu -R /var/www/html/'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
+
       - name: Conditionally backup public/uploads directory
         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/html/public/uploads" ]; then mkdir -p ~/backup_uploads && sudo mv /var/www/html/public/uploads/ ~/backup_uploads/; fi'
 
@@ -109,37 +114,30 @@ jobs:
       - name: Move files if present and remove directory
         run: ssh ubuntu@${{ secrets.HOST }} 'if [ "$(ls -A ~/backup_uploads/)" ]; then sudo mv ~/backup_uploads/* /var/www/html/public/uploads/; fi; sudo rm -rf ~/backup_uploads/'
 
-
-      - name: Set Laravel folder permission
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /var/www/html/'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
-
       - name: Ensure storage directories exist
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/storage && sudo  mkdir -p framework/sessions framework/views framework/cache/data logs'
 
-      - name: Set Directory Permissions for Storage
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/storage'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/storage'
+      # - name: Set Directory Permissions for Storage
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/storage'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/storage'
 
-      - name: Set Directory Permission for  Public Directory
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/public/'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/public/'
+      # - name: Set Directory Permission for  Public Directory
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/public/'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/public/'
 
 
       - name: Set Laravel log file permissions
         run: |
           ssh ubuntu@${{ secrets.HOST }} 'sudo touch /var/www/html/storage/logs/laravel.log'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data /var/www/html/storage/logs/laravel.log'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/html/storage/logs/laravel.log'
+      # ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/html/storage/logs/laravel.log'
         shell: bash
-
-      - name: Set Laravel storage permissions
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/storage'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/storage'
+      # ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data /var/www/html/storage/logs/laravel.log'
+      # - name: Set Laravel storage permissions
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/storage'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/storage'
 
       - name: Install Dependencies
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo -u www-data composer install --no-dev'
@@ -153,9 +151,14 @@ jobs:
       - name: Run Migrations
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && php artisan migrate --no-interaction --force'
 
-      - name: Set Laravel bootstrap/cache permissions
+      # - name: Set Laravel bootstrap/cache permissions
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/bootstrap/cache'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/bootstrap/cache'
+
+      - name: Set Laravel folder permission
         run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/html/bootstrap/cache'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/bootstrap/cache'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /var/www/html/'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
 
 # test
