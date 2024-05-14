@@ -106,10 +106,11 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /home/ubuntu/laravel_blog/storage'
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /home/ubuntu/laravel_blog/storage'
 
+      - name: Install laravel/ui Package
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo composer require laravel/ui'
+
       - name: Install Dependencies
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo composer require laravel/ui'
-          ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && composer install --no-dev'
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && composer install --no-dev'
 
       - name: Generate Application Key
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && php artisan key:generate'
