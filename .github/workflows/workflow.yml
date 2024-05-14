@@ -82,8 +82,8 @@ jobs:
         run: |
           ssh ubuntu@${{ secrets.HOST }} 'mkdir -p /home/ubuntu/laravel_blog/storage/logs && touch /home/ubuntu/laravel_blog/storage/logs/laravel.log'
 
-      - name: Install laravel/ui Package
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && composer require laravel/ui'
+      # - name: Install laravel/ui Package
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && composer require laravel/ui'
 
       - name: Install Dependencies
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && composer install --no-dev'
