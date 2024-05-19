@@ -30,8 +30,8 @@ jobs:
       - name: Conditionally backup public/uploads directory
         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/home/ubuntu/laravel_blog/public/uploads" ]; then mkdir -p ~/backup_uploads && sudo mv /home/ubuntu/laravel_blog/public/uploads/ ~/backup_uploads/; fi'
 
-      - name: Delete Existing Assets
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo rm -rf ./*'
+      - name: Check and Delete Directory
+        run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/home/ubuntu/laravel_blog/" ]; then sudo rm -rf /home/ubuntu/laravel_blog/ && echo "Directory /home/ubuntu/laravel_blog/ has been deleted."; else echo "Directory /home/ubuntu/laravel_blog/ does not exist."; fi'
 
       - name: Sync project files
         run: |
