@@ -47,7 +47,7 @@ jobs:
       - name: Create directory and change ownership
         run: ssh ubuntu@${{ secrets.HOST }} '
           sudo mkdir -p /var/www/laravel_blog &&
-          sudo chown -R ubuntu:www-data /var/www/laravel_blog &&
+          sudo chown -R $USER:$USER /var/www/laravel_blog &&
           sudo chmod -R 775 /var/www/laravel_blog'
         shell: bash
 
