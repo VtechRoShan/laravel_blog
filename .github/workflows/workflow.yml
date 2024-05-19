@@ -66,13 +66,13 @@ jobs:
       - name: Restore public/storage directory if backup exists
         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then sudo mv ~/backup_uploads/* /var/www/laravel_blog/storage/app/public/; fi && sudo rm -rf ~/backup_uploads'
 
-      - name: Ensure storage and bootstrap/cache directories exist
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog && mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs bootstrap/cache'
+      - name: Ensure storage directories exist
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/storage && mkdir -p framework/sessions framework/views framework/cache/data logs'
 
-      - name: Set Directory Permissions for Storage and Cache
+      - name: Set Directory Permissions for Storage
         run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage'
 
       - name: Set Directory Permissions for Public Directory
         run: |
@@ -92,7 +92,9 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog'
 
       - name: Install Dependencies
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
+          ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer require laravel/ui'
 
       - name: Generate Application Key
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan key:generate'
