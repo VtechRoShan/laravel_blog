@@ -66,13 +66,13 @@ jobs:
       - name: Restore public/storage directory if backup exists
         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then sudo mv ~/backup_uploads/* /var/www/laravel_blog/storage/app/public/; fi && sudo rm -rf ~/backup_uploads'
 
-      - name: Ensure storage and bootstrap/cache directories exist
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog && mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs bootstrap/cache'
+      - name: Ensure storage directories exist
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/storage && mkdir -p framework/sessions framework/views framework/cache/data logs'
 
-      - name: Set Directory Permissions for Storage and Cache
+      - name: Set Directory Permissions for Storage
         run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage'
 
       - name: Set Directory Permissions for Public Directory
         run: |
@@ -86,8 +86,18 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/laravel_blog/storage/logs/laravel.log'
         shell: bash
 
-      - name: Ensure vendor directory permissions
-        run: ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/vendor && sudo chmod -R 775 /var/www/laravel_blog/vendor'
+      - name: Set Laravel storage permissions
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage'
+
+      - name: Create vendor directory with correct permissions
+        run: ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir -p /var/www/laravel_blog/vendor && sudo chown -R ubuntu:www-data /var/www/laravel_blog/vendor && sudo chmod -R 775 /var/www/laravel_blog/vendor'
+
+      - name: Set Laravel bootstrap/cache permissions
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/bootstrap/cache'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/bootstrap/cache'
 
       - name: Install Dependencies
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
@@ -100,8 +110,3 @@ jobs:
 
       - name: Run Migrations
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan migrate --no-interaction --force'
-
-      - name: Set Laravel bootstrap/cache permissions
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/bootstrap/cache'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/bootstrap/cache'
