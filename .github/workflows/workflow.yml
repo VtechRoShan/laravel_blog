@@ -34,6 +34,26 @@ jobs:
         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/laravel_blog/" ]; then sudo rm -rf /var/www/laravel_blog/* /var/www/laravel_blog/.* 2>/dev/null && echo "Contents of /var/www/laravel_blog/ have been deleted."; else echo "Directory /var/www/laravel_blog/ does not exist."; fi'
         shell: bash
 
+      - name: Create .env file
+        run: |
+          echo "APP_NAME=laravel_blog" >> .env
+          echo "APP_ENV=local" >> .env
+          echo "APP_KEY=base64:/" >> .env
+          echo "APP_DEBUG=true" >> .env
+          echo "APP_URL=http://localhost" >> .env
+
+          echo "LOG_CHANNEL=stack" >> .env
+          echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
+          echo "LOG_LEVEL=debug" >> .env
+
+          echo "DB_CONNECTION=mysql" >> .env
+          echo "DB_HOST= 127.0.0.1" >> .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_DATABASE=laravel_blog" >> .env
+          echo "DB_USERNAME=ugra" >> .env
+          echo "DB_PASSWORD=ugra1234" >> .env
+        shell: bash
+
       - name: Sync project files
         run: |
           rsync -avh --rsync-path="sudo rsync" --exclude='.git/' ./ ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/
@@ -54,32 +74,6 @@ jobs:
         run: |
           ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/public/'
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/public/'
-
-
-      - name: Create .env file
-        run: |
-          echo "APP_NAME=laravel_blog" >> .env
-          echo "APP_ENV=local" >> .env
-          echo "APP_KEY=base64:/" >> .env
-          echo "APP_DEBUG=true" >> .env
-          echo "APP_URL=http://localhost" >> .env
-
-          echo "LOG_CHANNEL=stack" >> .env
-          echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
-          echo "LOG_LEVEL=debug" >> .env
-
-          echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST= 127.0.0.1" >> .env
-          echo "DB_PORT=3306" >> .env
-          echo "DB_DATABASE=laravel_blog" >> .env
-          echo "DB_USERNAME=ugra" >> .env
-          echo "DB_PASSWORD=ugra1234" >> .env
-
-        shell: bash
-
-      - name: Transfer .env to server
-        run: scp .env ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/
-        shell: bash
 
       - name: Set Laravel log file permissions
         run: |
