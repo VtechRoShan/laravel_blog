@@ -31,11 +31,12 @@ jobs:
         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/laravel_blog/storage/app/public" ]; then mkdir -p ~/backup_uploads && sudo mv /var/www/laravel_blog/storage/app/public ~/backup_uploads/; fi'
 
       - name: Delete Existing Assets
-        run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/laravel_blog/" ]; then sudo rm -rf /var/www/laravel_blog/ && echo "Directory /var/www/laravel_blog/ has been deleted."; else echo "Directory /var/www/laravel_blog/ does not exist."; fi'
+        run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/laravel_blog/" ]; then sudo rm -rf /var/www/laravel_blog/* /var/www/laravel_blog/.* 2>/dev/null && echo "Contents of /var/www/laravel_blog/ have been deleted."; else echo "Directory /var/www/laravel_blog/ does not exist."; fi'
+        shell: bash
 
       - name: Sync project files
         run: |
-          rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' ./ ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/
+          rsync -avh --rsync-path="sudo rsync" --exclude='.git/' ./ ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/
         shell: bash
 
       - name: Move files if present and remove directory
