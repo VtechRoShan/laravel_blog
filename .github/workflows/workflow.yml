@@ -92,9 +92,10 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog'
 
       - name: Install Dependencies
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
-          ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer require laravel/ui'
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
+
+      - name: Require Laravel UI
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer require laravel/ui'
 
       - name: Generate Application Key
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan key:generate'
