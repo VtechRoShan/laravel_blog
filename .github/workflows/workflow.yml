@@ -28,6 +28,19 @@ jobs:
       - name: Add SSH key to known hosts
         run: ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Specify the required Node.js version
+
+      - name: Install Node.js dependencies
+        run: npm install
+        working-directory: ./ # Adjust if your package.json is in a different directory
+
+      - name: Build assets with Vite
+        run: npm run build
+        working-directory: ./ # Adjust if your package.json is in a different directory
+
       - name: Conditionally backup public/storage directory
         run: ssh ubuntu@${{ secrets.HOST }} '
           if [ -d "/var/www/laravel_blog/storage/app/public" ]; then
@@ -72,6 +85,11 @@ jobs:
           rsync -avh --rsync-path="sudo rsync" --exclude='.git/' ./ ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/
         shell: bash
 
+      - name: Sync built assets
+        run: |
+          rsync -avh --rsync-path="sudo rsync" ./public/build/ ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/public/build/
+        shell: bash
+
       - name: Restore public/storage directory if backup exists
         run: ssh ubuntu@${{ secrets.HOST }} '
           if [ -d "~/backup_uploads" ]; then
@@ -106,11 +124,11 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog'
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog'
 
+      - name: Install PHP Dependencies
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
+
       - name: Require Laravel UI
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer require laravel/ui'
-
-      - name: Install Dependencies
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
 
       - name: Generate Application Key
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan key:generate'
