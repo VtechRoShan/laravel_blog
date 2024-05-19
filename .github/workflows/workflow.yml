@@ -34,6 +34,9 @@ jobs:
         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/laravel_blog/" ]; then sudo rm -rf /var/www/laravel_blog/* /var/www/laravel_blog/.* 2>/dev/null && echo "Contents of /var/www/laravel_blog/ have been deleted."; else echo "Directory /var/www/laravel_blog/ does not exist."; fi'
         shell: bash
 
+      - name: Change ownership of project directory
+        run: ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R ubuntu:www-data /var/www/laravel_blog && sudo chmod -R 775 /var/www/laravel_blog'
+
       - name: Create .env file
         run: |
           echo "APP_NAME=laravel_blog" >> .env
