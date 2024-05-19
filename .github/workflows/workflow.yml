@@ -86,6 +86,14 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/laravel_blog/storage/logs/laravel.log'
         shell: bash
 
+      - name: Set Laravel storage permissions
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage'
+
+      - name: Create vendor directory with correct permissions
+        run: ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir -p /var/www/laravel_blog/vendor && sudo chown -R ubuntu:www-data /var/www/laravel_blog/vendor && sudo chmod -R 775 /var/www/laravel_blog/vendor'
+
       - name: Install Dependencies
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
 
