@@ -66,13 +66,13 @@ jobs:
       - name: Restore public/storage directory if backup exists
         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then sudo mv ~/backup_uploads/* /var/www/laravel_blog/storage/app/public/; fi && sudo rm -rf ~/backup_uploads'
 
-      - name: Ensure storage directories exist
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/storage && mkdir -p framework/sessions framework/views framework/cache/data logs'
+      - name: Ensure storage and bootstrap/cache directories exist
+        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog && mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs bootstrap/cache'
 
-      - name: Set Directory Permissions for Storage
+      - name: Set Directory Permissions for Storage and Cache
         run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
 
       - name: Set Directory Permissions for Public Directory
         run: |
@@ -85,6 +85,11 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data /var/www/laravel_blog/storage/logs/laravel.log'
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/laravel_blog/storage/logs/laravel.log'
         shell: bash
+
+      - name: Set Permissions for Laravel Directory
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog'
 
       - name: Install Dependencies
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
