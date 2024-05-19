@@ -35,7 +35,7 @@ jobs:
         shell: bash
 
       - name: Create directory and change ownership
-        run: ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir -p /var/www/laravel_blog && sudo chown -R $USER:www-data /var/www/laravel_blog && sudo chmod -R 775 /var/www/laravel_blog'
+        run: ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir -p /var/www/laravel_blog && sudo chown -R ubuntu:www-data /var/www/laravel_blog && sudo chmod -R 775 /var/www/laravel_blog'
         shell: bash
 
       - name: Create .env file
@@ -51,7 +51,7 @@ jobs:
           echo "LOG_LEVEL=debug" >> .env
 
           echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST= 127.0.0.1" >> .env
+          echo "DB_HOST=127.0.0.1" >> .env
           echo "DB_PORT=3306" >> .env
           echo "DB_DATABASE=laravel_blog" >> .env
           echo "DB_USERNAME=ugra" >> .env
@@ -63,8 +63,8 @@ jobs:
           rsync -avh --rsync-path="sudo rsync" --exclude='.git/' ./ ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/
         shell: bash
 
-      - name: Move files if present and remove directory
-        run: ssh ubuntu@${{ secrets.HOST }} 'if [ "$(ls -A ~/backup_uploads/)" ]; then sudo mv ~/backup_uploads/* /var/www/laravel_blog/public/uploads/; fi; sudo rm -rf ~/backup_uploads/'
+      - name: Restore public/storage directory if backup exists
+        run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then sudo mv ~/backup_uploads/* /var/www/laravel_blog/storage/app/public/; fi && sudo rm -rf ~/backup_uploads'
 
       - name: Ensure storage directories exist
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/storage && mkdir -p framework/sessions framework/views framework/cache/data logs'
@@ -74,7 +74,7 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage'
           ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage'
 
-      - name: Set Directory Permission for  Public Directory
+      - name: Set Directory Permissions for Public Directory
         run: |
           ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/public/'
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/public/'
@@ -85,11 +85,6 @@ jobs:
           ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data /var/www/laravel_blog/storage/logs/laravel.log'
           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/laravel_blog/storage/logs/laravel.log'
         shell: bash
-
-      - name: Set Laravel storage permissions
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage'
 
       - name: Install Dependencies
         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
