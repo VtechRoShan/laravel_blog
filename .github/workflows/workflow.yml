@@ -34,7 +34,7 @@ jobs:
           node-version: '16' # Specify the required Node.js version
 
       - name: Install Node.js dependencies
-        run: npm install
+        run: npm ci
         working-directory: ./ # Adjust if your package.json is in a different directory
 
       - name: Build assets with Vite
