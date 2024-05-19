@@ -15,6 +15,7 @@ permissions:
 jobs:
   site-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,35 +29,43 @@ jobs:
         run: ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
       - name: Conditionally backup public/storage directory
-        run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/laravel_blog/storage/app/public" ]; then mkdir -p ~/backup_uploads && sudo mv /var/www/laravel_blog/storage/app/public ~/backup_uploads/; fi'
+        run: ssh ubuntu@${{ secrets.HOST }} '
+          if [ -d "/var/www/laravel_blog/storage/app/public" ]; then
+            mkdir -p ~/backup_uploads && sudo mv /var/www/laravel_blog/storage/app/public ~/backup_uploads/;
+          fi'
 
       - name: Delete Existing directory if present
-        run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/laravel_blog/" ]; then sudo rm -rf /var/www/laravel_blog ; else echo "Directory does not exist."; fi'
+        run: ssh ubuntu@${{ secrets.HOST }} '
+          if [ -d "/var/www/laravel_blog/" ]; then
+            sudo rm -rf /var/www/laravel_blog;
+          else
+            echo "Directory does not exist.";
+          fi'
         shell: bash
 
       - name: Create directory and change ownership
-        run: ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir -p /var/www/laravel_blog && sudo chown -R ubuntu:www-data /var/www/laravel_blog && sudo chmod -R 775 /var/www/laravel_blog'
+        run: ssh ubuntu@${{ secrets.HOST }} '
+          sudo mkdir -p /var/www/laravel_blog &&
+          sudo chown -R ubuntu:www-data /var/www/laravel_blog &&
+          sudo chmod -R 775 /var/www/laravel_blog'
         shell: bash
 
       - name: Create .env file
         run: |
-          echo "APP_NAME=laravel_blog" >> .env
+          echo "APP_NAME=laravel_blog" > .env
           echo "APP_ENV=local" >> .env
           echo "APP_KEY=base64:/" >> .env
           echo "APP_DEBUG=true" >> .env
           echo "APP_URL=http://localhost" >> .env
-
           echo "LOG_CHANNEL=stack" >> .env
           echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
           echo "LOG_LEVEL=debug" >> .env
-
           echo "DB_CONNECTION=mysql" >> .env
           echo "DB_HOST=127.0.0.1" >> .env
           echo "DB_PORT=3306" >> .env
           echo "DB_DATABASE=laravel_blog" >> .env
           echo "DB_USERNAME=ugra" >> .env
           echo "DB_PASSWORD=ugra1234" >> .env
-        shell: bash
 
       - name: Sync project files
         run: |
@@ -64,15 +73,21 @@ jobs:
         shell: bash
 
       - name: Restore public/storage directory if backup exists
-        run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then sudo mv ~/backup_uploads/* /var/www/laravel_blog/storage/app/public/; fi && sudo rm -rf ~/backup_uploads'
+        run: ssh ubuntu@${{ secrets.HOST }} '
+          if [ -d "~/backup_uploads" ]; then
+            sudo mv ~/backup_uploads/* /var/www/laravel_blog/storage/app/public/ &&
+            sudo rm -rf ~/backup_uploads;
+          fi'
 
-      - name: Ensure storage directories exist
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/storage && mkdir -p framework/sessions framework/views framework/cache/data logs'
+      - name: Ensure storage and bootstrap/cache directories exist
+        run: ssh ubuntu@${{ secrets.HOST }} '
+          cd /var/www/laravel_blog &&
+          mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs bootstrap/cache'
 
-      - name: Set Directory Permissions for Storage
+      - name: Set Directory Permissions for Storage and Cache
         run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
 
       - name: Set Directory Permissions for Public Directory
         run: |
