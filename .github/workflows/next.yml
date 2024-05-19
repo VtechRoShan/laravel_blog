@@ -1,5 +1,7 @@
 # # sudo rm -rf * && sudo rm -rf .*
 # name: site-deploy
+# # sudo rm -rf * && sudo rm -rf .*
+# # name: site-deploy
 
 # on:
 #   workflow_dispatch:
@@ -28,16 +30,16 @@
 #       - name: Add SSH key to known hosts
 #         run: ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-#       # - name: Set Laravel folder permission
-#       #   run: |
-#       #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown ubuntu:ubuntu -R /home/ubuntu/laravel_blog/'
-#       #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /home/ubuntu/laravel_blog/'
+#       - name: Set Laravel folder permission
+#         run: |
+#           ssh ubuntu@${{ secrets.HOST }} 'sudo chown ubuntu:ubuntu -R /var/www/html/'
+#           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
 
 #       - name: Conditionally backup public/uploads directory
-#         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/home/ubuntu/laravel_blog/public/uploads" ]; then mkdir -p ~/backup_uploads && mv /home/ubuntu/laravel_blog/public/uploads/* ~/backup_uploads/; fi'
+#         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/var/www/html/public/uploads" ]; then mkdir -p ~/backup_uploads && sudo mv /var/www/html/public/uploads/* ~/backup_uploads/; fi'
 
 #       - name: Delete Existing Assets
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && rm -rf ./*'
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo rm -rf ./*'
 
 #       - name: Create .env file
 #         run: |
@@ -68,37 +70,37 @@
 
 #       - name: Sync project files
 #         run: |
-#           rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' -e "ssh" ./ ubuntu@${{ secrets.HOST }}:/home/ubuntu/laravel_blog/ --rsync-path="rsync"
+#           rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' -e "ssh" ./ ubuntu@${{ secrets.HOST }}:/var/www/html/ --rsync-path="sudo rsync"
 #         shell: bash
 
 #       - name: Move files if present and remove directory
 #         run: |
-#           ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then mv ~/backup_uploads/* /home/ubuntu/laravel_blog/public/uploads/; fi; rm -rf ~/backup_uploads/'
+#           ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then sudo mv ~/backup_uploads/* /var/www/html/public/uploads/; fi; sudo rm -rf ~/backup_uploads/'
 
 #       - name: Ensure storage directories exist
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/storage && mkdir -p framework/sessions framework/views framework/cache/data logs'
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/storage && sudo mkdir -p framework/sessions framework/views framework/cache/data logs'
 
 #       - name: Set Laravel log file permissions
 #         run: |
-#           ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir -p /home/ubuntu/laravel_blog/storage/logs && sudo touch /home/ubuntu/laravel_blog/storage/logs/laravel.log'
+#           ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir -p /var/www/html/storage/logs && sudo touch /var/www/html/storage/logs/laravel.log'
 
 #       - name: Install laravel/ui Package
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo composer require laravel/ui'
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo composer require laravel/ui'
 
 #       - name: Install Dependencies
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo composer install --no-dev'
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo composer install --no-dev'
 
 #       - name: Generate Application Key
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo php artisan key:generate'
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan key:generate'
 
 #       - name: Cache Configuration
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo php artisan config:cache && sudo php artisan route:cache'
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan config:cache && sudo php artisan route:cache'
 
 #       - name: Run Migrations
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo php artisan migrate --no-interaction --force'
+#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/html/ && sudo php artisan migrate --no-interaction --force'
 
 #       - name: Set Laravel folder permission
 #         run: |
-#           ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /home/ubuntu/laravel_blog/'
-#           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /home/ubuntu/laravel_blog/'
+#           ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /var/www/html/'
+#           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/html/'
 # #
