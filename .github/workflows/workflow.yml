@@ -28,24 +28,12 @@ jobs:
       - name: Add SSH key to known hosts
         run: ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16' # Specify the required Node.js version
 
-      - name: Install Node.js dependencies
-        run: npm ci
-        working-directory: ./ # Adjust if your package.json is in a different directory
-
-      - name: Build assets with Vite
-        run: npm run build
-        working-directory: ./ # Adjust if your package.json is in a different directory
-
-      - name: Conditionally backup public/storage directory
-        run: ssh ubuntu@${{ secrets.HOST }} '
-          if [ -d "/var/www/laravel_blog/storage/app/public" ]; then
-            mkdir -p ~/backup_uploads && sudo mv /var/www/laravel_blog/storage/app/public ~/backup_uploads/;
-          fi'
+      # - name: Conditionally backup public/storage directory
+      #   run: ssh ubuntu@${{ secrets.HOST }} '
+      #     if [ -d "/var/www/laravel_blog/storage/app/public" ]; then
+      #       mkdir -p ~/backup_uploads && sudo mv /var/www/laravel_blog/storage/app/public ~/backup_uploads/;
+      #     fi'
 
       - name: Delete Existing directory if present
         run: ssh ubuntu@${{ secrets.HOST }} '
@@ -85,61 +73,61 @@ jobs:
           rsync -avh --rsync-path="sudo rsync" --exclude='.git/' ./ ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/
         shell: bash
 
-      - name: Sync built assets
-        run: |
-          rsync -avh --rsync-path="sudo rsync" ./public/build/ ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/public/build/
-        shell: bash
+      # - name: Sync built assets
+      #   run: |
+      #     rsync -avh --rsync-path="sudo rsync" ./public/build/ ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/public/build/
+      #   shell: bash
 
-      - name: Restore public/storage directory if backup exists
-        run: ssh ubuntu@${{ secrets.HOST }} '
-          if [ -d "~/backup_uploads" ]; then
-            sudo mv ~/backup_uploads/* /var/www/laravel_blog/storage/app/public/ &&
-            sudo rm -rf ~/backup_uploads;
-          fi'
+      # - name: Restore public/storage directory if backup exists
+      #   run: ssh ubuntu@${{ secrets.HOST }} '
+      #     if [ -d "~/backup_uploads" ]; then
+      #       sudo mv ~/backup_uploads/* /var/www/laravel_blog/storage/app/public/ &&
+      #       sudo rm -rf ~/backup_uploads;
+      #     fi'
 
-      - name: Ensure storage and bootstrap/cache directories exist
-        run: ssh ubuntu@${{ secrets.HOST }} '
-          cd /var/www/laravel_blog &&
-          mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs bootstrap/cache'
+      # - name: Ensure storage and bootstrap/cache directories exist
+      #   run: ssh ubuntu@${{ secrets.HOST }} '
+      #     cd /var/www/laravel_blog &&
+      #     mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs bootstrap/cache'
 
-      - name: Set Directory Permissions for Storage and Cache
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
+      # - name: Set Directory Permissions for Storage and Cache
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
 
-      - name: Set Directory Permissions for Public Directory
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/public/'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/public/'
+      # - name: Set Directory Permissions for Public Directory
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/public/'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/public/'
 
-      - name: Set Laravel log file permissions
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo touch /var/www/laravel_blog/storage/logs/laravel.log'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data /var/www/laravel_blog/storage/logs/laravel.log'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/laravel_blog/storage/logs/laravel.log'
-        shell: bash
+      # - name: Set Laravel log file permissions
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo touch /var/www/laravel_blog/storage/logs/laravel.log'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data /var/www/laravel_blog/storage/logs/laravel.log'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/laravel_blog/storage/logs/laravel.log'
+      #   shell: bash
 
-      - name: Set Permissions for Laravel Directory
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog'
+      # - name: Set Permissions for Laravel Directory
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog'
 
-      - name: Install PHP Dependencies
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
+      # - name: Install PHP Dependencies
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
 
-      - name: Require Laravel UI
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer require laravel/ui'
+      # - name: Require Laravel UI
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer require laravel/ui'
 
-      - name: Generate Application Key
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan key:generate'
+      # - name: Generate Application Key
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan key:generate'
 
-      - name: Cache Configuration
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan config:cache && php artisan route:cache'
+      # - name: Cache Configuration
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan config:cache && php artisan route:cache'
 
-      - name: Run Migrations
-        run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan migrate --no-interaction --force'
+      # - name: Run Migrations
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan migrate --no-interaction --force'
 
-      - name: Set Laravel bootstrap/cache permissions
-        run: |
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/bootstrap/cache'
-          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/bootstrap/cache'
+      # - name: Set Laravel bootstrap/cache permissions
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/bootstrap/cache'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/bootstrap/cache'
