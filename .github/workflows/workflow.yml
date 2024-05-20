@@ -107,10 +107,10 @@ jobs:
       #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/laravel_blog/storage/logs/laravel.log'
       #   shell: bash
 
-      # - name: Set Permissions for Laravel Directory
-      #   run: |
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog'
-      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog'
+      - name: Set Permissions for Laravel Directory
+        run: |
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R $USER:$USER /var/www/laravel_blog'
+          ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog'
 
       # - name: Install PHP Dependencies
       #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
