@@ -1,104 +1,133 @@
-# # sudo rm -rf * && sudo rm -rf .*
-# name: site-deploy
+name: site-deploy
 
-# on:
-#   workflow_dispatch:
-#   push:
-#     branches:
-#       - main
-#       # - 8586-dev-relationships
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 8586-dev-relationships
 
-# permissions:
-#   id-token: write
-#   contents: read
-#   pull-requests: write
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
 
-# jobs:
-#   site-deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v3
+jobs:
+  site-deploy:
+    runs-on: ubuntu-latest
 
-#       - name: Setup SSH
-#         uses: webfactory/ssh-agent@v0.5.3
-#         with:
-#           ssh-private-key: ${{ secrets.SSH_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-#       - name: Add SSH key to known hosts
-#         run: ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
 
-#       # - name: Set Laravel folder permission
-#       #   run: |
-#       #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown ubuntu:ubuntu -R /home/ubuntu/laravel_blog/'
-#       #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /home/ubuntu/laravel_blog/'
+      - name: Add SSH key to known hosts
+        run: ssh-keyscan -t rsa ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-#       - name: Conditionally backup public/uploads directory
-#         run: ssh ubuntu@${{ secrets.HOST }} 'if [ -d "/home/ubuntu/laravel_blog/public/uploads" ]; then mkdir -p ~/backup_uploads && mv /home/ubuntu/laravel_blog/public/uploads/* ~/backup_uploads/; fi'
 
-#       - name: Delete Existing Assets
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && rm -rf ./*'
+      # - name: Conditionally backup public/storage directory
+      #   run: ssh ubuntu@${{ secrets.HOST }} '
+      #     if [ -d "/var/www/laravel_blog/storage/app/public" ]; then
+      #       mkdir -p ~/backup_uploads && sudo mv /var/www/laravel_blog/storage/app/public ~/backup_uploads/;
+      #     fi'
 
-#       - name: Create .env file
-#         run: |
-#           echo "APP_NAME=DevOpsConsoles" >> .env
-#           echo "APP_ENV=local" >> .env
-#           echo "APP_KEY=base64:/" >> .env
-#           echo "APP_DEBUG=true" >> .env
-#           echo "APP_URL=https://devopsconsoles.com" >> .env
+      - name: Delete Existing directory if present
+        run: ssh ubuntu@${{ secrets.HOST }} '
+          if [ -d "/var/www/laravel_blog/" ]; then
+            sudo rm -rf /var/www/laravel_blog;
+          else
+            echo "Directory does not exist.";
+          fi'
+        shell: bash
 
-#           echo "LOG_CHANNEL=stack" >> .env
-#           echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
-#           echo "LOG_LEVEL=debug" >> .env
+      - name: Create directory and change ownership
+        run: ssh ubuntu@${{ secrets.HOST }} '
+          sudo mkdir -p /var/www/laravel_blog &&
+          sudo chown -R $USER:$USER /var/www/laravel_blog &&
+          sudo chmod -R 775 /var/www/laravel_blog'
+        shell: bash
 
-#           echo "DB_CONNECTION=mysql" >> .env
-#           echo "DB_HOST=127.0.0.1" >> .env
-#           echo "DB_PORT=3306" >> .env
-#           echo "DB_DATABASE=laravel_blog" >> .env
-#           echo "DB_USERNAME=ugra" >> .env
-#           echo "DB_PASSWORD=ugra1234" >> .env
+      - name: Create .env file
+        run: |
+          echo "APP_NAME=laravel_blog" > .env
+          echo "APP_ENV=local" >> .env
+          echo "APP_KEY=base64:/" >> .env
+          echo "APP_DEBUG=true" >> .env
+          echo "APP_URL=http://localhost" >> .env
+          echo "LOG_CHANNEL=stack" >> .env
+          echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
+          echo "LOG_LEVEL=debug" >> .env
+          echo "DB_CONNECTION=mysql" >> .env
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_PORT=3306" >> .env
+          echo "DB_DATABASE=laravel_blog" >> .env
+          echo "DB_USERNAME=ugra" >> .env
+          echo "DB_PASSWORD=ugra1234" >> .env
 
-#           echo "BROADCAST_DRIVER=log" >> .env
-#           echo "CACHE_DRIVER=file" >> .env
-#           echo "FILESYSTEM_DISK=local" >> .env
-#           echo "QUEUE_CONNECTION=sync" >> .env
-#           echo "SESSION_DRIVER=file" >> .env
-#           echo "SESSION_LIFETIME=120" >> .env
-#         shell: bash
+      - name: Sync project files
+        run: |
+          rsync -avh --rsync-path="sudo rsync" --exclude='.git/' ./ ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/
+        shell: bash
 
-#       - name: Sync project files
-#         run: |
-#           rsync -avh --exclude='/storage/*' --exclude='/vendor/*' --exclude='.git/' -e "ssh" ./ ubuntu@${{ secrets.HOST }}:/home/ubuntu/laravel_blog/ --rsync-path="rsync"
-#         shell: bash
+      # - name: Sync built assets
+      #   run: |
+      #     rsync -avh --rsync-path="sudo rsync" ./public/build/ ubuntu@${{ secrets.HOST }}:/var/www/laravel_blog/public/build/
+      #   shell: bash
 
-#       - name: Move files if present and remove directory
-#         run: |
-#           ssh ubuntu@${{ secrets.HOST }} 'if [ -d "~/backup_uploads" ]; then mv ~/backup_uploads/* /home/ubuntu/laravel_blog/public/uploads/; fi; rm -rf ~/backup_uploads/'
+      # - name: Restore public/storage directory if backup exists
+      #   run: ssh ubuntu@${{ secrets.HOST }} '
+      #     if [ -d "~/backup_uploads" ]; then
+      #       sudo mv ~/backup_uploads/* /var/www/laravel_blog/storage/app/public/ &&
+      #       sudo rm -rf ~/backup_uploads;
+      #     fi'
 
-#       - name: Ensure storage directories exist
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/storage && mkdir -p framework/sessions framework/views framework/cache/data logs'
+      # - name: Ensure storage and bootstrap/cache directories exist
+      #   run: ssh ubuntu@${{ secrets.HOST }} '
+      #     cd /var/www/laravel_blog &&
+      #     mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs bootstrap/cache'
 
-#       - name: Set Laravel log file permissions
-#         run: |
-#           ssh ubuntu@${{ secrets.HOST }} 'sudo mkdir -p /home/ubuntu/laravel_blog/storage/logs && sudo touch /home/ubuntu/laravel_blog/storage/logs/laravel.log'
+      # - name: Set Directory Permissions for Storage and Cache
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/storage /var/www/laravel_blog/bootstrap/cache'
 
-#       - name: Install laravel/ui Package
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo composer require laravel/ui'
+      # - name: Set Directory Permissions for Public Directory
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/public/'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/public/'
 
-#       - name: Install Dependencies
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo composer install --no-dev'
+      # - name: Set Laravel log file permissions
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo touch /var/www/laravel_blog/storage/logs/laravel.log'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data /var/www/laravel_blog/storage/logs/laravel.log'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod 664 /var/www/laravel_blog/storage/logs/laravel.log'
+      #   shell: bash
 
-#       - name: Generate Application Key
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo php artisan key:generate'
+      # - name: Set Permissions for Laravel Directory
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog'
 
-#       - name: Cache Configuration
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo php artisan config:cache && sudo php artisan route:cache'
+      # - name: Install PHP Dependencies
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer install --no-dev'
 
-#       - name: Run Migrations
-#         run: ssh ubuntu@${{ secrets.HOST }} 'cd /home/ubuntu/laravel_blog/ && sudo php artisan migrate --no-interaction --force'
+      # - name: Require Laravel UI
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && composer require laravel/ui'
 
-#       - name: Set Laravel folder permission
-#         run: |
-#           ssh ubuntu@${{ secrets.HOST }} 'sudo chown www-data:www-data -R /home/ubuntu/laravel_blog/'
-#           ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /home/ubuntu/laravel_blog/'
-# #
+      # - name: Generate Application Key
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan key:generate'
+
+      # - name: Cache Configuration
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan config:cache && php artisan route:cache'
+
+      # - name: Run Migrations
+      #   run: ssh ubuntu@${{ secrets.HOST }} 'cd /var/www/laravel_blog/ && php artisan migrate --no-interaction --force'
+
+      # - name: Set Laravel bootstrap/cache permissions
+      #   run: |
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chown -R www-data:www-data /var/www/laravel_blog/bootstrap/cache'
+      #     ssh ubuntu@${{ secrets.HOST }} 'sudo chmod -R 775 /var/www/laravel_blog/bootstrap/cache'
