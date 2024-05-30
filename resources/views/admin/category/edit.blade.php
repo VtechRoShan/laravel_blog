@@ -116,7 +116,7 @@ window.onload = updateClock; // Start the clock once the window has loaded.
                      </div>
 
                   <!-- Place the first <script> tag in your HTML's <head> -->
-                  <script src="https://cdn.tiny.cloud/1/0nnxiieaki9dx4u1xtnwick76s9pfptyigrrv9xlwo6nmsvt/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+                  <script src="https://cdn.tiny.cloud/1/cx4fazq00qv7o5a2khalj041exk6e1dw82c6spm6brifoywq/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
                   <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
                   <script>
